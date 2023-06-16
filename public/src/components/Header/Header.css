@@ -1,15 +1,40 @@
 header {
   display: flex;
-  min-height: 46px;
   align-items: center;
-  padding-inline: 24px;
   justify-content: space-between;
-  background-color: aquamarine;
+  max-width: 1440px;
+  min-height: 70px;
+  margin: auto;
+  margin-bottom: 24px;
 }
 
-header .left-side,
-header .right-side {
+.logo-link {
   display: flex;
-  gap: 14px;
   align-items: center;
+  text-decoration: none;
+  cursor: pointer;
+  gap: 6px;
+}
+
+.logo-link::before {
+  display: block;
+  content: "";
+  width: 32px;
+  height: 32px;
+  border-radius: 100%;
+  background-color: #434960;
+}
+
+.left-side {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 610.15px;
+  width: 100%;
+}
+
+.right-side {
+  display: flex;
+  align-items: center;
+  gap: 13px;
 }

@@ -1,6 +1,11 @@
 menu ul {
-  gap: 16px;
+  gap: 27px;
   display: flex;
   align-items: center;
   list-style: none;
+}
+
+a {
+  cursor: pointer;
+  text-decoration: none;
 }

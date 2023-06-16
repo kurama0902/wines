@@ -11,11 +11,13 @@ export const Header = () => {
   return (
     <header>
       <div className="left-side">
-        <a href="/">!!!! JustWine</a>
+        <div className="logo">
+          <a className="logo-link" href="/">JustWine</a>
+        </div>
         <Menu menuLinks={MenuModel} />
       </div>
       <div className="right-side">
-        <SearchField />
+        <SearchField placehoder='Search wine...' />
         <LikesPopup />
       </div>
     </header>

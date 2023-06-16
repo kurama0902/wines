@@ -1,27 +1,27 @@
 export const MenuModel = [
   {
     to: '/',
-    name: 'home',
-    id: 1
+    name: 'Popular wines',
+    id: 1,
   },
   {
     to: '/',
-    name: 'Popular wines',
-    id: 2
+    name: 'New Sale',
+    id: 2,
   },
   {
     to: '/newSale',
-    name: 'New Sale',
-    id: 3
+    name: 'Premium wine',
+    id: 3,
   },
   {
-    to: 'premiumWine',
-    name: 'Premium wine',
-    id: 4
+    to: '/about-us',
+    name: 'About us',
+    id: 4,
   },
   {
-    to: 'premiumWine',
-    name: 'Premium wine',
-    id: 4
+    to: '/contacts',
+    name: 'Contacts',
+    id: 5,
   }
 ]
