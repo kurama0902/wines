@@ -1,15 +1,13 @@
-.liked-items-btn {
+.bag-link {
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
     width: 40px;
     height: 40px;
     border-radius: 100%;
     background-color: transparent;
-    border: none;
 }
 
-.liked-items-btn:hover {
+.bag-link:hover {
     background-color: lightgray;
 }

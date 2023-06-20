@@ -41,3 +41,26 @@
     color: black;
 }
 
+.second-section .search-wrap {
+    display: none;
+}
+
+@media (max-width: 1300px) {
+
+    .right-side .search-wrap {
+        display: none;
+    }
+
+    .second-section .search-wrap {
+        display: flex;
+    }
+
+    .search-wrap {
+        width: auto;
+    }
+
+    .input-wrap {
+        width: calc(100% - 50px);
+    }
+}
+

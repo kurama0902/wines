@@ -1,0 +1,44 @@
+.user-btn-wrap {
+    position: relative;
+}
+
+.user-btn {
+    display: flex;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+    border: none;
+}
+
+.user-btn:hover {
+    background-color: lightgray;
+}
+
+.user-popup-wrap {
+    display: none;
+    flex-direction: column;
+    padding: 10px;
+    background-color: white;
+    position: absolute;
+    border-radius: 5px;
+    gap: 5px;
+    top: 55px;
+    right: 10px;
+}
+
+.user-page-btn, .login-btn {
+    width: 200px;
+    height: 35px;
+    cursor: pointer;
+    border-radius: 12px;
+    background-color: blue;
+    border: none;
+}
+
+.user-page-btn:hover, .login-btn:hover {
+    background-color: rgb(38, 38, 255);
+}

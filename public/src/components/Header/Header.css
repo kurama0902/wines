@@ -1,11 +1,20 @@
-header {
+.header-wrap {
+  display: flex;
+  flex-direction: column;
+  padding-left: 10px;
+  padding-right: 10px;
+  max-width: 1460px;
+  margin-bottom: 24px;
+  margin: auto;
+  gap: 10px;
+}
+
+.first-section {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  max-width: 1440px;
   min-height: 70px;
-  margin: auto;
-  margin-bottom: 24px;
+  width: 100%;
 }
 
 .logo-link {
@@ -37,4 +46,15 @@ header {
   display: flex;
   align-items: center;
   gap: 13px;
+}
+
+@media (max-width: 1299px) {
+  menu, .search-wrap, .liked-items-btn, .liked-items-btn-wrap, .user-btn-wrap {
+    display: none;
+  }
+  
+  .right-side {
+    display: flex;
+    gap: 38px;
+  }
 }

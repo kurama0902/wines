@@ -6,7 +6,6 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <h1 style={{fontFamily: 'Arial', fontSize: '25px', color: 'teal'}}>Wine Project</h1>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-.liked-items-btn {
+.notifications {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -10,6 +10,6 @@
     border: none;
 }
 
-.liked-items-btn:hover {
+.notifications:hover {
     background-color: lightgray;
 }

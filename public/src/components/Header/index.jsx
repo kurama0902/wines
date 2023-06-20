@@ -2,23 +2,33 @@ import React from "react";
 import { Menu } from "./components/Menu";
 import { SearchField } from "./components/SearchField";
 import { LikesPopup } from "./components/LikesPopup";
-
 import { MenuModel } from "../../shared/consts";
+import { NotificationsPopup } from "./components/NotificactionsPopup";
+import { UserPopup } from "./components/UserPopup";
 
 import "./Header.css";
+import { BagLink } from "./components/BagLink";
 
 export const Header = () => {
   return (
-    <header>
-      <div className="left-side">
-        <div className="logo">
-          <a className="logo-link" href="/">JustWine</a>
+    <header className="header-wrap">
+      <div className="first-section">
+        <div className="left-side">
+          <div className="logo">
+            <a className="logo-link" href="/">JustWine</a>
+          </div>
+          <Menu menuLinks={MenuModel} />
         </div>
-        <Menu menuLinks={MenuModel} />
+        <div className="right-side">
+          <SearchField placehoder='Search wine...' />
+          <LikesPopup />
+          <NotificationsPopup />
+          <BagLink />
+          <UserPopup />
+        </div>
       </div>
-      <div className="right-side">
+      <div className="second-section">
         <SearchField placehoder='Search wine...' />
-        <LikesPopup />
       </div>
     </header>
   );

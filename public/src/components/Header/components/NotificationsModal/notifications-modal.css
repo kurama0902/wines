@@ -1,5 +1,5 @@
-.liked-modal-wrap {
-    display: flex;
+.notifications-modal-wrap {
+    display: none;
     justify-content: center;
     align-items: center;
     position: absolute;
@@ -11,18 +11,18 @@
     z-index: 2;
 }
 
-.liked-modal {
+.notifications-modal {
     max-width: 800px;
     height: 500px;
     width: 100%;
     position: relative;
 }
 
-.liked-info-wrap {
+.notifications-info-wrap {
     align-items: center;
 }
 
-.liked-info-wrap {
+.notifications-info-wrap {
     display: flex;
     position: relative;
     height: 500px;
