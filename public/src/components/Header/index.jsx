@@ -5,9 +5,10 @@ import { LikesPopup } from "./components/LikesPopup";
 import { MenuModel } from "../../shared/consts";
 import { NotificationsPopup } from "./components/NotificactionsPopup";
 import { UserPopup } from "./components/UserPopup";
+import { BagLink } from "./components/BagLink";
 
 import "./Header.css";
-import { BagLink } from "./components/BagLink";
+
 
 export const Header = () => {
   return (

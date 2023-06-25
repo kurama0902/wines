@@ -1,0 +1,10 @@
+.brands-wrap {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 55px;
+    align-items: center;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    height: 124px;
+    gap: 10px;
+}

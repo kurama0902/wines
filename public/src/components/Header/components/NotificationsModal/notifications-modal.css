@@ -1,7 +1,26 @@
-.notifications-modal-wrap {
+/* .notifications-modal-wrap {
     display: none;
     justify-content: center;
     align-items: center;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgb(0 0 0 / 77%);
+    z-index: 2;
+} */
+
+.modal-wrap {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.close-area {
+    cursor: pointer;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -16,6 +35,10 @@
     height: 500px;
     width: 100%;
     position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
 }
 
 .notifications-info-wrap {
@@ -33,4 +56,5 @@
     border-radius: 8px;
     overflow-y: scroll;
     gap: 20px;
+    width: 100%;
 }

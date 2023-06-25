@@ -1,0 +1,23 @@
+.country-brand {
+    position: relative;
+    width: 318px;
+    height: 124px;
+    border-radius: 8px;
+}
+
+.country-img {
+    width: 318px;
+    height: 124px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.country-brand h3 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 28px;
+    line-height: 110%;
+    color: white;
+}

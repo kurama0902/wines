@@ -1,0 +1,93 @@
+.product-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 316px;
+    border: 1px solid lightgrey;
+    border-radius: 8px;
+}
+
+.picture-and-description {
+    width: 316px;
+    height: 340px;
+    position: relative;
+    margin-bottom: 24px;
+}
+
+.wine-img {
+    width: 316px;
+    height: 340px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.description-info {
+    display: flex;
+    width: 284px;
+    height: 44px;
+    flex-direction: column;
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    gap: 5px;
+}
+
+.heart-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    position: absolute;
+    border-radius: 100%;
+    background-color: transparent;
+    border: none;
+    top: 16px;
+    right: 16px;
+}
+
+.heart-btn:hover {
+    background-color: lightgray;
+}
+
+.price-and-quality {
+    display: flex;
+    justify-content: center;
+    width: 284px;
+    height: 65px;
+    flex-direction: column;
+    /* padding: 4px 8px 8px 8px; */
+    box-shadow: 0px 2px 8px 0px rgba(12, 8, 21, 0.20);
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: 8px;
+}
+
+.price-and-avalability, .quality-and-price-state {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.price-state {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.buy-btn {
+    display: flex;
+    cursor: pointer;
+    justify-content: center;
+    margin-top: 15px;
+    align-items: center;
+    width: 284px;
+    height: 40px;
+    background-color: #d48713;
+    border-radius: 8px;
+    border: none;
+    color: white;
+}

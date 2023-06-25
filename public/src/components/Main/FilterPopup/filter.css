@@ -1,0 +1,23 @@
+.filter-btn {
+    display: flex;
+    cursor: pointer;
+    padding: 8px 20px;
+    height: 32px;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #434960;
+    background-color: transparent;
+    border-radius: 8px;
+    gap: 8px;
+}
+
+.filter-btn p {
+    color: #434960;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 130%;
+}
+
+.filter-btn:hover {
+    background-color: lightgray;
+}

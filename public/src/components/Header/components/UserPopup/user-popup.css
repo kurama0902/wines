@@ -25,9 +25,11 @@
     background-color: white;
     position: absolute;
     border-radius: 5px;
+    border: 1px solid grey;
     gap: 5px;
     top: 55px;
     right: 10px;
+    z-index: 1;
 }
 
 .user-page-btn, .login-btn {
@@ -37,6 +39,7 @@
     border-radius: 12px;
     background-color: blue;
     border: none;
+    color: white;
 }
 
 .user-page-btn:hover, .login-btn:hover {

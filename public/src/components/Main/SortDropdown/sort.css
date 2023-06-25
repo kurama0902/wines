@@ -1,0 +1,36 @@
+.sort-by-wrap {
+    display: flex;
+    align-items: center;
+    position: relative;
+    gap: 6px;
+}
+
+.sort-by-label {
+    font-size: 14px;
+    line-height: 130%;
+    color: #ABADB2;
+}
+
+.sort-by {
+    display: flex;
+    cursor: pointer;
+    outline: none;
+    width: 136px;
+    height: 32px;
+    align-items: center;
+    padding-left: 13px;
+    border-radius: 8px;
+    border: 1px solid #EDEDF0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.arrow {
+    height: 16px;
+    position: absolute;
+    pointer-events: none;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+}

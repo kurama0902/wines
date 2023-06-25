@@ -11,10 +11,8 @@ export const LikesPopup = () => {
     setDisplay('flex');
   };
 
-  function closeModal(e) {
-    if (e.target.className !== 'liked-info-wrap') {
+  function closeModal() {
       setDisplay('none');
-    }
   }
 
 
