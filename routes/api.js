@@ -72,15 +72,15 @@ router.route("/popular-wines").get((req, res) => {
 });
 
 router.route("/winesNewSale").get((req, res) => {
-  res.send({winesNewSale});
+  res.send(winesNewSale);
 });
 
 router.route("/winesPremium").get((req, res) => {
-  res.send({winesPremium});
+  res.send(winesPremium);
 });
 
 router.route("/brands").get((req, res) => {
-  res.send({brandCategories});
+  res.send(brandCategories);
 });
 
 module.exports = router;

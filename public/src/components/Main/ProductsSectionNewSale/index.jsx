@@ -1,19 +1,19 @@
 import React from 'react';
 import { Product } from '../Product';
 import { RightArrowSVG } from '../RightArrowSVG';
-
-import './products-section.css';
 import { useGetRequest } from '../../../shared/hooks/getRequest';
 
-export const ProductsSection = () => {
-	const products = useGetRequest('popular-wines');
+import './products-section.css';
+
+export const ProductsSectionNewSale = () => {
+	const products = useGetRequest('winesNewSale');
 
 	return (
 		<div className="section-h3-wrap">
 			<h3>
-				Popular wines <RightArrowSVG />
+			NewSale <RightArrowSVG />
 			</h3>
-			<section className="products-wrap popularWines">
+			<section className="products-wrap winesNewSale">
 				{products.map((item) => {
 					const { id, cl, cost, year, avaliableAmount, fixedPrice, quality, description, imgURL } =
 						item;
