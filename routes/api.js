@@ -3,6 +3,7 @@ require("dotenv").config();
 const router = require("express").Router();
 const nodemailer = require("nodemailer");
 const { popularWines, winesNewSale, winesPremium } = require("../db/index");
+const { brandCategories } = require("../db/brandCategories");
 
 const adminEmail = process.env.ADMIN_EMAIL;
 const adminPass = process.env.ADMIN_PASS;
@@ -67,7 +68,19 @@ router.route("/check-user-able").post((req, res) => {
 });
 
 router.route("/popular-wines").get((req, res) => {
-  res.send({popularWines, winesNewSale, winesPremium});
+  res.send(popularWines);
+});
+
+router.route("/winesNewSale").get((req, res) => {
+  res.send({winesNewSale});
+});
+
+router.route("/winesPremium").get((req, res) => {
+  res.send({winesPremium});
+});
+
+router.route("/brands").get((req, res) => {
+  res.send({brandCategories});
 });
 
 module.exports = router;

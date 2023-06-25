@@ -2,8 +2,14 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const express = require("express");
 // const logger = require("morgan");
+
+const cors = require('cors');
+const corsDefault = require('./corsSettings');
+
 const path = require("path");
 const app = express();
+
+app.use(cors(corsDefault));
 
 const api = require("./routes/api");
 const users = require("./routes/users");
