@@ -4,14 +4,6 @@ import './notifications-modal.css'
 
 export const NotificationsModal = ({ display, closeModal }) => {
     return (
-        // <div className="notifications-modal-wrap" onClick={closeModal} style={{display: display}}>
-        //     <div className="notifications-modal">
-        //         <div className="notifications-info-wrap">
-
-        //         </div>
-        //     </div>
-        // </div>
-
         <div className="modal-wrap" style={{ display: display }}>
             <div className="close-area" onClick={closeModal} style={{ display: display }}></div>
             <div className="notifications-modal" style={{ display: display }}>

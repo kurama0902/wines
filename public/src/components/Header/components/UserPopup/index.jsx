@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { UserSVG } from "../UserSVG";
+import { UserSVG } from "../../../../shared/SVG/UserSVG";
 
 import './user-popup.css'
 

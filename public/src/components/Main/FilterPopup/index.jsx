@@ -1,7 +1,7 @@
 import React from "react";
 
 import './filter.css';
-import { FilterSVG } from "../FilterSVG";
+import { FilterSVG } from "../../../shared/SVG/FilterSVG";
 
 
 export const FilterPopup = () => {

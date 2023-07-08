@@ -4,9 +4,9 @@ import { SortDropdown } from "../SortDropdown";
 
 import './filter-and-sort-section.css'
 
-export const FilterAndSortSection = () => {
+export const FilterAndSortSection = ({sectionName}) => {
     return (
-        <section className="filter-and-sort-section">
+        <section className={`filter-and-sort-section -${sectionName}`}>
             <FilterPopup/>
             <SortDropdown/>
         </section>

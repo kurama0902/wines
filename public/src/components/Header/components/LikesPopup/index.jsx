@@ -1,27 +1,29 @@
-import { useState } from "react";
-import { LikedModal } from "../LikedModal";
-import { HeartSVG } from "../HeartSVG";
+import { useState } from 'react';
+import { LikedModal } from '../LikedModal';
+import { HeaderHeartSVG } from '../../../../shared/SVG/HeaderHeartSVG';
+// import { Counter } from '../../../../shared/components/Counter';
 
-import "./likesPopup.css";
+import './likesPopup.css';
 
 export const LikesPopup = () => {
-  const [display, setDisplay] = useState('none');
 
-  const handleOpenPopup = () => {
-    setDisplay('flex');
-  };
+	let [display, setDisplay] = useState('none');
 
-  function closeModal() {
-      setDisplay('none');
-  }
+	const handleOpenPopup = () => {
+		setDisplay('flex');
+	};
 
+	const closeModal = () => {
+		setDisplay('none');
+	}
 
-  return (
-    <div className="liked-items-btn-wrap">
-      <button className="liked-items-btn" onClick={handleOpenPopup}>
-        <HeartSVG />
-      </button>
-      <LikedModal display={display} closeModal={closeModal} />
-    </div>
-  );
+	return (
+		<div className="liked-items-btn-wrap">
+			<button className="liked-items-btn" onClick={handleOpenPopup}>
+				<HeaderHeartSVG />
+				{/* <Counter /> */}
+			</button>
+			<LikedModal display={display} closeModal={closeModal} />
+		</div>
+	);
 };

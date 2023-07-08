@@ -1,93 +1,139 @@
 .product-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 316px;
-    border: 1px solid lightgrey;
-    border-radius: 8px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 316px;
+	border: 1px solid lightgrey;
+	border-radius: 8px;
 }
 
 .picture-and-description {
-    width: 316px;
-    height: 340px;
-    position: relative;
-    margin-bottom: 24px;
+	width: 316px;
+	height: 340px;
+	position: relative;
+	margin-bottom: 24px;
 }
 
 .wine-img {
-    width: 316px;
-    height: 340px;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
+	width: 316px;
+	height: 340px;
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
 }
 
 .description-info {
-    display: flex;
-    width: 284px;
-    height: 44px;
-    flex-direction: column;
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-    gap: 5px;
+	display: flex;
+	width: 284px;
+	height: 44px;
+	flex-direction: column;
+	position: absolute;
+	bottom: 10px;
+	left: 50%;
+	transform: translateX(-50%);
+	pointer-events: none;
+	text-align: center;
+	gap: 5px;
 }
 
 .heart-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    position: absolute;
-    border-radius: 100%;
-    background-color: transparent;
-    border: none;
-    top: 16px;
-    right: 16px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 40px;
+	height: 40px;
+	cursor: pointer;
+	position: absolute;
+	border-radius: 100%;
+	background-color: transparent;
+	border: none;
+	top: 16px;
+	right: 16px;
 }
 
 .heart-btn:hover {
-    background-color: lightgray;
+	background-color: lightgray;
+}
+
+.description {
+	color: white;
+	text-align: center;
+	font-size: 16px;
+	line-height: 140%;
+}
+
+.year {
+	color: white;
+	text-align: center;
+	font-size: 12px;
+	font-weight: 700;
+	line-height: 150%;
 }
 
 .price-and-quality {
-    display: flex;
-    justify-content: center;
-    width: 284px;
-    height: 65px;
-    flex-direction: column;
-    /* padding: 4px 8px 8px 8px; */
-    box-shadow: 0px 2px 8px 0px rgba(12, 8, 21, 0.20);
-    padding-left: 8px;
-    padding-right: 8px;
-    border-radius: 8px;
+	display: flex;
+	justify-content: center;
+	width: 284px;
+	height: 65px;
+	flex-direction: column;
+	box-shadow: 0px 2px 8px 0px rgba(12, 8, 21, 0.2);
+	padding-left: 8px;
+	padding-right: 8px;
+	border-radius: 8px;
+	gap: 8px;
 }
 
-.price-and-avalability, .quality-and-price-state {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.price-and-quality p {
+	display: flex;
+	align-items: center;
+	gap: 3px;
+}
+
+.price-and-avalability,
+.quality-and-price-state {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	line-height: 130%;
 }
 
 .price-state {
-    display: flex;
-    align-items: center;
-    gap: 7px;
+	display: flex;
+	align-items: center;
+	gap: 7px;
 }
 
 .buy-btn {
-    display: flex;
-    cursor: pointer;
-    justify-content: center;
-    margin-top: 15px;
-    align-items: center;
-    width: 284px;
-    height: 40px;
-    background-color: #d48713;
-    border-radius: 8px;
-    border: none;
-    color: white;
+	display: flex;
+	cursor: pointer;
+	justify-content: center;
+	margin-top: 15px;
+	align-items: center;
+	width: 284px;
+	height: 40px;
+	background-color: #d48713;
+	margin-bottom: 15px;
+	border-radius: 8px;
+	border: none;
+	color: white;
+}
+
+.grey-text {
+	color: #abadb2;
+	font-size: 12px;
+	line-height: 150%;
+}
+
+.cl {
+	font-size: 14px;
+}
+
+.cost {
+	color: #434960;
+	font-size: 18px;
+	font-weight: 700;
+	line-height: 150%;
+}
+
+.buy-btn:disabled {
+	background-color: grey;
 }

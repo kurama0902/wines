@@ -4,6 +4,7 @@ import { FilterAndSortSection } from "./FilterAndSortSection";
 import { Brands } from "./Brands";
 import { ProductsSection } from "./ProductsSection";
 import { ProductsSectionNewSale } from "./ProductsSectionNewSale";
+import { ProductsSectionPremiumWines } from "./ProductsSectionPremiumWines";
 
 import './main.css'
 
@@ -12,9 +13,12 @@ export const Main = () => {
         <main className="main">
             <MainSlider/>
             <Brands/>
-            <FilterAndSortSection/>
+            <FilterAndSortSection sectionName='popularWines'/>
             <ProductsSection/>
+            <FilterAndSortSection sectionName='winesNewSale'/>
             <ProductsSectionNewSale />
+            <FilterAndSortSection sectionName='premiumwines'/>
+            <ProductsSectionPremiumWines />
         </main>
     )
 }

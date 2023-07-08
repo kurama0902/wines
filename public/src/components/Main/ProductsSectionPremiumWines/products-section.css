@@ -1,0 +1,18 @@
+.section-h3-wrap h3 {
+    display: flex;
+    align-items: center;
+    color: #434960;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 110%;
+    margin-top: 40px;
+    margin-bottom: 32px;
+    gap: 15px;
+}
+
+.products-wrap {
+    display: flex;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    gap: 16px;
+}

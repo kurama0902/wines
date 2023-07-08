@@ -1,5 +1,5 @@
-import { CameraSVG } from '../CameraSVG';
-import { SearchSVG } from '../SearchSVG';
+import { CameraSVG } from "../../../../shared/SVG/CameraSVG";
+import { SearchSVG } from "../../../../shared/SVG/SearchSVG";
 
 import './searchField.css';
 

@@ -5,15 +5,15 @@ import { useGetRequest } from '../../../shared/hooks/getRequest';
 
 import './products-section.css';
 
-export const ProductsSectionNewSale = () => {
-	const products = useGetRequest('winesNewSale');
+export const ProductsSectionPremiumWines = () => {
+    const products = useGetRequest('winesPremium');
 
 	return (
 		<div className="section-h3-wrap">
 			<h3>
-			New sale <RightArrowSVG />
+			Premium wines <RightArrowSVG />
 			</h3>
-			<section className="products-wrap winesNewSale">
+			<section className="products-wrap winesPremium">
 				{products.map((item) => {
 					const { id, cl, cost, year, avaliableAmount, fixedPrice, quality, description, imgURL } =
 						item;
@@ -35,4 +35,4 @@ export const ProductsSectionNewSale = () => {
 			</section>
 		</div>
 	);
-};
+}

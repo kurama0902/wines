@@ -1,9 +1,9 @@
 import React from 'react';
 import { Product } from '../Product';
-import { RightArrowSVG } from '../RightArrowSVG';
+import { RightArrowSVG } from '../../../shared/SVG/RightArrowSVG';
+import { useGetRequest } from '../../../shared/hooks/getRequest';
 
 import './products-section.css';
-import { useGetRequest } from '../../../shared/hooks/getRequest';
 
 export const ProductsSection = () => {
 	const products = useGetRequest('popular-wines');

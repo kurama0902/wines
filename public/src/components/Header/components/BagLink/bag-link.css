@@ -6,6 +6,7 @@
     height: 40px;
     border-radius: 100%;
     background-color: transparent;
+    position: relative;
 }
 
 .bag-link:hover {
