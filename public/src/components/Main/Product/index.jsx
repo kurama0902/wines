@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { HeartSVG } from '../../../shared/SVG/HeartSVG';
 import { LockSVG } from '../../../shared/SVG/LockSVG';
-import { Counter } from '../../../shared/components/Counter';
 
 import './product.css';
 
@@ -15,58 +14,32 @@ export const Product = ({
 	quality,
 	description,
 	imgURL,
+	setAmount,
+	setBusketAmount
 }) => {
-	let [buyBtnText, setBuyBtnText] = useState('Buy');
+
 	let [likedBtnColor, setLikedBtnColor] = useState('transparent');
+	let [buyBtnText, setBuyBtnText] = useState('Buy');
 
-	if (!JSON.parse(localStorage.getItem('LikedIDs'))) {
-		localStorage.setItem('LikedIDs', JSON.stringify([]));
-	}
-
-	if (!JSON.parse(localStorage.getItem('addedToBusketIDs'))) {
-		localStorage.setItem('addedToBusketIDs', JSON.stringify([]));
-	}
-
-	if(JSON.parse(localStorage.getItem('LikedIDs')).length > 0) {
-		addCounter();
-	}
-
-	function addCounter() {
-		const likedItemsBtn = document.querySelector('.liked-items-btn');
-		if (!likedItemsBtn.querySelector('.counter')) {
-			const counter = document.createElement('div');
-			counter.textContent = Counter(JSON.parse(localStorage.getItem('LikedIDs')).length).props.children;
-			counter.className = 'counter';
-			likedItemsBtn.append(counter);
-		} else {
-			likedItemsBtn.querySelector('.counter').textContent = JSON.parse(localStorage.getItem('LikedIDs')).length;
-		}
-	}
-
-	const changeLikedBtnColor = (e) => {
-		const compStyles = getComputedStyle(e.target);
-		if (compStyles.getPropertyValue('background-color') === 'rgb(255, 255, 255)') {
-			setLikedBtnColor('transparent');
-		} else {
+	const changeLikedBtnColor = () => {
+		if(likedBtnColor === 'transparent') {
 			setLikedBtnColor('white');
+		} else {
+			setLikedBtnColor('transparent');
 		}
 	};
 
 	const addLikedProductIDToStorage = (e) => {
 		const likedProductsIDs = JSON.parse(localStorage.getItem('LikedIDs'));
-		const likedItemsBtn = document.querySelector('.liked-items-btn');
 		if (!likedProductsIDs.includes(id)) {
 			likedProductsIDs.push(id);
 			localStorage.setItem('LikedIDs', JSON.stringify(likedProductsIDs));
-			changeLikedBtnColor(e);
-			addCounter();
+			changeLikedBtnColor();
+			setAmount(JSON.parse(localStorage.getItem('LikedIDs')).length)
 		} else {
 			deleteLikedProductInStorage(e);
-			if(likedItemsBtn.querySelector('.counter').textContent === '1') {
-				likedItemsBtn.querySelector('.counter').remove();
-			} else {
-				likedItemsBtn.querySelector('.counter').textContent = JSON.parse(localStorage.getItem('LikedIDs')).length;			}
-			changeLikedBtnColor(e);
+			changeLikedBtnColor();
+			setAmount(JSON.parse(localStorage.getItem('LikedIDs')).length)
 		}
 	};
 
@@ -84,6 +57,7 @@ export const Product = ({
 			addedToBusketIDs.push(id);
 			localStorage.setItem('addedToBusketIDs', JSON.stringify(addedToBusketIDs));
 			setBuyBtnText('Added');
+			setBusketAmount(JSON.parse(localStorage.getItem('addedToBusketIDs')).length)
 		} else {
 			deleteBusketProductInStorage(e);
 		}
@@ -95,6 +69,7 @@ export const Product = ({
 			addedToBusketIDs.splice(addedToBusketIDs.indexOf(id), 1);
 			localStorage.setItem('addedToBusketIDs', JSON.stringify(addedToBusketIDs));
 			setBuyBtnText('Buy');
+			setBusketAmount(JSON.parse(localStorage.getItem('addedToBusketIDs')).length)
 		}
 	};
 

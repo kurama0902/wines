@@ -2,7 +2,6 @@ import React, { useState } from "react";
 
 import { NotificationsSVG } from "../../../../shared/SVG/NotificationsSVG";
 import { NotificationsModal } from "../NotificationsModal";
-// import { Counter } from "../../../../shared/components/Counter";
 
 import './notifications-popup.css';
 
@@ -24,7 +23,7 @@ export const NotificationsPopup = () => {
         <div>
             <button onClick={openModal} className="notifications">
                 <NotificationsSVG />
-                {/* <Counter/> */}
+                
             </button>
             <NotificationsModal display={display} closeModal={closeModal} />
         </div>
