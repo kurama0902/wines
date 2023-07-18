@@ -1,16 +1,14 @@
-import React from "react";
-import "./liked-modal.css";
+import React from 'react';
 
-export const LikedModal = ({ display, closeModal }) => {
+import './liked-modal.css';
 
-    return (
-        <div className="modal-wrap" style={{display: display}}>
-            <div className="close-area" onClick={closeModal} style={{ display: display }}></div>
-            <div className="liked-modal" style={{ display: display }}>
-                <div className="liked-info-wrap">
-
-                </div>
-            </div>
-        </div>
-    )
-}
+export const LikedModal = ({ isActive, closeModal }) => {
+	return (
+		<div className={`modal-wrap ${isActive && 'active'}`}>
+			<div className="close-area" onClick={closeModal}></div>
+			<div className="liked-modal">
+				<div className="liked-info-wrap"></div>
+			</div>
+		</div>
+	);
+};

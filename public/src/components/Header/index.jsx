@@ -10,7 +10,7 @@ import { BagLink } from "./components/BagLink";
 import "./Header.css";
 
 
-export const Header = ({likedAmount, busketAmount, likedAmountDisplay, busketAmountDisplay}) => {
+export const Header = ({likedAmount, busketAmount}) => {
   return (
     <header className="header-wrap">
       <div className="first-section">
@@ -22,9 +22,9 @@ export const Header = ({likedAmount, busketAmount, likedAmountDisplay, busketAmo
         </div>
         <div className="right-side">
           <SearchField placehoder='Search wine...' />
-          <LikesPopup likedAmount={likedAmount} likedAmountDisplay={likedAmountDisplay} />
+          <LikesPopup likedAmount={likedAmount} />
           <NotificationsPopup />
-          <BagLink busketAmount={busketAmount} busketAmountDisplay={busketAmountDisplay}/>
+          <BagLink busketAmount={busketAmount}/>
           <UserPopup />
         </div>
       </div>

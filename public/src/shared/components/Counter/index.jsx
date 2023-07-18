@@ -2,8 +2,8 @@ import React from "react";
 
 import './counter.css'
 
-export const Counter = ({amount, display}) => {
+export const Counter = ({amount}) => {
     return (
-        <div style={{display: display}} className="counter">{amount}</div>
+        <div className="counter">{amount}</div>
     )
 }

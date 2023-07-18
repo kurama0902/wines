@@ -5,7 +5,7 @@ import { useGetRequest } from '../../../shared/hooks/getRequest';
 
 import './products-section.css';
 
-export const ProductsSection = ({setAmount, setBusketAmount}) => {
+export const ProductsSection = ({ likedProductsIDs, setAmount, setBusketAmount }) => {
 	const products = useGetRequest('popular-wines');
 
 	return (
@@ -17,12 +17,16 @@ export const ProductsSection = ({setAmount, setBusketAmount}) => {
 				{products.map((item) => {
 					const { id, cl, cost, year, avaliableAmount, fixedPrice, quality, description, imgURL } =
 						item;
+
+					const isSelected = likedProductsIDs?.includes(id);
+
 					return (
 						<Product
 							id={id}
 							cl={cl}
 							cost={cost}
 							year={year}
+							isSelected={isSelected}
 							avaliableAmount={avaliableAmount}
 							fixedPrice={fixedPrice}
 							quality={quality}

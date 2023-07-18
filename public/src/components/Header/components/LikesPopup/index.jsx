@@ -1,30 +1,28 @@
 import { useState } from 'react';
 import { LikedModal } from '../LikedModal';
 import { HeaderHeartSVG } from '../../../../shared/SVG/HeaderHeartSVG';
-
-import './likesPopup.css';
 import { Counter } from '../../../../shared/components/Counter';
 
-export const LikesPopup = ({likedAmount, likedAmountDisplay}) => {
+import './likesPopup.css';
 
-	let [display, setDisplay] = useState('none');
+export const LikesPopup = ({ likedAmount }) => {
+	let [isActive, setIsActive] = useState(false);
 
 	const handleOpenPopup = () => {
-		setDisplay('flex');
-		/////////////////////////////////////////////
+		setIsActive(true);
 	};
 
 	const closeModal = () => {
-		setDisplay('none');
-	}
+		setIsActive(false);
+	};
 
 	return (
 		<div className="liked-items-btn-wrap">
 			<button className="liked-items-btn" onClick={handleOpenPopup}>
 				<HeaderHeartSVG />
-				<Counter amount={likedAmount} display={likedAmountDisplay}/>
+				{likedAmount > 0 && <Counter amount={likedAmount} />}
 			</button>
-			<LikedModal display={display} closeModal={closeModal} />
+			<LikedModal isActive={isActive} closeModal={closeModal} />
 		</div>
 	);
 };

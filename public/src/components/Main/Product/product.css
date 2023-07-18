@@ -50,6 +50,10 @@
 	right: 16px;
 }
 
+.heart-btn.isActive {
+	background-color: white;
+}
+
 .heart-btn:hover {
 	background-color: lightgray;
 }

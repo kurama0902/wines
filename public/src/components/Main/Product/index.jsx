@@ -15,41 +15,12 @@ export const Product = ({
 	description,
 	imgURL,
 	setAmount,
-	setBusketAmount
+	isSelected,
+	setBusketAmount,
 }) => {
-
-	let [likedBtnColor, setLikedBtnColor] = useState('transparent');
 	let [buyBtnText, setBuyBtnText] = useState('Buy');
 
-	const changeLikedBtnColor = () => {
-		if(likedBtnColor === 'transparent') {
-			setLikedBtnColor('white');
-		} else {
-			setLikedBtnColor('transparent');
-		}
-	};
-
-	const addLikedProductIDToStorage = (e) => {
-		const likedProductsIDs = JSON.parse(localStorage.getItem('LikedIDs'));
-		if (!likedProductsIDs.includes(id)) {
-			likedProductsIDs.push(id);
-			localStorage.setItem('LikedIDs', JSON.stringify(likedProductsIDs));
-			changeLikedBtnColor();
-			setAmount(JSON.parse(localStorage.getItem('LikedIDs')).length)
-		} else {
-			deleteLikedProductInStorage(e);
-			changeLikedBtnColor();
-			setAmount(JSON.parse(localStorage.getItem('LikedIDs')).length)
-		}
-	};
-
-	const deleteLikedProductInStorage = (e) => {
-		const likedProductsIDs = JSON.parse(localStorage.getItem('LikedIDs'));
-		if (likedProductsIDs.includes(id)) {
-			likedProductsIDs.splice(likedProductsIDs.indexOf(id), 1);
-			localStorage.setItem('LikedIDs', JSON.stringify(likedProductsIDs));
-		}
-	};
+	const setActive = () => setAmount(id);
 
 	const addBasketProductIDToStorage = (e) => {
 		const addedToBusketIDs = JSON.parse(localStorage.getItem('addedToBusketIDs'));
@@ -57,7 +28,7 @@ export const Product = ({
 			addedToBusketIDs.push(id);
 			localStorage.setItem('addedToBusketIDs', JSON.stringify(addedToBusketIDs));
 			setBuyBtnText('Added');
-			setBusketAmount(JSON.parse(localStorage.getItem('addedToBusketIDs')).length)
+			setBusketAmount(JSON.parse(localStorage.getItem('addedToBusketIDs')).length);
 		} else {
 			deleteBusketProductInStorage(e);
 		}
@@ -69,7 +40,7 @@ export const Product = ({
 			addedToBusketIDs.splice(addedToBusketIDs.indexOf(id), 1);
 			localStorage.setItem('addedToBusketIDs', JSON.stringify(addedToBusketIDs));
 			setBuyBtnText('Buy');
-			setBusketAmount(JSON.parse(localStorage.getItem('addedToBusketIDs')).length)
+			setBusketAmount(JSON.parse(localStorage.getItem('addedToBusketIDs')).length);
 		}
 	};
 
@@ -83,10 +54,10 @@ export const Product = ({
 					<p className="description">{description}</p>
 					<p className="year">{year}</p>
 				</div>
-				<button id={'l' + id}
-					style={{ backgroundColor: likedBtnColor }}
-					onClick={addLikedProductIDToStorage}
-					className="heart-btn"
+				<button
+					id={'l' + id}
+					onClick={setActive}
+					className={`heart-btn ${isSelected && 'isActive'}`}
 				>
 					<HeartSVG />
 				</button>
