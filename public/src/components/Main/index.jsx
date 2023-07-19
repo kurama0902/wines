@@ -8,13 +8,13 @@ import { ProductsSectionPremiumWines } from "./ProductsSectionPremiumWines";
 
 import './main.css'
 
-export const Main = ({likedProductsIDs, setAmount, setBusketAmount}) => {
+export const Main = ({likedProductsIDs, setAmount, busketProductsIDs, setBusketAmount}) => {
     return (
         <main className="main">
             <MainSlider/>
             <Brands/>
             <FilterAndSortSection sectionName='popularWines'/>
-            <ProductsSection likedProductsIDs={likedProductsIDs} setAmount={setAmount} setBusketAmount={setBusketAmount}/>
+            <ProductsSection likedProductsIDs={likedProductsIDs} setAmount={setAmount} busketProductsIDs={busketProductsIDs} setBusketAmount={setBusketAmount}/>
             <FilterAndSortSection sectionName='winesNewSale'/>
             <ProductsSectionNewSale />
             <FilterAndSortSection sectionName='premiumwines'/>

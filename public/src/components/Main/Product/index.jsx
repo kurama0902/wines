@@ -15,34 +15,39 @@ export const Product = ({
 	description,
 	imgURL,
 	setAmount,
-	isSelected,
-	setBusketAmount,
+	isLikedSelected,
+	isProductAddedToBusket,
+	setBusketAmount
 }) => {
-	let [buyBtnText, setBuyBtnText] = useState('Buy');
+	// let [buyBtnText, setBuyBtnText] = useState('Buy');
 
-	const setActive = () => setAmount(id);
+	const setLikedActive = () => setAmount(id);
+	const setAddToBusketActive = () => { 
+		setBusketAmount(id); 
+	}
 
-	const addBasketProductIDToStorage = (e) => {
-		const addedToBusketIDs = JSON.parse(localStorage.getItem('addedToBusketIDs'));
-		if (!addedToBusketIDs.includes(id)) {
-			addedToBusketIDs.push(id);
-			localStorage.setItem('addedToBusketIDs', JSON.stringify(addedToBusketIDs));
-			setBuyBtnText('Added');
-			setBusketAmount(JSON.parse(localStorage.getItem('addedToBusketIDs')).length);
-		} else {
-			deleteBusketProductInStorage(e);
-		}
-	};
 
-	const deleteBusketProductInStorage = (e) => {
-		const addedToBusketIDs = JSON.parse(localStorage.getItem('addedToBusketIDs'));
-		if (addedToBusketIDs.includes(id)) {
-			addedToBusketIDs.splice(addedToBusketIDs.indexOf(id), 1);
-			localStorage.setItem('addedToBusketIDs', JSON.stringify(addedToBusketIDs));
-			setBuyBtnText('Buy');
-			setBusketAmount(JSON.parse(localStorage.getItem('addedToBusketIDs')).length);
-		}
-	};
+	// const addBasketProductIDToStorage = (e) => {
+	// 	const addedToBusketIDs = JSON.parse(localStorage.getItem('addedToBusketIDs'));
+	// 	if (!addedToBusketIDs.includes(id)) {
+	// 		addedToBusketIDs.push(id);
+	// 		localStorage.setItem('addedToBusketIDs', JSON.stringify(addedToBusketIDs));
+	// 		setBuyBtnText('Added');
+	// 		setBusketAmount(JSON.parse(localStorage.getItem('addedToBusketIDs')).length);
+	// 	} else {
+	// 		deleteBusketProductInStorage(e);
+	// 	}
+	// };
+
+	// const deleteBusketProductInStorage = (e) => {
+	// 	const addedToBusketIDs = JSON.parse(localStorage.getItem('addedToBusketIDs'));
+	// 	if (addedToBusketIDs.includes(id)) {
+	// 		addedToBusketIDs.splice(addedToBusketIDs.indexOf(id), 1);
+	// 		localStorage.setItem('addedToBusketIDs', JSON.stringify(addedToBusketIDs));
+	// 		setBuyBtnText('Buy');
+	// 		setBusketAmount(JSON.parse(localStorage.getItem('addedToBusketIDs')).length);
+	// 	}
+	// };
 
 	return (
 		<div className="product-wrap">
@@ -56,8 +61,8 @@ export const Product = ({
 				</div>
 				<button
 					id={'l' + id}
-					onClick={setActive}
-					className={`heart-btn ${isSelected && 'isActive'}`}
+					onClick={setLikedActive}
+					className={`heart-btn ${isLikedSelected && 'isActive'}`}
 				>
 					<HeartSVG />
 				</button>
@@ -84,9 +89,11 @@ export const Product = ({
 					</p>
 				</div>
 			</div>
-			<button onClick={addBasketProductIDToStorage} className="buy-btn" id={id}>
-				{buyBtnText}
+			<button onClick={setAddToBusketActive} className={"buy-btn"}>
+				{isProductAddedToBusket ? 'Added' : 'Buy'}
 			</button>
 		</div>
 	);
 };
+
+
