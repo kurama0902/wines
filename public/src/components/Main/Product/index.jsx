@@ -26,29 +26,6 @@ export const Product = ({
 		setBusketAmount(id); 
 	}
 
-
-	// const addBasketProductIDToStorage = (e) => {
-	// 	const addedToBusketIDs = JSON.parse(localStorage.getItem('addedToBusketIDs'));
-	// 	if (!addedToBusketIDs.includes(id)) {
-	// 		addedToBusketIDs.push(id);
-	// 		localStorage.setItem('addedToBusketIDs', JSON.stringify(addedToBusketIDs));
-	// 		setBuyBtnText('Added');
-	// 		setBusketAmount(JSON.parse(localStorage.getItem('addedToBusketIDs')).length);
-	// 	} else {
-	// 		deleteBusketProductInStorage(e);
-	// 	}
-	// };
-
-	// const deleteBusketProductInStorage = (e) => {
-	// 	const addedToBusketIDs = JSON.parse(localStorage.getItem('addedToBusketIDs'));
-	// 	if (addedToBusketIDs.includes(id)) {
-	// 		addedToBusketIDs.splice(addedToBusketIDs.indexOf(id), 1);
-	// 		localStorage.setItem('addedToBusketIDs', JSON.stringify(addedToBusketIDs));
-	// 		setBuyBtnText('Buy');
-	// 		setBusketAmount(JSON.parse(localStorage.getItem('addedToBusketIDs')).length);
-	// 	}
-	// };
-
 	return (
 		<div className="product-wrap">
 			<div className="picture-and-description">
