@@ -3,7 +3,6 @@ import { Main } from './components/Main';
 
 import { useLikedWines } from './shared/hooks/likedWines';
 import { useBusketIDs } from './shared/hooks/addedToBusketIDs';
-// import { useState } from 'react';
 
 import './App.css';
 

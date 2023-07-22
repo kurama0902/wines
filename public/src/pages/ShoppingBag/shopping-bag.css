@@ -1,0 +1,21 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.products-bag-wrap {
+    display: flex;
+    flex-direction: column;
+    padding-inline: 10px;
+}
+
+.bag-amount {
+    display: flex;
+    max-width: 1460px;
+    justify-content: space-between;
+    padding-inline: 10px;
+    margin: auto;
+    margin-top: 45px;
+}
+

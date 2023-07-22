@@ -1,6 +1,9 @@
 import React from 'react';
 import { Product } from '../Product';
+
 import { RightArrowSVG } from '../../../shared/SVG/RightArrowSVG';
+import { FilterAndSortSection } from '../FilterAndSortSection';
+
 import { useGetRequest } from '../../../shared/hooks/getRequest';
 
 import './products-section.css';
@@ -10,6 +13,7 @@ export const ProductsSectionPremiumWines = () => {
 
 	return (
 		<div className="section-h3-wrap">
+			<FilterAndSortSection sectionName='premiumWines'/>
 			<h3>
 			Premium wines <RightArrowSVG />
 			</h3>

@@ -1,5 +1,4 @@
 require("dotenv").config();
-
 const router = require("express").Router();
 const nodemailer = require("nodemailer");
 const { popularWines, winesNewSale, winesPremium } = require("../db/index");
@@ -81,6 +80,15 @@ router.route("/winesPremium").get((req, res) => {
 
 router.route("/brands").get((req, res) => {
   res.send(brandCategories);
+});
+
+router.route("/shopping-bag").post((req, res) => {
+  let items = []
+  for(let ID of req.body) {
+    items.push([...popularWines, ...winesNewSale, ...winesPremium].find(item => item.id === ID))
+  }
+  console.log(items);
+  res.send(items)
 });
 
 module.exports = router;

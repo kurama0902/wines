@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { HeartSVG } from '../../../shared/SVG/HeartSVG';
 import { LockSVG } from '../../../shared/SVG/LockSVG';
 
@@ -19,8 +18,7 @@ export const Product = ({
 	isProductAddedToBusket,
 	setBusketAmount
 }) => {
-	// let [buyBtnText, setBuyBtnText] = useState('Buy');
-
+	
 	const setLikedActive = () => setAmount(id);
 	const setAddToBusketActive = () => { 
 		setBusketAmount(id); 

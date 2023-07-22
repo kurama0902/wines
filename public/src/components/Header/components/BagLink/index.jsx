@@ -7,7 +7,7 @@ import './bag-link.css';
 
 export const BagLink = ({ busketAmount }) => {
 	return (
-		<a className="bag-link" href="/shopping-bag">
+		<a href="shopping-bag" className="bag-link">
 			<BagSVG />
 			{busketAmount > 0 && <Counter amount={busketAmount} />}
 		</a>

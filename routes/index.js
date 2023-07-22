@@ -42,15 +42,11 @@ router.route("/login").get(checkAuth, (req, res) => {
     res.redirect('/user-page');
 });
 
-router.route("/shopping-bag").get((req, res) => {
-  res.sendFile(path.join(__dirname, "../public/pages/shopping-bag.html"));
-});
 router.route("/wine").get((req, res) => {
   res.sendFile(path.join(__dirname, "../public/pages/wine.html"));
 });
 
 router.route("/user-page").get(checkAuth, (req, res) => {
-
   res.sendFile(path.join(__dirname, "../public/pages/user-page.html"));
 });
 
