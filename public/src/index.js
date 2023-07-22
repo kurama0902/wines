@@ -1,22 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
+import App from './app/App';
 
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { ShoppingBag } from './pages/ShoppingBag';
-
-const router = createBrowserRouter([
-	{
-		path: '/',
-		element: <App />,
-	},
-	{
-		path: '/shopping-bag',
-		element: <ShoppingBag />,
-	},
-]);
+import { BrowserRouter } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-	<RouterProvider router={router} />
+	<BrowserRouter>
+		<App />
+	</BrowserRouter>
 );

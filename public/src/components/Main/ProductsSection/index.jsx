@@ -5,8 +5,11 @@ import { useGetRequest } from '../../../shared/hooks/getRequest';
 
 import './products-section.css';
 import { FilterAndSortSection } from '../FilterAndSortSection';
+import { useOutletContext } from 'react-router-dom';
 
-export const ProductsSection = ({ likedProductsIDs, setAmount, busketProductsIDs, setBusketAmount }) => {
+export const ProductsSection = () => {
+	const { likedProductsIDs, setAmount, busketProductsIDs, setBusketAmount } = useOutletContext();
+
 	const products = useGetRequest('popular-wines');
 
 	return (
