@@ -1,11 +1,10 @@
 import React from 'react';
+import { useOutletContext } from 'react-router-dom';
 
 import { Product } from './Components/Product';
-
 import { useRequestProductsInfo } from '../../shared/hooks/requestProductsInfo';
 
 import './shopping-bag.css';
-import { useOutletContext } from 'react-router-dom';
 
 export const ShoppingBag = () => {
 	const { busketProductsIDs } = useOutletContext();

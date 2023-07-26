@@ -1,29 +1,32 @@
-import React, { useState } from "react";
-import { UserSVG } from "../../../../shared/SVG/UserSVG";
+import React, { useState } from 'react';
+import { UserSVG } from '../../../../shared/SVG/UserSVG';
 
-import './user-popup.css'
+import './user-popup.css';
 
 export const UserPopup = () => {
+	let [display, setDisplay] = useState(false);
 
-    let [display, setDisplay] = useState('none');
+	const handleUsersPopup = () => {
+		setDisplay((prevState) => {
+			return !prevState;
+		});
+	};
 
-    const handleUsersPopup = () => {
-        if(display === 'flex') {
-            setDisplay('none');
-        } else {
-            setDisplay('flex');
-        }
-    }
+	return (
+		<div className="user-btn-wrap">
+			<button className="user-btn" onClick={handleUsersPopup}>
+				<UserSVG />
+			</button>
+			{display && (
+				<>
+					<div className="back" onClick={handleUsersPopup}></div>
 
-    return (
-        <div className="user-btn-wrap">
-            <button className="user-btn" onClick={handleUsersPopup}>
-                <UserSVG />
-            </button>
-            <div className="user-popup-wrap" style={{display: display}}>
-                <button className="user-page-btn">User's Page</button>
-                <button className="login-btn">Login</button>
-            </div>
-        </div>
-    )
-}
+					<div className="user-popup-wrap">
+						<button className="user-page-btn">User's Page</button>
+						<button className="login-btn">Login</button>
+					</div>
+				</>
+			)}
+		</div>
+	);
+};

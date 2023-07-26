@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Menu } from "./components/Menu";
 import { SearchField } from "./components/SearchField";
 import { LikesPopup } from "./components/LikesPopup";
@@ -6,13 +6,23 @@ import { MenuModel } from "../../shared/consts";
 import { NotificationsPopup } from "./components/NotificactionsPopup";
 import { UserPopup } from "./components/UserPopup";
 import { BagLink } from "./components/BagLink";
+import { UserContext } from "../../context/userContext";
 
 import "./Header.css";
 
-
 export const Header = ({likedAmount, busketAmount}) => {
+  const [user, setUser] = useContext(UserContext);
+
+  console.log(user, ' useer');
+
+  const handleUpdateUser = () => {
+    setUser({
+      name: 'Dima',
+    })
+  }
+
   return (
-    <header className="header-wrap">
+    <header className="header-wrap" onClick={handleUpdateUser}>
       <div className="first-section">
         <div className="left-side">
           <div className="logo">

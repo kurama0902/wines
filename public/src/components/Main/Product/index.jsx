@@ -44,24 +44,24 @@ export const Product = ({
 			</div>
 			<div className="price-and-quality">
 				<div className="price-and-avalability">
-					<p className="availability">
+					<div className="availability">
 						<p>{avaliableAmount} bottles</p>
 						<p className="grey-text">available</p>
-					</p>
-					<p className="price">
+					</div>
+					<div className="price">
 						<p className="cost">€{cost}</p>
 						<p className="grey-text cl">/ {cl}cl</p>
-					</p>
+					</div>
 				</div>
 				<div className="quality-and-price-state">
-					<p className="quality">
+					<div className="quality">
 						<p>{quality}</p>
 						<p className="grey-text">condition</p>
-					</p>
-					<p className="price-state">
+					</div>
+					<div className="price-state">
 						<LockSVG />
 						<p className="grey-text">{fixedPrice ? 'Fixed price' : 'Non fixed price'}</p>
-					</p>
+					</div>
 				</div>
 			</div>
 			<button onClick={setAddToBusketActive} className={`buy-btn ${avaliableAmount > 0 ? 'able' : 'non-able'}`}>

@@ -2,6 +2,16 @@
     position: relative;
 }
 
+.user-btn-wrap .back {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.566);
+}
+
 .user-btn {
     display: flex;
     cursor: pointer;
@@ -18,8 +28,8 @@
     background-color: lightgray;
 }
 
-.user-popup-wrap {
-    display: none;
+.user-btn-wrap .user-popup-wrap {
+    display: flex;
     flex-direction: column;
     padding: 10px;
     background-color: white;
@@ -29,7 +39,7 @@
     gap: 5px;
     top: 55px;
     right: 10px;
-    z-index: 1;
+    z-index: 11;
 }
 
 .user-page-btn, .login-btn {
