@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { DownArrowSVG } from '../../../../shared/SVG/DownArrowSVG';
 
@@ -6,6 +6,8 @@ import './busket-product.css';
 
 export const Product = ({ avaliableAmount, cl, cost, description, imgURL, type, fixedPrice }) => {
 	const avaliableAmountArr = [...Array(avaliableAmount).keys()].map((i) => i + 1);
+	let [subtotal, setSubtotal] = useState(cost)
+
 	return (
 		<div className="product-wrapper">
 			<div className="product">
@@ -22,7 +24,7 @@ export const Product = ({ avaliableAmount, cl, cost, description, imgURL, type, 
 					<div className="amount-wrap">
 						<p>Amount</p>
 						<div className="select-wrap">
-							<select className="select" name="" id="">
+							<select onChange={(e) => setSubtotal(cost * e.target.value)} className="select" name="" id="">
 								{avaliableAmountArr.map((num) => (
 									<option key={num} value={num}>
 										{num}
@@ -40,7 +42,7 @@ export const Product = ({ avaliableAmount, cl, cost, description, imgURL, type, 
 					</div>
 					<div className="subtotal-wrap">
 						<p>Subtotal</p>
-						<p className="subtotal">€297,00</p>
+						<p className="subtotal">€{subtotal}</p>
 					</div>
 				</div>
 			</div>
