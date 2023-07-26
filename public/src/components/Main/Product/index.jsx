@@ -64,7 +64,7 @@ export const Product = ({
 					</p>
 				</div>
 			</div>
-			<button onClick={setAddToBusketActive} className={"buy-btn"}>
+			<button onClick={setAddToBusketActive} className={`buy-btn ${avaliableAmount > 0 ? 'able' : 'non-able'}`}>
 				{isProductAddedToBusket ? 'Added' : 'Buy'}
 			</button>
 		</div>

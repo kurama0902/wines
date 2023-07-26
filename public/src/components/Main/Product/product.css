@@ -114,11 +114,20 @@
 	align-items: center;
 	width: 284px;
 	height: 40px;
-	background-color: #d48713;
 	margin-bottom: 15px;
 	border-radius: 8px;
 	border: none;
 	color: white;
+}
+
+.able {
+	background-color: #d48713;
+}
+
+.non-able {
+	background-color: grey;
+	text-decoration: line-through;
+	pointer-events: none;
 }
 
 .grey-text {
@@ -136,8 +145,4 @@
 	font-size: 18px;
 	font-weight: 700;
 	line-height: 150%;
-}
-
-.buy-btn:disabled {
-	background-color: grey;
 }

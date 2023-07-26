@@ -2,10 +2,10 @@ import React from 'react';
 import { Product } from '../Product';
 import { RightArrowSVG } from '../../../shared/SVG/RightArrowSVG';
 import { useGetRequest } from '../../../shared/hooks/getRequest';
-
-import './products-section.css';
 import { FilterAndSortSection } from '../FilterAndSortSection';
 import { useOutletContext } from 'react-router-dom';
+
+import './products-section.css';
 
 export const ProductsSection = () => {
 	const { likedProductsIDs, setAmount, busketProductsIDs, setBusketAmount } = useOutletContext();
