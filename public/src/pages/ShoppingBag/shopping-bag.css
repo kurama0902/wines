@@ -19,3 +19,23 @@
     margin-top: 45px;
 }
 
+@media (max-width: 955px) {
+    .product {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .product-img {
+        width: 200px;
+        height: 200px;
+    }
+
+    .product-name {
+        text-align: center;
+    }
+
+    .bag-amount h1 {
+        line-height: 30px;
+    }
+    
+}

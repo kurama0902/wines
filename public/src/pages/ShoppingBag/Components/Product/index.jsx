@@ -1,10 +1,11 @@
 import React from 'react';
 
+import { DownArrowSVG } from '../../../../shared/SVG/DownArrowSVG';
+
 import './busket-product.css';
 
-// finish the basket logic
-
-export const Product = ({cl, cost, description, imgURL, type, fixedPrice}) => {
+export const Product = ({ avaliableAmount, cl, cost, description, imgURL, type, fixedPrice }) => {
+	const avaliableAmountArr = [...Array(avaliableAmount).keys()].map((i) => i + 1);
 	return (
 		<div className="product-wrapper">
 			<div className="product">
@@ -14,13 +15,24 @@ export const Product = ({cl, cost, description, imgURL, type, fixedPrice}) => {
 					<p className="wine-type">Type {type}</p>
 					<div className="price-wrap">
 						<p>{fixedPrice ? 'Fixed price' : 'Non fixed price'}</p>
-						<p className="price">€{cost} / {cl}cl</p>
+						<p className="price">
+							€{cost} / {cl}cl
+						</p>
 					</div>
 					<div className="amount-wrap">
 						<p>Amount</p>
-						<select name="" id="">
-							<option value="10">10</option>
-						</select>
+						<div className="select-wrap">
+							<select className="select" name="" id="">
+								{avaliableAmountArr.map((num) => (
+									<option key={num} value={num}>
+										{num}
+									</option>
+								))}
+							</select>
+							<div className="choose-arrow-wrap">
+								<DownArrowSVG/>
+							</div>
+						</div>
 					</div>
 					<div className="shipping-wrap">
 						<p>Shipping</p>

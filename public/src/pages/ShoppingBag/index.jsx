@@ -23,6 +23,7 @@ export const ShoppingBag = () => {
 				{productsArr.map((item) => (
 					<Product
 						key={item.id}
+						avaliableAmount={item.avaliableAmount}
 						cl={item.cl}
 						cost={item.cost}
 						description={item.description}

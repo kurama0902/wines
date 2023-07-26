@@ -1,0 +1,14 @@
+.choose-arrow-wrap {
+    top: 50%;
+    transform: translateY(-50%);
+    right: 5px;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+}
+
+.down-arrow path {
+    fill: #E56A77;
+}
+

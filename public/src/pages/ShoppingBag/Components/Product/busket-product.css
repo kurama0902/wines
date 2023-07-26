@@ -14,8 +14,6 @@ body {
 
 .product {
     display: flex;
-    /* max-width: 1440px;
-    width: 100%; */
     justify-content: space-between;
     align-items: center;
 }
@@ -44,7 +42,40 @@ body {
 }
 
 .delete-product {
+    display: flex;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
     position: absolute;
+    border: none;
+    border-radius: 100%;
+    background-color: lightgray;
     top: 17px;
-    right: 21px;
+    right: 12px;
 }
+
+.delete-product:hover {
+    background-color: rgb(224, 222, 222);
+}
+
+.select-wrap {
+    position: relative;
+}
+
+.select-wrap:hover path {
+    fill: blue;
+}
+
+.select {
+    cursor: pointer;
+    width: 100px;
+    height: 30px;
+    outline: none;
+    border: 1px solid grey;
+    border-radius: 12px;
+    padding-left: 5px;
+    appearance: none;
+}
+
