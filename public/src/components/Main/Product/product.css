@@ -86,7 +86,7 @@
 	gap: 8px;
 }
 
-.price-and-quality p {
+.price-and-quality div {
 	display: flex;
 	align-items: center;
 	gap: 3px;
