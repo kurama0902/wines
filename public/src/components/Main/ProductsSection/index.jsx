@@ -12,13 +12,13 @@ import './products-section.css';
 export const ProductsSection = () => {
 	const { likedProductsIDs, setAmount, busketProductsIDs, setBusketAmount } = useOutletContext();
 
-	const products = useGetRequest('popular-wines');
+	const [products, setProducts] = useState(useGetRequest('popular-wines'));
 	let [sortDirection, setSortDirection] = useState({ num: 1 });
 
 	return (
 		<sortContext.Provider value={[sortDirection, setSortDirection]}>
 			<div className="section-h3-wrap">
-				<FilterAndSortSection sectionName={'popularWines'} />
+				<FilterAndSortSection products={products} setProducts={setProducts} sectionName={'popular-wines'} />
 				<h3>
 					Popular wines <RightArrowSVG />
 				</h3>

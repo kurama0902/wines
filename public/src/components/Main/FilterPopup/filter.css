@@ -21,3 +21,83 @@
 .filter-btn:hover {
     background-color: lightgray;
 }
+
+.filter-modal-wrap {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: rgba(128, 128, 128, 0.541);
+    padding-inline: 10px;
+    z-index: 1;
+}
+
+.filter-modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    align-items: center;
+    width: 800px;
+    height: 500px;
+    background: white;
+    border-radius: 12px;
+    z-index: 1;
+    gap: 30px;
+}
+
+.close-filter-modal {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+
+.visible-filter-modal {
+    display: flex;
+}
+
+.invisible-filter-modal {
+    display: none;
+}
+
+.filters {
+    display: flex;
+    gap: 7px;
+}
+
+.apply-filters {
+    cursor: pointer;
+    position: absolute;
+    padding: 10px;
+    border-radius: 12px;
+    bottom: 53px;
+    right: 78px;
+    border: none;
+    background-color: blue;
+    color: white;
+    font-size: 17px;
+}
+
+.filter-select {
+    cursor: pointer;
+    width: 100px;
+    height: 30px;
+    padding-left: 5px;
+}
+
+h1 {
+    font-size: 40px;
+}
+
+.filters p {
+    text-align: center;
+    margin-bottom: 3px;
+    color: gray;
+}

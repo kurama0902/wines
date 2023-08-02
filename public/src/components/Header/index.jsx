@@ -11,18 +11,9 @@ import { UserContext } from "../../context/userContext";
 import "./Header.css";
 
 export const Header = ({likedAmount, busketAmount}) => {
-  const [user, setUser] = useContext(UserContext);
-
-  console.log(user, ' useer');
-
-  const handleUpdateUser = () => {
-    setUser({
-      name: 'Dima',
-    })
-  }
 
   return (
-    <header className="header-wrap" onClick={handleUpdateUser}>
+    <header className="header-wrap">
       <div className="first-section">
         <div className="left-side">
           <div className="logo">

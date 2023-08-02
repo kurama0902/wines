@@ -4,10 +4,10 @@ import { SortDropdown } from "../SortDropdown";
 
 import './filter-and-sort-section.css'
 
-export const FilterAndSortSection = ({sectionName}) => {
+export const FilterAndSortSection = ({products, setProducts, sectionName}) => {
     return (
         <section className={`filter-and-sort-section -${sectionName}`}>
-            <FilterPopup/>
+            <FilterPopup products={products} setProducts={setProducts}/>
             <SortDropdown/>
         </section>
     )

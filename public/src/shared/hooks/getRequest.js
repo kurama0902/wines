@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 export const useGetRequest = (name) => {
 	const [data, setData] = useState([]);
 
-	const getData = async () => {
+	 async function getData () {
 		try {
 			let res = await fetch(`http://localhost:3010/api/${name}`, {
 				method: 'GET',
@@ -19,5 +19,6 @@ export const useGetRequest = (name) => {
 		getData();
 	}, []);
 
+	console.log(data);
 	return data
 };
