@@ -72,13 +72,17 @@
     gap: 7px;
 }
 
+.wrap-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-end;
+}
+
 .apply-filters {
     cursor: pointer;
-    position: absolute;
     padding: 10px;
     border-radius: 12px;
-    bottom: 53px;
-    right: 78px;
     border: none;
     background-color: blue;
     color: white;

@@ -1,7 +1,7 @@
 export const getFilterInfo = (arr, type) => {
     let collector = {};
 
-    arr.forEach((item) => {
+    arr?.forEach((item) => {
         if (!collector[item[type]]) {
             collector[item[type]] = item[type];
         }
