@@ -1,0 +1,43 @@
+.searched-items-wrap {
+    flex-direction: column;
+    width: inherit;
+    height: 100px;
+    background-color: white;
+    box-shadow: 2px 2px 2px lightgray, -2px -2px 2px lightgrey;
+    position: absolute;
+    padding: 10px;
+    overflow-y: scroll;
+    top: 50px;
+    gap: 5px;
+    z-index: 1;
+}
+
+.visible {
+    display: flex;
+}
+
+.invisible {
+    display: none;
+}
+
+.searched-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.searched-item b, .searched-item p {
+    display: flex;
+    font-size: 13px;
+    align-items: center;
+}
+
+.search-product-item-img {
+    width: 40px;
+    height: 40px;
+}
+
+.name-and-price-wrap {
+    display: flex;
+    gap: 5px;
+}

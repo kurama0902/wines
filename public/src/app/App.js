@@ -1,20 +1,18 @@
 import { useRoutes } from 'react-router-dom';
 import { routes } from './routes';
-import { UserContext } from '../context/userContext';
+import { ScrollContext } from '../context/userContext';
 import { useState } from 'react';
 
 import './App.css';
 
 function App() {
-	const [user, setUser] = useState({
-		name: 'Alex'
-	});
+	const [isScrollAble, setIsScrollAble] = useState(true)
 
 	const components = useRoutes(routes);
 
 	return (
-		<div className="App">
-			<UserContext.Provider value={[user, setUser]}>{components}</UserContext.Provider>
+		<div className={`App ${isScrollAble ? 'on-scroll' : 'off-scroll'}`}>
+			<ScrollContext.Provider value={setIsScrollAble}>{components}</ScrollContext.Provider>
 		</div>
 	);
 }

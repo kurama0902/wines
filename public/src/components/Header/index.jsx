@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Menu } from "./components/Menu";
 import { SearchField } from "./components/SearchField";
 import { LikesPopup } from "./components/LikesPopup";
@@ -6,7 +6,6 @@ import { MenuModel } from "../../shared/consts";
 import { NotificationsPopup } from "./components/NotificactionsPopup";
 import { UserPopup } from "./components/UserPopup";
 import { BagLink } from "./components/BagLink";
-import { UserContext } from "../../context/userContext";
 
 import "./Header.css";
 

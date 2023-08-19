@@ -3,3 +3,11 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+.off-scroll {
+    overflow-y: hidden;
+}
+
+.on-scroll {
+    overflow-y: scroll;
+}

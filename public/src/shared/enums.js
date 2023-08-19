@@ -1,3 +1,5 @@
 export const enums = {
-  popularWines: 'popular-wines'
+  popularWines: 'popular-wines',
+  winesNewSale: 'winesNewSale',
+  winesPremium: 'winesPremium'
 }

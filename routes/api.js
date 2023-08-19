@@ -91,4 +91,11 @@ router.route("/shopping-bag").post((req, res) => {
   res.send(items)
 });
 
+router.route("/search-info").post((req, res) => {
+  const { inputValue } = req.body;
+  console.log(inputValue);
+  const seachedProductsResult = (inputValue.length > 0) ? [...popularWines, ...winesNewSale, ...winesPremium].filter(item => item.description.toLocaleLowerCase().includes(inputValue.toLocaleLowerCase())) : [];
+  res.send(seachedProductsResult);
+})
+
 module.exports = router;

@@ -1,19 +1,24 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { LikedModal } from '../LikedModal';
 import { HeaderHeartSVG } from '../../../../shared/SVG/HeaderHeartSVG';
+import { ScrollContext } from '../../../../context/userContext';
 import { Counter } from '../../../../shared/components/Counter';
 
 import './likesPopup.css';
 
 export const LikesPopup = ({ likedAmount }) => {
 	let [isActive, setIsActive] = useState(false);
+	let {setIsScrollAble} = useContext(ScrollContext)
 
 	const handleOpenPopup = () => {
 		setIsActive(true);
+		// setIsScrollAble(false);
+		console.log(setIsScrollAble);
 	};
 
 	const closeModal = () => {
 		setIsActive(false);
+		// setIsScrollAble(true);
 	};
 
 	return (

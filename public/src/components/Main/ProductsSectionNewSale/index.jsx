@@ -1,15 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useGetRequest } from '../../../shared/hooks/getRequest';
 import { ProductsSections } from '../ProductsSections/ProductsSections';
 import { RenderItems } from '../RenderItems/RenderItems';
+import { enums } from '../../../shared/enums';
 
 export const ProductsSectionNewSale = () => {
-	const products = useGetRequest('winesNewSale');
+	const initialProducts = useGetRequest(enums.winesNewSale);
+
+	const [filterdProducts, setFilteredProducts] = useState([]);
+
+	useEffect(() => {
+		setFilteredProducts(initialProducts);
+	}, [initialProducts]);
 
 	return (
-		<ProductsSections title="Popular wines" products={products} setFilteredProducts={() => {}}>
-			<section className="products-wrap winesNewSale">
-				<RenderItems products={products} />
+		<ProductsSections
+			title="New Sale"
+			products={initialProducts}
+			initialProducts={initialProducts}
+			setFilteredProducts={setFilteredProducts}
+		>
+			<section className="products-wrap popularWines">
+				<RenderItems products={filterdProducts} />
 			</section>
 		</ProductsSections>
 	);
