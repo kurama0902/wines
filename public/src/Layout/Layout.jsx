@@ -10,7 +10,11 @@ export const Layout = () => {
 
 	return (
 		<>
-			<Header likedAmount={likedProductsIDs?.length} busketAmount={busketProductsIDs?.length} />
+			<Header
+				updateLikedWines={setAmount}
+				likedAmount={likedProductsIDs?.length}
+				busketAmount={busketProductsIDs?.length}
+			/>
 
 			<Suspense fallback="Loading">
 				<Outlet context={{ likedProductsIDs, busketProductsIDs, setAmount, setBusketAmount }} />;

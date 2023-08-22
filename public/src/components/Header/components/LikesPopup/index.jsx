@@ -5,11 +5,10 @@ import { ScrollContext } from '../../../../context/userContext';
 import { Counter } from '../../../../shared/components/Counter';
 
 import './likesPopup.css';
-import { useRequestProductsInfo } from '../../../../shared/hooks/requestProductsInfo';
 
-export const LikesPopup = ({ likedAmount }) => {
+export const LikesPopup = ({ likedAmount, updateLikedWines }) => {
 	let [isActive, setIsActive] = useState(false);
-	let setIsScrollAble = useContext(ScrollContext)
+	let setIsScrollAble = useContext(ScrollContext);
 
 	const handleOpenPopup = () => {
 		setIsActive(true);
@@ -27,7 +26,7 @@ export const LikesPopup = ({ likedAmount }) => {
 				<HeaderHeartSVG />
 				{likedAmount > 0 && <Counter amount={likedAmount} />}
 			</button>
-			<LikedModal isActive={isActive} closeModal={closeModal} />
+			{isActive && <LikedModal updateLikedWines={updateLikedWines} isActive={isActive} closeModal={closeModal} />}
 		</div>
 	);
 };
