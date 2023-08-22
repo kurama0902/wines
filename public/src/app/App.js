@@ -11,7 +11,7 @@ function App() {
 	const components = useRoutes(routes);
 
 	return (
-		<div className={`App ${isScrollAble ? 'on-scroll' : 'off-scroll'}`}>
+		<div className={`App ${isScrollAble ? 'on-scroll' : 'off-scroll'}`} id='root'>
 			<ScrollContext.Provider value={setIsScrollAble}>{components}</ScrollContext.Provider>
 		</div>
 	);

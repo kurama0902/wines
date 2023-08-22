@@ -11,3 +11,7 @@
 .on-scroll {
     overflow-y: scroll;
 }
+
+#root {
+    height: inherit;
+}

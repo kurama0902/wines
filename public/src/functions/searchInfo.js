@@ -39,6 +39,7 @@ export const searchInfo = (e, setSeacrhedProducts) => {
 					console.log(info, `sub str: ${e.target.value}`);
 					flag = true;
 				});
-		}, 4000);
+		}, 1000);
 	}
 };
+

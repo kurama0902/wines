@@ -5,20 +5,20 @@ import { ScrollContext } from '../../../../context/userContext';
 import { Counter } from '../../../../shared/components/Counter';
 
 import './likesPopup.css';
+import { useRequestProductsInfo } from '../../../../shared/hooks/requestProductsInfo';
 
 export const LikesPopup = ({ likedAmount }) => {
 	let [isActive, setIsActive] = useState(false);
-	let {setIsScrollAble} = useContext(ScrollContext)
+	let setIsScrollAble = useContext(ScrollContext)
 
 	const handleOpenPopup = () => {
 		setIsActive(true);
-		// setIsScrollAble(false);
-		console.log(setIsScrollAble);
+		setIsScrollAble(false);
 	};
 
 	const closeModal = () => {
 		setIsActive(false);
-		// setIsScrollAble(true);
+		setIsScrollAble(true);
 	};
 
 	return (

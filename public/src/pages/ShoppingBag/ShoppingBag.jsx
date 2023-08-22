@@ -9,7 +9,7 @@ import './shopping-bag.css';
 export const ShoppingBag = () => {
 	const { busketProductsIDs } = useOutletContext();
 
-	const productsArr = useRequestProductsInfo();
+	const productsArr = useRequestProductsInfo('addedToBusketIDs');
 	console.log(productsArr);
 
 	return (

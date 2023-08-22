@@ -82,7 +82,7 @@ router.route("/brands").get((req, res) => {
   res.send(brandCategories);
 });
 
-router.route("/shopping-bag").post((req, res) => {
+router.route("/getDataArray").post((req, res) => {
   let items = []
   for(let ID of req.body) {
     items.push([...popularWines, ...winesNewSale, ...winesPremium].find(item => item.id === ID))
