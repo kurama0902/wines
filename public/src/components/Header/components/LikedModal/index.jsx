@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchLikedDataArray } from '../../../../functions/fetchLikedDataArray';
+import { fetchDataArray } from '../../../../functions/fetchDataArray';
 
 import './liked-modal.css';
 export const LikedModal = ({ updateLikedWines, closeModal }) => {
@@ -13,7 +13,7 @@ export const LikedModal = ({ updateLikedWines, closeModal }) => {
 	};
 
 	useEffect(() => {
-		fetchLikedDataArray(setProducts);
+		fetchDataArray('LikedIDs', setProducts);
 	}, []);
 
 	return (

@@ -1,16 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 
 import { Product } from './Components/Product';
 import { useRequestProductsInfo } from '../../shared/hooks/requestProductsInfo';
+import { fetchDataArray } from '../../functions/fetchDataArray';
 
 import './shopping-bag.css';
 
 export const ShoppingBag = () => {
-	const { busketProductsIDs } = useOutletContext();
-
+	const { busketProductsIDs, setBusketAmount } = useOutletContext();
 	const productsArr = useRequestProductsInfo('addedToBusketIDs');
-	console.log(productsArr);
+
+	// let [IDs, setIDs] = useState(busketProductsIDs);
+	let [products, setProducts] = useState(productsArr);
+	
+	// console.log(IDs);
+
+	const deleteBusketItem = (id) => (event) => {
+		setProducts((currentItems) => {
+			return currentItems.filter(item => item.id !== id)
+		})
+		
+		setBusketAmount(id)
+	}
+
+	useEffect(() => {
+		fetchDataArray('addedToBusketIDs', setProducts)
+	}, [])
 
 	return (
 		<div className="shopping-bag-wrap">
@@ -19,8 +35,9 @@ export const ShoppingBag = () => {
 				<a href="/">Back to shopping</a>
 			</div>
 			<div className="products-bag-wrap">
-				{productsArr.map((item) => (
+				{products?.map((item) => (
 					<Product
+						id={item.id}
 						key={item.id}
 						avaliableAmount={item.avaliableAmount}
 						cl={item.cl}
@@ -29,6 +46,7 @@ export const ShoppingBag = () => {
 						imgURL={item.imgURL}
 						type={item.type}
 						fixedPrice={item.fixedPrice}
+						deleteBusketItem={deleteBusketItem}
 					/>
 				))}
 			</div>

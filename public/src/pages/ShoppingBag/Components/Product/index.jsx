@@ -4,7 +4,7 @@ import { DownArrowSVG } from '../../../../shared/SVG/DownArrowSVG';
 
 import './busket-product.css';
 
-export const Product = ({ avaliableAmount, cl, cost, description, imgURL, type, fixedPrice }) => {
+export const Product = ({ id, avaliableAmount, cl, cost, description, imgURL, type, fixedPrice, deleteBusketItem }) => {
 	const avaliableAmountArr = [...Array(avaliableAmount).keys()].map((i) => i + 1);
 	let [subtotal, setSubtotal] = useState(cost)
 
@@ -46,7 +46,7 @@ export const Product = ({ avaliableAmount, cl, cost, description, imgURL, type, 
 					</div>
 				</div>
 			</div>
-			<button className="delete-product">
+			<button className="delete-product" onClick={deleteBusketItem(id)}>
 				<svg
 					width="24"
 					height="24"
