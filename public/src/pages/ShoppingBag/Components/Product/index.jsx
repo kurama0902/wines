@@ -4,9 +4,26 @@ import { DownArrowSVG } from '../../../../shared/SVG/DownArrowSVG';
 
 import './busket-product.css';
 
-export const Product = ({ id, avaliableAmount, cl, cost, description, imgURL, type, fixedPrice, deleteBusketItem }) => {
+export const Product = ({ id, avaliableAmount, cl, cost, description, imgURL, type, fixedPrice, deleteBusketItem, total, setTotal }) => {
 	const avaliableAmountArr = [...Array(avaliableAmount).keys()].map((i) => i + 1);
-	let [subtotal, setSubtotal] = useState(cost)
+	const shippingCost = cost >= 180 ? 0 : 10;
+	let [subtotal, setSubtotal] = useState(cost + shippingCost);
+	let [quantity, setQuantity] = useState(1);
+
+	function changeSubtotal(e) {
+		if(e.target.value > quantity) {
+			setSubtotal(cost * e.target.value + shippingCost);
+			setTotal(((subtotal - total) + (-(cost * e.target.value)) + (-shippingCost)) * (-1));
+			setQuantity(e.target.value);
+		} else {
+			setSubtotal(cost * e.target.value + shippingCost);
+			setTotal((total - (cost * (quantity - e.target.value))))
+			setQuantity(e.target.value);
+		}
+	}
+
+	// Make minus for deleting items
+
 
 	return (
 		<div className="product-wrapper">
@@ -18,13 +35,13 @@ export const Product = ({ id, avaliableAmount, cl, cost, description, imgURL, ty
 					<div className="price-wrap">
 						<p>{fixedPrice ? 'Fixed price' : 'Non fixed price'}</p>
 						<p className="price">
-							€{cost} / {cl}cl
+							${cost} / {cl}cl
 						</p>
 					</div>
 					<div className="amount-wrap">
 						<p>Amount</p>
 						<div className="select-wrap">
-							<select onChange={(e) => setSubtotal(cost * e.target.value)} className="select" name="" id="">
+							<select onChange={(e) => changeSubtotal(e)} className="select" name="" id="">
 								{avaliableAmountArr.map((num) => (
 									<option key={num} value={num}>
 										{num}
@@ -32,7 +49,7 @@ export const Product = ({ id, avaliableAmount, cl, cost, description, imgURL, ty
 								))}
 							</select>
 							<div className="choose-arrow-wrap">
-								<DownArrowSVG/>
+								<DownArrowSVG />
 							</div>
 						</div>
 					</div>
@@ -42,11 +59,11 @@ export const Product = ({ id, avaliableAmount, cl, cost, description, imgURL, ty
 					</div>
 					<div className="subtotal-wrap">
 						<p>Subtotal</p>
-						<p className="subtotal">€{subtotal}</p>
+						<p className="subtotal">${subtotal}</p>
 					</div>
 				</div>
 			</div>
-			<button className="delete-product" onClick={deleteBusketItem(id)}>
+			<button className="delete-product" onClick={deleteBusketItem(id, subtotal)}>
 				<svg
 					width="24"
 					height="24"
@@ -66,3 +83,4 @@ export const Product = ({ id, avaliableAmount, cl, cost, description, imgURL, ty
 		</div>
 	);
 };
+

@@ -47,7 +47,7 @@ router.route("/wine").get((req, res) => {
 });
 
 router.route("/user-page").get(checkAuth, (req, res) => {
-  res.sendFile(path.join(__dirname, "../public/pages/user-page.html"));
+  res.sendFile("C:/Users/vadim/OneDrive/Рабочий стол/wines/public/src/pages/ShoppingBag/Components/Product/index.jsx");
 });
 
 module.exports = router;

@@ -11,22 +11,25 @@ export const ShoppingBag = () => {
 	const { busketProductsIDs, setBusketAmount } = useOutletContext();
 	const productsArr = useRequestProductsInfo('addedToBusketIDs');
 
-	// let [IDs, setIDs] = useState(busketProductsIDs);
 	let [products, setProducts] = useState(productsArr);
-	
-	// console.log(IDs);
+	let [total, setTotal] = useState(0);
 
-	const deleteBusketItem = (id) => (event) => {
+	const deleteBusketItem = (id, subtotal) => (event) => {
+		setTotal(total - subtotal);
 		setProducts((currentItems) => {
 			return currentItems.filter(item => item.id !== id)
 		})
-		
-		setBusketAmount(id)
+		setBusketAmount(id);
 	}
 
 	useEffect(() => {
 		fetchDataArray('addedToBusketIDs', setProducts)
-	}, [])
+		let totalValue = 0;
+		productsArr.forEach(item => {
+			totalValue += item.cost >= 180 ? item.cost : item.cost + 10;
+		})
+		setTotal(totalValue)
+	}, [productsArr])
 
 	return (
 		<div className="shopping-bag-wrap">
@@ -35,8 +38,8 @@ export const ShoppingBag = () => {
 				<a href="/">Back to shopping</a>
 			</div>
 			<div className="products-bag-wrap">
-				{products?.map((item) => (
-					<Product
+				{products?.map((item) => {
+					 return <Product
 						id={item.id}
 						key={item.id}
 						avaliableAmount={item.avaliableAmount}
@@ -47,9 +50,15 @@ export const ShoppingBag = () => {
 						type={item.type}
 						fixedPrice={item.fixedPrice}
 						deleteBusketItem={deleteBusketItem}
+						total={total}
+						setTotal={setTotal}
 					/>
-				))}
+				})}
 			</div>
+			{total > 0 ? <div className="total-wrap">
+				<p className="total">Total: ${total}</p>
+				<button className="order-btn">Order</button>
+			</div> : <></>}
 		</div>
-	);
-};
+	)
+}

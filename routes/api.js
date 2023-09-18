@@ -41,12 +41,11 @@ router.route("/login").post((req, res) => {
   const { email, pass } = req?.body;
   if (email === adminEmail && pass === adminPass) {
     console.log("You succsessfully logged");
-    res.cookie("m_k", `user_${email}`, { maxAge: 99999 * 1000, httpOnly: true });
-    res.redirect('/user-page');
+    res.cookie("m_k", `user_${email}`);
+    res.send(200)
   } else {
     console.log("Not registered");
-    // res.cookie("m_k", `user_${email}`, { maxAge: 300000, httpOnly: true });
-    // res.redirect("/login");
+    res.send(404)
   } 
 });
 
