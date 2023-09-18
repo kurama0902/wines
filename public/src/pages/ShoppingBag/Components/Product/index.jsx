@@ -22,8 +22,6 @@ export const Product = ({ id, avaliableAmount, cl, cost, description, imgURL, ty
 		}
 	}
 
-	// Make minus for deleting items
-
 
 	return (
 		<div className="product-wrapper">

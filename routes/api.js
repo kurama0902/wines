@@ -4,8 +4,8 @@ const nodemailer = require("nodemailer");
 const { popularWines, winesNewSale, winesPremium } = require("../db/index");
 const { brandCategories } = require("../db/brandCategories");
 
-const adminEmail = process.env.ADMIN_EMAIL;
-const adminPass = process.env.ADMIN_PASS;
+const adminEmail = 'creepysimbaplay@gmail.com';
+const adminPass = 1234;
 
 /* GET api listing. */
 router.route("/feedback").post((req, res, next) => {
@@ -39,9 +39,9 @@ router.route("/feedback").post((req, res, next) => {
 
 router.route("/login").post((req, res) => {
   const { email, pass } = req?.body;
-  if (email === adminEmail && pass === adminPass) {
+  console.log(email, pass);
+  if (email === adminEmail && +pass === adminPass) {
     console.log("You succsessfully logged");
-    res.cookie("m_k", `user_${email}`);
     res.send(200)
   } else {
     console.log("Not registered");

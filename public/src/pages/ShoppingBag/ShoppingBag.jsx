@@ -57,7 +57,7 @@ export const ShoppingBag = () => {
 			</div>
 			{total > 0 ? <div className="total-wrap">
 				<p className="total">Total: ${total}</p>
-				<button className="order-btn">Order</button>
+				<button className={`order-btn ${(!document.cookie.includes('user')) ? 'order-btn-hide' : ''}`}>Order</button>
 			</div> : <></>}
 		</div>
 	)

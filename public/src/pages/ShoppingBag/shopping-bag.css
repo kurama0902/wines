@@ -45,6 +45,10 @@
     color: white;
 }
 
+.order-btn-hide {
+    display: none;
+}
+
 .order-btn:hover {
     background-color: rgb(41, 41, 255);
 }
@@ -68,4 +72,5 @@
         line-height: 30px;
     }
     
+
 }

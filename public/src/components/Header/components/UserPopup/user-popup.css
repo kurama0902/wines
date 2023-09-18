@@ -42,7 +42,10 @@
     z-index: 11;
 }
 
-.user-page-btn, .login-btn {
+.user-page-link, .login-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 200px;
     height: 35px;
     cursor: pointer;
@@ -50,6 +53,10 @@
     background-color: blue;
     border: none;
     color: white;
+}
+
+.user-link-hide {
+    display: none;
 }
 
 .user-page-btn:hover, .login-btn:hover {
