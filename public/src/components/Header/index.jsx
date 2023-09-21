@@ -6,6 +6,7 @@ import { MenuModel } from '../../shared/consts';
 import { NotificationsPopup } from './components/NotificactionsPopup';
 import { UserPopup } from './components/UserPopup';
 import { BagLink } from './components/BagLink';
+import { Link } from 'react-router-dom';
 
 import './Header.css';
 
@@ -15,9 +16,9 @@ export const Header = ({ likedAmount, busketAmount, updateLikedWines }) => {
 			<div className="first-section">
 				<div className="left-side">
 					<div className="logo">
-						<a className="logo-link" href="/">
+						<Link className="logo-link" to="/">
 							JustWine
-						</a>
+						</Link>
 					</div>
 					<Menu menuLinks={MenuModel} />
 				</div>

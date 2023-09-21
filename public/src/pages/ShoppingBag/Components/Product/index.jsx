@@ -4,33 +4,54 @@ import { DownArrowSVG } from '../../../../shared/SVG/DownArrowSVG';
 
 import './busket-product.css';
 
-export const Product = ({ id, avaliableAmount, cl, cost, description, imgURL, type, fixedPrice, deleteBusketItem, total, setTotal, productsQuant, setProductsQuant, order}) => {
+export const Product = ({
+	id,
+	avaliableAmount,
+	cl,
+	cost,
+	description,
+	imgURL,
+	type,
+	fixedPrice,
+	deleteBusketItem,
+	total,
+	setTotal,
+	productsQuant,
+	setProductsQuant,
+	order,
+}) => {
 	const avaliableAmountArr = [...Array(avaliableAmount).keys()].map((i) => i + 1);
 	const shippingCost = cost >= 180 ? 0 : 10;
 	let [subtotal, setSubtotal] = useState(cost + shippingCost);
 	let [quantity, setQuantity] = useState(1);
+	const [isDeliting, setIsDeliting] = useState(false);
 
 	function changeSubtotal(e) {
-		if(e.target.value > quantity) {
+		if (e.target.value > quantity) {
 			setSubtotal(cost * e.target.value + shippingCost);
-			setTotal(((subtotal - total) + (-(cost * e.target.value)) + (-shippingCost)) * (-1));
+			setTotal((subtotal - total + -(cost * e.target.value) + -shippingCost) * -1);
 			setQuantity(e.target.value);
 			let newQuantOrder = [...productsQuant];
 			newQuantOrder[order] = +e.target.value;
-			setProductsQuant(newQuantOrder)
+			setProductsQuant(newQuantOrder);
 		} else {
 			setSubtotal(cost * e.target.value + shippingCost);
-			setTotal((total - (cost * (quantity - e.target.value))))
+			setTotal(total - cost * (quantity - e.target.value));
 			setQuantity(e.target.value);
 			let newQuantOrder = [...productsQuant];
 			newQuantOrder[order] = +e.target.value;
-			setProductsQuant(newQuantOrder)
+			setProductsQuant(newQuantOrder);
 		}
 	}
 
+	const onTransitionEnd = () => deleteBusketItem(id, subtotal, productsQuant, setProductsQuant, order);
+
+	const deleteItemAction = () => {
+		setIsDeliting(true);
+	};
 
 	return (
-		<div className="product-wrapper">
+		<div className={`product-wrapper ${isDeliting ? 'delete' : ''}`} onTransitionEnd={onTransitionEnd}>
 			<div className="product">
 				<img className="product-img" src={imgURL} alt="" />
 				<div className="name-and-price">
@@ -67,7 +88,7 @@ export const Product = ({ id, avaliableAmount, cl, cost, description, imgURL, ty
 					</div>
 				</div>
 			</div>
-			<button className="delete-product" onClick={deleteBusketItem(id, subtotal, productsQuant, setProductsQuant, order)}>
+			<button className="delete-product" onClick={deleteItemAction}>
 				<svg
 					width="24"
 					height="24"
@@ -87,4 +108,3 @@ export const Product = ({ id, avaliableAmount, cl, cost, description, imgURL, ty
 		</div>
 	);
 };
-

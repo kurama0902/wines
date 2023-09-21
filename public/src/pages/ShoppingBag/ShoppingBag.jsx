@@ -17,7 +17,7 @@ export const ShoppingBag = () => {
 	let [billTable, setBillTable] = useState('');
 	let [total, setTotal] = useState(0);
 
-	const deleteBusketItem = (id, subtotal, productsQuant, setProductsQuant, order) => (event) => {
+	const deleteBusketItem = (id, subtotal, productsQuant, setProductsQuant, order) => {
 		let newProductsQuantArr = [...productsQuant];
 		newProductsQuantArr.splice(order, 1);
 		setProductsQuant(newProductsQuantArr);

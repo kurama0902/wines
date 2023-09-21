@@ -10,6 +10,11 @@ body {
     border: 1px solid grey;
     margin: auto;
     margin-top: 47px;
+    transition: opacity .6s cubic-bezier(0.075, 0.82, 0.165, 1);
+
+    &.delete {
+        opacity: 0;
+    }
 }
 
 .product {

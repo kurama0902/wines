@@ -17,7 +17,7 @@ export const Layout = () => {
 			/>
 
 			<Suspense fallback="Loading">
-				<Outlet context={{ likedProductsIDs, busketProductsIDs, setAmount, setBusketAmount }} />;
+				<Outlet context={{ likedProductsIDs, busketProductsIDs, setAmount, setBusketAmount }} />
 			</Suspense>
 		</>
 	);

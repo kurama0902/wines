@@ -10,14 +10,7 @@
     bottom: 0;
     right: 0;
     left: 0;
-}
-
-.visible {
     display: flex;
-}
-
-.invisible {
-    display: none;
 }
 
 .login-modal-bg {

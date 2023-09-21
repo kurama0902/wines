@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import "./menu.css";
 
 export const Menu = ({ menuLinks }) => {
@@ -7,7 +9,7 @@ export const Menu = ({ menuLinks }) => {
         {menuLinks.map((link) => {
           return (
             <li key={link.id}>
-              <a href={link.to}>{link.name}</a>
+              <Link to={link.to}>{link.name}</Link>
             </li>
           );
         })}
