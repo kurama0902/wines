@@ -9,32 +9,30 @@ const adminPass = 1234;
 
 /* GET api listing. */
 router.route("/feedback").post((req, res, next) => {
-  if(req.cookies['m_k']) {
-    let transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: "", // Here is needs to be users email
-        pass: "", // Here is needs to be users password
-      },
-    });
-  
-    let mailOptions = {
-      from: "", // Email
-      to: "", // Email
-      subject: "Your order",
-      html: `${req.body.info}`,
-    };
-  
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        res.statusCode = 405;
-        return res.send(error);
-      }
-      console.log(mailOptions.html);
-    });
-  } else {
-    res.redirect('/shopping-bag');
-  }
+  let transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "creepysimbaplay@gmail.com",
+      pass: "jcsvzpuqkmkygxej",
+    },
+  });
+
+  console.log(req.body.info);
+
+  let mailOptions = {
+    from: "creepysimbaplay@gmail.com",
+    to: "dmytrohrynchuk9@gmail.com",
+    subject: "Your order",
+    html: `${req.body.info}`,
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      res.statusCode = 405;
+      return res.send(error);
+    }
+    console.log(mailOptions.html);
+  });
 });
 
 router.route("/login").post((req, res) => {
@@ -52,7 +50,7 @@ router.route("/login").post((req, res) => {
 router.route("/logout").post((req, res) => {
   res.clearCookie('m_k');
   console.log('Deleted cookie');
-  res.redirect('/'); // Redirect is not working
+  res.redirect('/');
 });
 
 router.route("/check-user-able").post((req, res) => {

@@ -12,15 +12,56 @@ export const ShoppingBag = () => {
 	const productsArr = useRequestProductsInfo('addedToBusketIDs');
 
 	let [products, setProducts] = useState(productsArr);
+	let [productsQuant, setProductsQuant] = useState([]);
+	// console.log(productsArr.length);
+	let [billTable, setBillTable] = useState('');
 	let [total, setTotal] = useState(0);
 
-	const deleteBusketItem = (id, subtotal) => (event) => {
+	const deleteBusketItem = (id, subtotal, productsQuant, setProductsQuant, order) => (event) => {
+		let newProductsQuantArr = [...productsQuant];
+		newProductsQuantArr.splice(order, 1);
+		setProductsQuant(newProductsQuantArr);
+
 		setTotal(total - subtotal);
 		setProducts((currentItems) => {
 			return currentItems.filter(item => item.id !== id)
 		})
 		setBusketAmount(id);
 	}
+
+
+	// console.log(billTable);
+	function orderGoods () {
+		let tableStart = `
+		<table border=1>
+		<tr>
+		  <th style='padding: 10px;'>Product</th>
+		  <th style='padding: 10px;'>Quantity</th>
+		  <th style='padding: 10px;'>Cost</th>
+		</tr>`;
+
+		let tableEnd = `
+		<tr>
+		<th style="padding: 10px; text-align: right;" colspan='3'>Total: $${total}</th>
+	  </tr>
+	</table>
+		`;
+		let htmlStr = '';
+		products.forEach((e, index) => {
+			htmlStr += billTable + `<tr><td style="text-align: center; padding: 10px;">${e.description}</td><td style="text-align: center; padding: 10px;">${productsQuant[index]}</td><td style="text-align: center; padding: 10px;">$${e.cost}</td></tr>`;
+		});
+		fetch('http://localhost:3010/api/feedback', {
+			method: 'POST',
+			headers: {
+				"Content-Type": "application/json",
+			},
+
+			body: JSON.stringify({
+				info: tableStart + htmlStr + tableEnd
+			})
+		})
+	}
+
 
 	useEffect(() => {
 		fetchDataArray('addedToBusketIDs', setProducts)
@@ -29,6 +70,8 @@ export const ShoppingBag = () => {
 			totalValue += item.cost >= 180 ? item.cost : item.cost + 10;
 		})
 		setTotal(totalValue)
+		// console.log([...new Array(productsArr.length)].map(i => 1));
+		setProductsQuant([...new Array(productsArr.length)].map(i => 1))
 	}, [productsArr])
 
 	return (
@@ -38,7 +81,7 @@ export const ShoppingBag = () => {
 				<a href="/">Back to shopping</a>
 			</div>
 			<div className="products-bag-wrap">
-				{products?.map((item) => {
+				{products?.map((item, index) => {
 					 return <Product
 						id={item.id}
 						key={item.id}
@@ -52,12 +95,15 @@ export const ShoppingBag = () => {
 						deleteBusketItem={deleteBusketItem}
 						total={total}
 						setTotal={setTotal}
+						productsQuant={productsQuant}
+						setProductsQuant={setProductsQuant}
+						order={index}
 					/>
 				})}
 			</div>
 			{total > 0 ? <div className="total-wrap">
 				<p className="total">Total: ${total}</p>
-				<button className={`order-btn ${(!document.cookie.includes('user')) ? 'order-btn-hide' : ''}`}>Order</button>
+				<button onClick={orderGoods} className={`order-btn ${(!document.cookie.includes('user')) ? 'order-btn-hide' : ''}`}>Order</button>
 			</div> : <></>}
 		</div>
 	)

@@ -1,0 +1,42 @@
+.about-us-modal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+
+.modal-visible {
+    display: flex;
+}
+
+.modal-invisible {
+    display: none;
+}
+
+.close-wrap {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.494);
+}
+
+.about-us-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 420px;
+    height: 300px;
+    padding: 10px;
+    border-radius: 12px;
+    background-color: white;
+    text-align: center;
+    z-index: 1;
+}
+
