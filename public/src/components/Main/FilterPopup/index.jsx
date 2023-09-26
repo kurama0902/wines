@@ -17,11 +17,22 @@ export const FilterPopup = ({ products, setProducts }) => {
 	};
 
 	const applyFilters = () => {
-		setProducts(
-			products.filter(
+		if(selectValues.year && selectValues.type) {
+			if(products.filter(
 				(product) => +product.year === selectValues.year && product.type === selectValues.type
-			)
-		);
+			).length > 0) {
+				setProducts(
+					products.filter(
+						(product) => +product.year === selectValues.year && product.type === selectValues.type
+					)
+				)
+			} else {
+				alert('No wines for these filters');
+				return products;
+			}
+		} else {
+			alert('Enter please correct information')
+		}
 	};
 
 	const handleResetFilters = () => {
