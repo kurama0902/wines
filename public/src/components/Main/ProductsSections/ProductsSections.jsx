@@ -5,12 +5,12 @@ import { enums } from '../../../shared/enums';
 import { RightArrowSVG } from '../../../shared/SVG/RightArrowSVG';
 import { sortContext } from '../../../context/sortContext';
 
-export const ProductsSections = ({ products, setFilteredProducts, title, children }) => {
+export const ProductsSections = ({ products, setFilteredProducts, idName, title, children }) => {
 	let [sortDirection, setSortDirection] = useState({ num: 1 });
 
 	return (
 		<sortContext.Provider value={[sortDirection, setSortDirection]}>
-			<div className="section-h3-wrap">
+			<div className="section-h3-wrap" id={idName}>
 				<FilterAndSortSection
 					products={products}
 					setProducts={setFilteredProducts}

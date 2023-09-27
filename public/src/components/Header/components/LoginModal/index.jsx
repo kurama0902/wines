@@ -31,7 +31,7 @@ export const LoginModal = (display, setUserLogin, isUserLogined) => {
 							if (result.status === 200) {
 								document.cookie = `user=${email}`;
 								localStorage.setItem('auth', `user=${email}`);
-								setUserLogin(true);
+								display.setUserLogin(true);
 							}
 						} catch (error) {
 							console.log('Error -', error);

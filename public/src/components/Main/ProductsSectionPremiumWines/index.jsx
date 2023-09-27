@@ -21,6 +21,7 @@ export const ProductsSectionPremiumWines = () => {
 			products={initialProducts}
 			initialProducts={initialProducts}
 			setFilteredProducts={setFilteredProducts}
+			idName="premium-wines"
 		>
 			<section className="products-wrap popularWines">
 				<RenderItems products={filterdProducts} />

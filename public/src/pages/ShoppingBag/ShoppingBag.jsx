@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { Link, useOutletContext } from 'react-router-dom';
 
 import { Product } from './Components/Product';
 import { useRequestProductsInfo } from '../../shared/hooks/requestProductsInfo';
@@ -78,7 +78,7 @@ export const ShoppingBag = () => {
 		<div className="shopping-bag-wrap">
 			<div className="bag-amount">
 				<h1>My shopping bag ({busketProductsIDs.length})</h1>
-				<a href="/">Back to shopping</a>
+				<Link to="/">Back to shopping</Link>
 			</div>
 			<div className="products-bag-wrap">
 				{products?.map((item, index) => {

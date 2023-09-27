@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { UserSVG } from '../../../../shared/SVG/UserSVG';
 import { LoginModal } from '../LoginModal';
+import { Link } from 'react-router-dom';
 
 import './user-popup.css';
 
@@ -40,12 +41,12 @@ export const UserPopup = () => {
 						<div className="back" onClick={handleUsersPopup}></div>
 
 						<div className="user-popup-wrap">
-							<a
-								href="/user-page"
+							<Link
+								to="/user-page"
 								className={`user-page-link ${loginLogoutText === 'Login' ? 'user-link-hide' : ''}`}
 							>
 								User's Page
-							</a>
+							</Link>
 							{isUserLogined && (
 								<button onClick={Logout} className="login-btn">
 									Logout

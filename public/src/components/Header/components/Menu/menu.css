@@ -9,3 +9,43 @@ a {
   cursor: pointer;
   text-decoration: none;
 }
+
+li {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 1px;
+}
+
+.line-hover {
+  display: flex;
+  visibility: hidden;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.first-line, .second-line {
+  height: 1px;
+  background-color: black;
+}
+
+li:hover .line-hover {
+  visibility: visible;
+}
+
+li:hover .first-line, li:hover .second-line {
+  animation: menuAnimation .4s forwards;
+}
+
+@keyframes menuAnimation {
+  0% {
+    width: 0%;
+  }
+
+  100% {
+    width: 100%;
+  }
+}
+

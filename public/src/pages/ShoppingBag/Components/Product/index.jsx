@@ -27,20 +27,24 @@ export const Product = ({
 	const [isDeliting, setIsDeliting] = useState(false);
 
 	function changeSubtotal(e) {
-		if (e.target.value > quantity) {
-			setSubtotal(cost * e.target.value + shippingCost);
-			setTotal((subtotal - total + -(cost * e.target.value) + -shippingCost) * -1);
-			setQuantity(e.target.value);
-			let newQuantOrder = [...productsQuant];
-			newQuantOrder[order] = +e.target.value;
-			setProductsQuant(newQuantOrder);
+		if(e.target.value <= avaliableAmount) {
+			if (e.target.value > quantity) {
+				setSubtotal(cost * e.target.value + shippingCost);
+				setTotal((subtotal - total + -(cost * e.target.value) + -shippingCost) * -1);
+				setQuantity(e.target.value);
+				let newQuantOrder = [...productsQuant];
+				newQuantOrder[order] = +e.target.value;
+				setProductsQuant(newQuantOrder);
+			} else {
+				setSubtotal(cost * e.target.value + shippingCost);
+				setTotal(total - cost * (quantity - e.target.value));
+				setQuantity(e.target.value);
+				let newQuantOrder = [...productsQuant];
+				newQuantOrder[order] = +e.target.value;
+				setProductsQuant(newQuantOrder);
+			}
 		} else {
-			setSubtotal(cost * e.target.value + shippingCost);
-			setTotal(total - cost * (quantity - e.target.value));
-			setQuantity(e.target.value);
-			let newQuantOrder = [...productsQuant];
-			newQuantOrder[order] = +e.target.value;
-			setProductsQuant(newQuantOrder);
+			e.target.value = 1;
 		}
 	}
 
@@ -66,16 +70,7 @@ export const Product = ({
 					<div className="amount-wrap">
 						<p>Amount</p>
 						<div className="select-wrap">
-							<select onChange={(e) => changeSubtotal(e)} className="select" name="" id="">
-								{avaliableAmountArr.map((num) => (
-									<option key={num} value={num}>
-										{num}
-									</option>
-								))}
-							</select>
-							<div className="choose-arrow-wrap">
-								<DownArrowSVG />
-							</div>
+							<input type="number" className="select" onChange={(e) => changeSubtotal(e)} defaultValue={1} min={1} max={avaliableAmountArr.length} />
 						</div>
 					</div>
 					<div className="shipping-wrap">

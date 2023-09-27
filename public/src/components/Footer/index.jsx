@@ -5,7 +5,7 @@ import './footer.css'
 
 export const Footer = () => {
     return (
-        <footer className="footer-wrap">
+        <footer className="footer-wrap" id="contacts">
             <div className="footer-links-wrap">
                 <div className="footer-links">
                     <div className="links-container">

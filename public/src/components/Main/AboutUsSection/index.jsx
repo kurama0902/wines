@@ -11,7 +11,7 @@ export const AboutUsSection = () => {
     }
 
     return (
-        <div className="about-us-section">
+        <div className="about-us-section" id="about-us">
             <h3 className="about-label">About us</h3>
             <div className="about-us-info">
                 <p>We are started from 2000</p>

@@ -24,9 +24,9 @@ export const SearchField = ({ placehoder }) => {
 					}}
 				/>
 			</div>
-			<button className="photo-scan">
+			{/* <button className="photo-scan">
 				<CameraSVG />
-			</button>
+			</button> */}
 			<SearchedProductsPopup searchedProducts={searchedProducts} />
 		</div>
 	);
