@@ -11,22 +11,10 @@ export const SearchField = ({ placehoder }) => {
 
 	return (
 		<div className="search-wrap">
-			<div className="input-wrap">
-				<label htmlFor="search">
-					<SearchSVG />
-				</label>
-				<input
-					id="search"
-					type="text"
-					placeholder={placehoder}
-					onChange={(e) => {
-						searchInfo(e, setSearchedProducts)
-					}}
-				/>
+			<input className="search-input" placeholder="Search the product..." type="text" onChange={e => searchInfo(e, setSearchedProducts)} />
+			<div className="search-trap-hover">
+				<SearchSVG></SearchSVG>
 			</div>
-			{/* <button className="photo-scan">
-				<CameraSVG />
-			</button> */}
 			<SearchedProductsPopup searchedProducts={searchedProducts} />
 		</div>
 	);
