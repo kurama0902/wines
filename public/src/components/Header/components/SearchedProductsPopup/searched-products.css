@@ -1,13 +1,21 @@
+.popup-bg {
+    position: absolute;
+    display: flex;
+    align-items: end;
+    height: 110px;
+    top: 40px;
+    left: 0;
+}
+
 .searched-items-wrap {
     flex-direction: column;
+    /* padding-top: 10px; */
     width: inherit;
     height: 100px;
     background-color: white;
     box-shadow: 2px 2px 2px lightgray, -2px -2px 2px lightgrey;
-    position: absolute;
     padding: 10px;
     overflow-y: scroll;
-    top: 50px;
     gap: 5px;
     z-index: 1;
 }

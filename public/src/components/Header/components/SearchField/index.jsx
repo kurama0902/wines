@@ -11,7 +11,7 @@ export const SearchField = ({ placehoder }) => {
 
 	return (
 		<div className="search-wrap">
-			<input className="search-input" placeholder="Search the product..." type="text" onChange={e => searchInfo(e, setSearchedProducts)} />
+			<input className="search-input" placeholder={placehoder} type="text" onChange={e => searchInfo(e, setSearchedProducts)} />
 			<div className="search-trap-hover">
 				<SearchSVG></SearchSVG>
 			</div>

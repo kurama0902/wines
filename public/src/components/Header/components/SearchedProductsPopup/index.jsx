@@ -7,7 +7,8 @@ export const SearchedProductsPopup = ({searchedProducts}) => {
     let isVisible = searchedProducts.length > 0 ? true : false;
 
     return (
-        <div className={`searched-items-wrap ${isVisible ? 'visible' : 'invisible'}`}>
+        <div className="popup-bg">
+            <div className={`searched-items-wrap ${isVisible ? 'visible' : 'invisible'}`}>
             {(isVisible) ? searchedProducts.map(product => {
                 return (
                     <div key={product.id} className="searched-item">
@@ -19,6 +20,7 @@ export const SearchedProductsPopup = ({searchedProducts}) => {
                     </div>
                 )
             }) : <></>}
+        </div>
         </div>
     )
 }
