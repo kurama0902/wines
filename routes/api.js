@@ -38,12 +38,12 @@ router.route("/feedback").post((req, res, next) => {
 router.route("/login").post((req, res) => {
   const { email, pass } = req?.body;
   console.log(email, pass);
-  if (email === adminEmail && +pass === adminPass) {
+  if (email === adminEmail && Number(pass) === adminPass) {
     console.log("You succsessfully logged");
-    res.send(200)
+    res.sendStatus(200)
   } else {
     console.log("Not registered");
-    res.send(404)
+    res.sendStatus(404)
   } 
 });
 

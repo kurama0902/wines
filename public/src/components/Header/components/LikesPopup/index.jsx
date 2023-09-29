@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { LikedModal } from '../LikedModal';
 import { HeaderHeartSVG } from '../../../../shared/SVG/HeaderHeartSVG';
-import { ScrollContext } from '../../../../context/userContext';
+import { ScrollContext } from '../../../../context/scrollContext';
 import { Counter } from '../../../../shared/components/Counter';
 
 import './likesPopup.css';

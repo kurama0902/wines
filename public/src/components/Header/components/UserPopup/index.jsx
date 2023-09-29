@@ -5,13 +5,12 @@ import { Link } from 'react-router-dom';
 
 import './user-popup.css';
 
-const isLogined = localStorage.getItem('auth');
-
 export const UserPopup = () => {
 	let [display, setDisplay] = useState(false);
-	let [isUserLogined, setIsUserLogined] = useState(false);
+	let [isUserLogined, setIsUserLogined] = useState(localStorage.getItem('auth'));
 	let [loginModalDisplay, setLoginModalDisplay] = useState(false);
-	let [loginLogoutText, setLoginLogout] = useState(isLogined ? 'Log out' : 'Login');
+
+	const loginLogoutText = isUserLogined ? 'Log out' : 'Login'
 
 	const handleUsersPopup = () => {
 		setDisplay((prevState) => {
@@ -26,9 +25,15 @@ export const UserPopup = () => {
 	const Logout = () => {
 		document.cookie =
 			'user=creepysimbaplay@gmail.com; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-		localStorage.removeItem('user');
-		// window.location.reload(false);
+
+		localStorage.removeItem('auth');
+		setIsUserLogined(false);
 	};
+
+	const handleLoginAction = () => {
+		setIsUserLogined(true);
+		setLoginModalDisplay(false);
+	}
 
 	return (
 		<>
@@ -63,9 +68,8 @@ export const UserPopup = () => {
 			</div>
 			{loginModalDisplay && (
 				<LoginModal
-					display={{ loginModalDisplay, handleLoginBgClick }}
-					isUserLogined={isUserLogined}
-					setUserLogin={setIsUserLogined}
+					handleLoginBgClick={handleLoginBgClick}
+					handleLoginAction={handleLoginAction}
 				/>
 			)}
 		</>

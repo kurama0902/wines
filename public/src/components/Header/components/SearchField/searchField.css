@@ -1,92 +1,88 @@
 .search-wrap {
-    display: flex;
-    position: relative;
-    align-items: center;
-    justify-content: end;
-    min-height: 40px;
-    background-color: white;
-    border: 1px solid transparent;
-    border-radius: 12px 22px 22px 12px;
+	display: flex;
+	position: relative;
+	align-items: center;
+	justify-content: end;
+	min-height: 40px;
+	background-color: white;
+	border: 1px solid transparent;
+	border-radius: 12px 22px 22px 12px;
+
+    transition: all 1s;
+
+    &:hover,
+	&.active {
+		border-color: lightgray;
+		gap: 7px;
+	}
 }
 
 .search-trap-hover {
-    display: flex;
-    cursor: pointer;
-    justify-content: center;
-    align-items: center;
-    border-radius: 100%;
-    width: 40px;
-    height: 40px;
+	display: flex;
+	cursor: pointer;
+	justify-content: center;
+	align-items: center;
+	border-radius: 100%;
+	width: 40px;
+	height: 40px;
 }
 
 .search-input {
-    border: none;
-    outline: none;
-    transition: all 1s;
-    width: 0px;
-    height: 30px;
-    border-radius: inherit;
-}
-
-.search-wrap {
-    transition: all 1s;
-}
-
-.search-wrap:hover {
-    border-color: lightgray;
-    gap: 7px;
+	border: none;
+	outline: none;
+	transition: all 1s;
+	width: 0px;
+	height: 30px;
+	border-radius: inherit;
 }
 
 .search-wrap:hover .search-input {
-    padding-left: 5px;
-    width: 290px;
+	padding-left: 5px;
+	width: 290px;
 }
 
-
 .search-wrap:hover .search-trap-hover {
-    background-color: rgb(20, 20, 20);
+	background-color: rgb(20, 20, 20);
 }
 
 .second-section .search-wrap {
-    display: none;
+	display: none;
 }
 
 @keyframes searchAnimation {
-    from {
-        width: 0px;
-    }
+	from {
+		width: 0px;
+	}
 
-    to {
-        width: 190px;
-    }
+	to {
+		width: 190px;
+	}
 }
 
 @media (max-width: 1300px) {
+	.right-side .search-wrap {
+		display: none;
+	}
 
-    .right-side .search-wrap {
-        display: none;
-    }
+	.second-section {
+		display: flex;
+		justify-content: end;
+	}
 
-    .second-section {
-        display: flex;
-        justify-content: end;
-    }
+	.second-section .search-wrap {
+		display: flex;
+		transition: all 1s;
+	}
 
-    .second-section .search-wrap {
-        display: flex;
-        transition: all 1s;
-    }
+	.second-section .search-wrap:hover {
+		width: 100%;
+	}
 
-    .second-section .search-wrap:hover {
-        width: 100%;
-    }
-
-    .second-section:hover .search-input {
-        width: 100%;
-    }
-/* 
+	.second-section:hover .search-input {
+		width: 100%;
+	}
+	/* 
     .input-wrap {
         width: calc(100% - 50px);
     } */
 }
-
