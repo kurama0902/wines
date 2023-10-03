@@ -11,24 +11,25 @@ export const SearchField = ({ placehoder }) => {
 	const ref = useRef(null);
 
 	const [searchedProducts, setSearchedProducts] = useState([]);
+	const [isSearchActive, setIsSearchActive] = useState(false);
 
 	const classNames = cn('search-wrap', {
 		active: ref.current?.value,
 	});
 
 	return (
-		<div className={classNames}>
+		<div className={`${classNames} ${isSearchActive ? 'search-wrap-border-line' : ''}`}>
 			<input
 				ref={ref}
 				type="text"
-				className="search-input"
+				className={`search-input ${isSearchActive ? 'search-input-visible' : ''}`}
 				placeholder={placehoder}
 				onChange={(e) => searchInfo(e, setSearchedProducts)}
 			/>
-			<div className="search-trap-hover">
+			<div onClick={() => setIsSearchActive(!isSearchActive)} className="search-trap-hover">
 				<SearchSVG></SearchSVG>
 			</div>
-			<SearchedProductsPopup searchedProducts={searchedProducts} />
+			{isSearchActive && <SearchedProductsPopup searchedProducts={searchedProducts} />}
 		</div>
 	);
 };

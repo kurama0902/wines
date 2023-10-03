@@ -103,7 +103,7 @@ export const ShoppingBag = () => {
 			</div>
 			{total > 0 ? <div className="total-wrap">
 				<p className="total">Total: ${total}</p>
-				<button onClick={orderGoods} className={`order-btn ${(!document.cookie.includes('user')) ? 'order-btn-hide' : ''}`}>Order</button>
+				<button onClick={orderGoods} className={`order-btn ${(localStorage.getItem('auth')) ? '' : 'order-btn-hide'}`}>Order</button>
 			</div> : <></>}
 		</div>
 	)
