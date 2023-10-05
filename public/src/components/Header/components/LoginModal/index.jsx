@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import './login-modal.css';
 
@@ -6,18 +6,21 @@ export const LoginModal = ({
 	handleLoginAction,
 	handleLoginBgClick,
 }) => {
-	const [inputs, setInputs] = useState({});
+
+	// const [inputs, setInputs] = useState({});
+	const authFormData = useRef({
+		email: '',
+		pass: ''
+	});
 
 	const onChangeInput = (event) => {
 		const inputName = event.target.name;
 		const inputValue = event.target.value;
+		console.log(inputName + " | " + inputValue);
 
-		setInputs((prevState) => {
-			return {
-				...prevState,
-				[inputName]: inputValue,
-			};
-		});
+		authFormData.current[inputName] = inputValue;
+
+		console.log(authFormData.current);
 	};
 
 	const onSubmit = async (event) => {
@@ -29,11 +32,10 @@ export const LoginModal = ({
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify(inputs),
+				body: JSON.stringify(authFormData.current),
 			});
 			if (result.status === 200) {
-				document.cookie = `user=${inputs.email}`;
-				localStorage.setItem('auth', `user=${inputs.email}`);
+				localStorage.setItem('auth', `user=${authFormData.current.email}`);
 				handleLoginAction();
 			}
 		} catch (error) {

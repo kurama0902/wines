@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { UserSVG } from '../../../../shared/SVG/UserSVG';
 import { LoginModal } from '../LoginModal';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../../../context/authContext';
 
 import './user-popup.css';
 
@@ -9,6 +10,8 @@ export const UserPopup = () => {
 	let [display, setDisplay] = useState(false);
 	let [isUserLogined, setIsUserLogined] = useState(localStorage.getItem('auth'));
 	let [loginModalDisplay, setLoginModalDisplay] = useState(false);
+	const [userLocalStorage, setUserLocalStorage] = useContext(AuthContext);
+	console.log('fsefesfes' + userLocalStorage);
 
 	const loginLogoutText = isUserLogined ? 'Log out' : 'Login'
 
@@ -23,16 +26,14 @@ export const UserPopup = () => {
 	};
 
 	const Logout = () => {
-		document.cookie =
-			'user=creepysimbaplay@gmail.com; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-
 		localStorage.removeItem('auth');
 		setIsUserLogined(false);
+		setUserLocalStorage(false);
 	};
 
 	const handleLoginAction = () => {
 		setIsUserLogined(true);
-		setLoginModalDisplay(false);
+		setUserLocalStorage(localStorage.getItem('auth'));
 	}
 
 	return (

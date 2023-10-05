@@ -4,6 +4,7 @@ import { fetchDataArray } from '../../../../functions/fetchDataArray';
 import './liked-modal.css';
 export const LikedModal = ({ updateLikedWines, closeModal }) => {
 	let [products, setProducts] = useState([]);
+	
 
 	const deleteLikedItem = (id) => (event) => {
 		setProducts((currentItems) => {

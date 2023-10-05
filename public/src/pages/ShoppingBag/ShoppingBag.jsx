@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useOutletContext } from 'react-router-dom';
+import { AuthContext } from '../../context/authContext';
 
 import { Product } from './Components/Product';
 import { useRequestProductsInfo } from '../../shared/hooks/requestProductsInfo';
@@ -9,6 +10,8 @@ import './shopping-bag.css';
 
 export const ShoppingBag = () => {
 	const { busketProductsIDs, setBusketAmount } = useOutletContext();
+	const [userLocalStorage, setUserLocalStorage] = useContext(AuthContext);
+	console.log(userLocalStorage);
 	const productsArr = useRequestProductsInfo('addedToBusketIDs');
 
 	let [products, setProducts] = useState(productsArr);
@@ -103,7 +106,7 @@ export const ShoppingBag = () => {
 			</div>
 			{total > 0 ? <div className="total-wrap">
 				<p className="total">Total: ${total}</p>
-				<button onClick={orderGoods} className={`order-btn ${(localStorage.getItem('auth')) ? '' : 'order-btn-hide'}`}>Order</button>
+				<button onClick={orderGoods} className={`order-btn ${(userLocalStorage) ? '' : 'order-btn-hide'}`}>Order</button>
 			</div> : <></>}
 		</div>
 	)
