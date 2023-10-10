@@ -23,5 +23,10 @@ export const MenuModel = [
     to: '#contacts',
     name: 'Contacts',
     id: 5,
+  },
+  {
+    to: '/all-wines',
+    name: 'More wines',
+    id: 6
   }
 ]

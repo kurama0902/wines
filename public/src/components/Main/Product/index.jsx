@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { HeartSVG } from '../../../shared/SVG/HeartSVG';
 import { LockSVG } from '../../../shared/SVG/LockSVG';
 
@@ -27,9 +28,9 @@ export const Product = ({
 	return (
 		<div className="product-wrap">
 			<div className="picture-and-description">
-				<a href="/">
+				<Link to={`/wine:id=${id}`}>
 					<img className="wine-img" src={imgURL} alt="" />
-				</a>
+				</Link>
 				<div className="description-info">
 					<p className="description">{description}</p>
 					<p className="year">{year}</p>

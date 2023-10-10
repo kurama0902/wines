@@ -1,0 +1,34 @@
+.all-wines-wrap {
+    max-width: 1440px;
+    margin: auto;
+}
+
+.wines-pagination {
+    display: flex;
+    width: 440px;
+    background-color: rgba(211, 211, 211, 0.384);
+    padding: 5px;
+    margin: auto;
+    margin-top: 15px;
+    gap: 10px;
+}
+
+.pagination-numbers {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.page-number {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(137, 43, 226, 0.377);
+    color: green;
+}
+
+.previous-btn, .next-btn {
+    width: 65px;
+}

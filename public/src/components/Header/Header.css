@@ -38,7 +38,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  max-width: 707px;
+  max-width: 747px;
   width: 100%;
 }
 
@@ -51,13 +51,13 @@
 
 menu ul {
   display: flex;
-  width: 528px;
+  width: 620px;
   align-items: center;
   list-style: none;
   justify-content: space-between;
 }
 
-@media (max-width: 1299px) {
+@media (max-width: 1345px) {
 
   menu,
   .search-wrap,
