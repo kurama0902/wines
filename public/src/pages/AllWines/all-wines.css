@@ -40,12 +40,12 @@
 }
 
 .wines-pagination {
-    display: flex;
-    width: 450px;
+    display: inline-flex;
     background-color: rgba(211, 211, 211, 0.384);
     border-radius: 12px;
     padding: 5px;
-    margin: auto;
+    margin-left: 50%;
+    transform: translate(-50%);
     margin-top: 15px;
     gap: 10px;
 }
@@ -69,6 +69,10 @@
     background-color: transparent;
     border: 1px solid transparent;
     color: green;
+}
+
+.border-active {
+    border-color: black;
 }
 
 .page-number:hover {

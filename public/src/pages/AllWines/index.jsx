@@ -8,29 +8,40 @@ export const AllWines = () => {
 
     const allWines = useGetAllWines();
     const [winesList, setWinesList] = useState(allWines);
-    const [range, setRange] = useState([0, 8])
+    const [pageNumber, setPageNumber] = useState(1);
+    const [range, setRange] = useState([0, 8]);
 
-    function changeRange(number) {
-        if(number > 1) {
-            setRange([8 * number, 8 * number * number])
-        } else {
-            setRange([0, 8])
+    function changeRange(number, pageNumber) {
+        if(number !== pageNumber) {
+            setPageNumber(number);
+            setRange([8 * number - 8, 8 * number])
         }
     }
 
-    function changeToPreviousState(number) {
-        
+    function changeToPreviousState() {
+        if(range[0] !== 0) {
+            setRange([range[0] - 8, range[1] - 8]);
+        }
     }
 
-    function generatePageNumbers() {
+    function changeToNextState() {
+        if(range[1] < winesList?.length) {
+            setRange([range[0] + 8, range[1] + 8]);
+        }
+    }
+
+    function generatePageBtns(btnNum = 1) {
         const pageNums = [];
 
-        for(let i = 0; i < Math.trunc(winesList.length / 8); i++) {
+        for(let i = 0; i < Math.ceil(winesList?.length / 8); i++) {
             pageNums.push(i + 1);
         }
 
-        return pageNums;
+        return pageNums.map(number => {
+            return <button key={number} onClick={() => {changeRange(number, pageNumber);}} className={`page-number ${btnNum === number ? 'border-active': ''}`}>{number}</button>
+        });
     }
+    
 
     useEffect(() => {
         setWinesList(allWines);
@@ -48,13 +59,11 @@ export const AllWines = () => {
                 })}
             </div>
             <div className="wines-pagination">
-                <button className="previous-btn">Previous</button>
+                <button onClick={changeToPreviousState} className="previous-btn">Previous</button>
                 <div className="pagination-numbers">
-                    {generatePageNumbers().map(number => {
-                        return <button onClick={() => changeRange(number)} className="page-number">{number}</button>
-                    })}
+                    {generatePageBtns()}
                 </div>
-                <button className="next-btn">Next</button>
+                <button onClick={changeToNextState} className="next-btn">Next</button>
             </div>
         </div>
     )
