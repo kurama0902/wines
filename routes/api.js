@@ -88,6 +88,12 @@ router.route("/getDataArray").post((req, res) => {
   res.send(items)
 });
 
+router.route("/getAllWines").get((req, res) => {
+  const allWines = [...popularWines, ...winesNewSale, ...winesPremium];
+  console.log(allWines);
+  res.send(allWines)
+});
+
 router.route("/search-info").post((req, res) => {
   const { inputValue } = req.body;
   console.log(inputValue);
