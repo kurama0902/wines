@@ -21,16 +21,18 @@ export const AllWines = () => {
     function changeToPreviousState() {
         if(range[0] !== 0) {
             setRange([range[0] - 8, range[1] - 8]);
+            setPageNumber(pageNumber - 1);
         }
     }
 
     function changeToNextState() {
         if(range[1] < winesList?.length) {
             setRange([range[0] + 8, range[1] + 8]);
+            setPageNumber(pageNumber + 1);
         }
     }
 
-    function generatePageBtns(btnNum = 1) {
+    function generatePageBtns() {
         const pageNums = [];
 
         for(let i = 0; i < Math.ceil(winesList?.length / 8); i++) {
@@ -38,7 +40,7 @@ export const AllWines = () => {
         }
 
         return pageNums.map(number => {
-            return <button key={number} onClick={() => {changeRange(number, pageNumber);}} className={`page-number ${btnNum === number ? 'border-active': ''}`}>{number}</button>
+            return <button key={number} onClick={() => {changeRange(number, pageNumber)}} className={`page-number ${pageNumber === number ? 'border-active': ''}`}>{number}</button>
         });
     }
     
@@ -52,7 +54,7 @@ export const AllWines = () => {
             <h1 className="wines-list-label">Wines list:</h1>
             <div className="all-wines-section">
                 {winesList?.slice(range[0], range[1]).map((wine) => {
-                return <Link key={wine.id} className="wine-wrap">
+                return <Link to={`/wine?id=${wine.id}`} key={wine.id} className="wine-wrap">
                     <img className="wine-img" src={wine.imgURL} alt="" />
                     <p className="wine-name">{wine.description}</p>
                 </Link>

@@ -28,7 +28,7 @@ export const Product = ({
 	return (
 		<div className="product-wrap">
 			<div className="picture-and-description">
-				<Link to={`/wine:id=${id}`}>
+				<Link to={`/wine?id=${id}`}>
 					<img className="wine-img" src={imgURL} alt="" />
 				</Link>
 				<div className="description-info">

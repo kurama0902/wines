@@ -9,8 +9,6 @@ export const RenderItems = ({ products }) => {
 
 	let [sortDirection] = useContext(sortContext);
 
-	console.log(sortDirection, ' sortDirection');
-
 	return sortBy(sortDirection.num, products).map((item) => {
 		const { id, cl, cost, year, avaliableAmount, fixedPrice, quality, description, imgURL } = item;
 

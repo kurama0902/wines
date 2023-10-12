@@ -16,11 +16,8 @@ export const LoginModal = ({
 	const onChangeInput = (event) => {
 		const inputName = event.target.name;
 		const inputValue = event.target.value;
-		console.log(inputName + " | " + inputValue);
-
+		
 		authFormData.current[inputName] = inputValue;
-
-		console.log(authFormData.current);
 	};
 
 	const onSubmit = async (event) => {

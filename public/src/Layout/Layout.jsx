@@ -12,7 +12,8 @@ export const Layout = () => {
 	const currentLocation = useLocation();
 	const isVisible = currentLocation.pathname !== routesMap.ShoppingBag &&
 	 				  currentLocation.pathname !== routesMap.UserPage &&
-	          		  currentLocation.pathname !== routesMap.allWines ? true : false;
+	          		  currentLocation.pathname !== routesMap.allWines && 
+						currentLocation.pathname !== routesMap.winePage ? true : false;
 
 	return (
 		<>

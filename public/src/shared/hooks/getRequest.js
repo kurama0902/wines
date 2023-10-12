@@ -19,6 +19,5 @@ export const useGetRequest = (name) => {
 		getData();
 	}, []);
 
-	console.log(data);
 	return data
 };

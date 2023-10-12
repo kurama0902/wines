@@ -11,8 +11,6 @@ export const UserPopup = () => {
 	let [isUserLogined, setIsUserLogined] = useState(localStorage.getItem('auth'));
 	let [loginModalDisplay, setLoginModalDisplay] = useState(false);
 	const [userLocalStorage, setUserLocalStorage] = useContext(AuthContext);
-	console.log('fsefesfes' + userLocalStorage);
-
 	const loginLogoutText = isUserLogined ? 'Log out' : 'Login'
 
 	const handleUsersPopup = () => {

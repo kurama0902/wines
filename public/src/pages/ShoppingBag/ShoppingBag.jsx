@@ -11,7 +11,6 @@ import './shopping-bag.css';
 export const ShoppingBag = () => {
 	const { busketProductsIDs, setBusketAmount } = useOutletContext();
 	const [userLocalStorage, setUserLocalStorage] = useContext(AuthContext);
-	console.log(userLocalStorage);
 	const productsArr = useRequestProductsInfo('addedToBusketIDs');
 
 	let [products, setProducts] = useState(productsArr);
