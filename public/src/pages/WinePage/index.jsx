@@ -1,30 +1,29 @@
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import { useGetAllWines } from "../../shared/hooks/useGetAllWines";
+import React from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { useGetWine } from '../../shared/hooks/useGetWine';
 
-import './wine-page.css'
+import './wine-page.css';
 
 export const WinePage = () => {
+    let [searchParams, setSearchParams] = useSearchParams();
 
-    const { search } = useLocation();
-    const params = new URLSearchParams(search);
-    const wineID = params.get('id');
+    const wineID = searchParams.get('id');
 
-    const allProducts = useGetAllWines();
-    const [wine, setWine] = useState([]);
+	const wine = useGetWine(wineID);
 
-    useEffect(() => {
-        setWine(allProducts?.find(wine => wine.id === +wineID))
-    }, [allProducts])
-
-    console.log(wine);
-
-    return (
-        <div className="wine-description-wrap">
-            <div className="wine-description">
-                <img className="wine-picture" src={`${wine?.imgURL}`} alt="" />
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum non consectetur neque architecto corporis velit suscipit tempore laboriosam dolor magnam, placeat, deleniti dolore quo. Voluptate eius corrupti ducimus. Nemo, excepturi!</p>
-            </div>
-        </div>
-    )
-}
+    if (!wine) {
+        return 'Sorry but this wine is not avaliable!'
+    }
+	return (
+		<div className="wine-description-wrap">
+			<div className="wine-description">
+				<img className="wine-picture" src={`${wine?.imgURL}`} alt="" />
+				<p>
+					Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum non consectetur neque
+					architecto corporis velit suscipit tempore laboriosam dolor magnam, placeat, deleniti
+					dolore quo. Voluptate eius corrupti ducimus. Nemo, excepturi!
+				</p>
+			</div>
+		</div>
+	);
+};

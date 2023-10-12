@@ -6,23 +6,30 @@ import { useLikedWines } from '../shared/hooks/likedWines';
 import { routesMap } from '../app/routes';
 
 export const Layout = () => {
+	const { pathname } = useLocation();
+
 	const [likedProductsIDs, setAmount] = useLikedWines();
 	const [busketProductsIDs, setBusketAmount] = useBusketIDs();
 
-	const currentLocation = useLocation();
-	const isVisible = currentLocation.pathname !== routesMap.ShoppingBag &&
-	 				  currentLocation.pathname !== routesMap.UserPage &&
-	          		  currentLocation.pathname !== routesMap.allWines && 
-						currentLocation.pathname !== routesMap.winePage ? true : false;
+	const valuesOfRoutesMap = Object.keys(routesMap).map((key) => {
+		const item = routesMap[key];
+		if (item?.isVisible) {
+			return item.path;
+		}
+		return null
+	}).filter((item) => item);
+
+	const isShowHeader = valuesOfRoutesMap.includes(pathname);
 
 	return (
 		<>
-			{isVisible && <Header
-				updateLikedWines={setAmount}
-				likedAmount={likedProductsIDs?.length}
-				busketAmount={busketProductsIDs?.length}
-			/>
-			}
+			{isShowHeader && (
+				<Header
+					updateLikedWines={setAmount}
+					likedAmount={likedProductsIDs?.length}
+					busketAmount={busketProductsIDs?.length}
+				/>
+			)}
 
 			<Suspense fallback="Loading">
 				<Outlet context={{ likedProductsIDs, busketProductsIDs, setAmount, setBusketAmount }} />
@@ -30,4 +37,3 @@ export const Layout = () => {
 		</>
 	);
 };
-

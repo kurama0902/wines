@@ -89,9 +89,17 @@ router.route("/getDataArray").post((req, res) => {
 });
 
 router.route("/getAllWines").get((req, res) => {
+  const query = req.query; // page=1,limit=10
+
   const allWines = [...popularWines, ...winesNewSale, ...winesPremium];
-  console.log(allWines);
   res.send(allWines)
+});
+
+router.route("/getWine/:id").get((req, res) => {
+  const id = req.params.id;
+  const allWines = [...popularWines, ...winesNewSale, ...winesPremium];
+  const wine = allWines.find((wine) => Number(wine.id) === Number(id)) || null;
+  res.send(wine);
 });
 
 router.route("/search-info").post((req, res) => {

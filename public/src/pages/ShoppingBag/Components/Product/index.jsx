@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import { DownArrowSVG } from '../../../../shared/SVG/DownArrowSVG';
-
 import './busket-product.css';
 
 export const Product = ({
@@ -20,14 +18,13 @@ export const Product = ({
 	setProductsQuant,
 	order,
 }) => {
-	const avaliableAmountArr = [...Array(avaliableAmount).keys()].map((i) => i + 1);
 	const shippingCost = cost >= 180 ? 0 : 10;
 	let [subtotal, setSubtotal] = useState(cost + shippingCost);
 	let [quantity, setQuantity] = useState(1);
 	const [isDeliting, setIsDeliting] = useState(false);
 
 	function changeSubtotal(e) {
-		if(e.target.value <= avaliableAmount) {
+		if (e.target.value <= avaliableAmount) {
 			if (e.target.value > quantity) {
 				setSubtotal(cost * e.target.value + shippingCost);
 				setTotal((subtotal - total + -(cost * e.target.value) + -shippingCost) * -1);
@@ -43,19 +40,21 @@ export const Product = ({
 				newQuantOrder[order] = +e.target.value;
 				setProductsQuant(newQuantOrder);
 			}
-		} else {
-			e.target.value = 1;
 		}
 	}
 
-	const onTransitionEnd = () => deleteBusketItem(id, subtotal, productsQuant, setProductsQuant, order);
+	const onTransitionEnd = () =>
+		deleteBusketItem(id, subtotal, productsQuant, setProductsQuant, order);
 
 	const deleteItemAction = () => {
 		setIsDeliting(true);
 	};
 
 	return (
-		<div className={`product-wrapper ${isDeliting ? 'delete' : ''}`} onTransitionEnd={onTransitionEnd}>
+		<div
+			className={`product-wrapper ${isDeliting ? 'delete' : ''}`}
+			onTransitionEnd={onTransitionEnd}
+		>
 			<div className="product">
 				<img className="product-img" src={imgURL} alt="" />
 				<div className="name-and-price">
@@ -70,7 +69,14 @@ export const Product = ({
 					<div className="amount-wrap">
 						<p>Amount</p>
 						<div className="select-wrap">
-							<input type="number" className="select" onChange={(e) => changeSubtotal(e)} defaultValue={1} min={1} max={avaliableAmountArr.length} />
+							<input
+								type="number"
+								className="select"
+								onChange={(e) => changeSubtotal(e)}
+								defaultValue={1}
+								min={1}
+								max={avaliableAmount}
+							/>
 						</div>
 					</div>
 					<div className="shipping-wrap">
