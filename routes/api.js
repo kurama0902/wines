@@ -4,7 +4,7 @@ const nodemailer = require("nodemailer");
 const { popularWines, winesNewSale, winesPremium } = require("../db/index");
 const { brandCategories } = require("../db/brandCategories");
 
-const adminEmail = 'creepysimbaplay@gmail.com';
+const adminEmail = "creepysimbaplay@gmail.com";
 const adminPass = 1234;
 
 /* GET api listing. */
@@ -40,11 +40,11 @@ router.route("/login").post((req, res) => {
   console.log(email, pass);
   if (email === adminEmail && Number(pass) === adminPass) {
     console.log("You succsessfully logged");
-    res.sendStatus(200)
+    res.sendStatus(200);
   } else {
     console.log("Not registered");
-    res.sendStatus(404)
-  } 
+    res.sendStatus(404);
+  }
 });
 
 // router.route("/logout").post((req, res) => {
@@ -80,12 +80,16 @@ router.route("/brands").get((req, res) => {
 });
 
 router.route("/getDataArray").post((req, res) => {
-  let items = []
-  for(let ID of req.body) {
-    items.push([...popularWines, ...winesNewSale, ...winesPremium].find(item => item.id === ID))
+  let items = [];
+  for (let ID of req.body) {
+    items.push(
+      [...popularWines, ...winesNewSale, ...winesPremium].find(
+        (item) => item.id === ID
+      )
+    );
   }
   console.log(items);
-  res.send(items)
+  res.send(items);
 });
 
 router.route("/getRangedWines").post((req, res) => {
@@ -93,8 +97,12 @@ router.route("/getRangedWines").post((req, res) => {
 
   const allWines = [...popularWines, ...winesNewSale, ...winesPremium];
   const slicedWinesArr = allWines.slice(page * 8 - 8, page * 8);
-  console.log(slicedWinesArr);
-  res.send(slicedWinesArr);
+  const length = allWines.length;
+
+  res.send({
+    items: slicedWinesArr,
+    pagesCount: Math.ceil(length / 8),
+  });
 });
 
 router.route("/getAllWinesQuantity").get((req, res) => {
@@ -115,8 +123,15 @@ router.route("/getWine/:id").get((req, res) => {
 router.route("/search-info").post((req, res) => {
   const { inputValue } = req.body;
   console.log(inputValue);
-  const seachedProductsResult = (inputValue.length > 0) ? [...popularWines, ...winesNewSale, ...winesPremium].filter(item => item.description.toLocaleLowerCase().includes(inputValue.toLocaleLowerCase())) : [];
+  const seachedProductsResult =
+    inputValue.length > 0
+      ? [...popularWines, ...winesNewSale, ...winesPremium].filter((item) =>
+          item.description
+            .toLocaleLowerCase()
+            .includes(inputValue.toLocaleLowerCase())
+        )
+      : [];
   res.send(seachedProductsResult);
-})
+});
 
 module.exports = router;

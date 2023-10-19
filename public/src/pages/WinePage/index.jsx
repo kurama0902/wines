@@ -5,15 +5,15 @@ import { useGetWine } from '../../shared/hooks/useGetWine';
 import './wine-page.css';
 
 export const WinePage = () => {
-    let [searchParams, setSearchParams] = useSearchParams();
+	let [searchParams] = useSearchParams();
 
-    const wineID = searchParams.get('id');
+	const wineID = searchParams.get('id');
 
 	const wine = useGetWine(wineID);
 
-    if (!wine) {
-        return 'Sorry but this wine is not avaliable!'
-    }
+	if (!wine) {
+		return 'Sorry but this wine is not avaliable!';
+	}
 	return (
 		<div className="wine-description-wrap">
 			<div className="wine-description">

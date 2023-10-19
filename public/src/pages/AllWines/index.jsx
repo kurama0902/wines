@@ -1,73 +1,69 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { useGetRangedWines } from '../../shared/hooks/useGetRangedWines'
-import { useGetAllWinesQuantity } from "../../shared/hooks/useGetAllWinesQuantity";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
+import { GeneratePageBtns } from './components/GeneratePageBtns';
+import { useGetRangedWines } from '../../shared/hooks/useGetRangedWines';
 
-import './all-wines.css'
+import './all-wines.css';
 
 export const AllWines = () => {
+	const [searchParams, setSearchParams] = useSearchParams();
 
-    const [rangedWines, setRangedWines] = useGetRangedWines();
-    const [winesList, setWinesList] = useState(rangedWines);
-    const [pageNumber, setPageNumber] = useState(1);
-    const winesQuantity = useGetAllWinesQuantity();
+	const pageNumber = Number(searchParams.get('page')) || 1;
 
-    function changeRange(number, pageNumber) {
-        setPageNumber(number);
-        setRangedWines(number);
-    }
+	const winesData = useGetRangedWines(pageNumber) || {};
+	const { items, pagesCount } = winesData;
 
-    function changeToPreviousState() {
-        if(pageNumber !== 1) {
-            setPageNumber(pageNumber - 1);
-            setRangedWines(pageNumber - 1);
-        }
-    }
 
-    function changeToNextState() {
-        if(pageNumber !== Math.ceil(winesQuantity / 8)) {
-            setPageNumber(pageNumber + 1);
-            setRangedWines(pageNumber + 1);
-        }
-    }
+	function changePageUrl(page) {
+		setSearchParams(`page=${page}`);
+	}
 
-    function generatePageBtns() {
-        const pageNums = [];
+	function changeRange(number) {
+		changePageUrl(number);
+	}
 
-        for(let i = 0; i < Math.ceil(winesQuantity / 8); i++) {
-            pageNums.push(i + 1);
-        }
+	function changeToPreviousState() {
+		if (pageNumber !== 1) {
+			changePageUrl(pageNumber - 1);
+		}
+	}
 
-        return pageNums.map(number => {
-            return <Link to={`?page=${number}`}><button key={number} onClick={() => {changeRange(number, pageNumber)}} className={`page-number ${pageNumber === number ? 'border-active': ''}`}>{number}</button></Link>
-        });
-    }
-    
+	function changeToNextState() {
+		if (pageNumber !== pagesCount) {
+			const newPage = pageNumber + 1;
+			changePageUrl(newPage);
+		}
+	}
 
-    useEffect(() => {
-        setWinesList(rangedWines);
-    }, [rangedWines])
-
-    return (
-        <div className="all-wines-wrap">
-            <h1 className="wines-list-label">Wines list:</h1>
-            <div className="all-wines-section">
-                {winesList?.map((wine) => {
-                return <Link to={`/wine?id=${wine.id}`} key={wine.id} className="wine-wrap">
-                    <img className="wine-img" src={wine.imgURL} alt="" />
-                    <p className="wine-name">{wine.description}</p>
-                </Link>
-                })}
-            </div>
-            <div className="wines-pagination">
-                <button onClick={changeToPreviousState} className="previous-btn">Previous</button>
-                <div className="pagination-numbers">
-                    {generatePageBtns()}
-                </div>
-                <button onClick={changeToNextState} className="next-btn">Next</button>
-            </div>
-        </div>
-    )
-
-}
-
+	return (
+		<div className="all-wines-wrap">
+			<h1 className="wines-list-label">Wines list:</h1>
+			<div className="all-wines-section">
+				{items?.map((wine) => {
+					return (
+						<Link to={`/wine?id=${wine.id}`} key={wine.id} className="wine-wrap">
+							<img className="wine-img" src={wine.imgURL} alt={wine.description} />
+							<p className="wine-name">{wine.description}</p>
+						</Link>
+					);
+				})}
+			</div>
+			<div className="wines-pagination">
+				<button onClick={changeToPreviousState} className="previous-btn">
+					Previous
+				</button>
+				<div className="pagination-numbers">
+					<GeneratePageBtns
+						pageNumber={pageNumber}
+						changeRange={changeRange}
+						pagesCount={pagesCount}
+					/>
+				</div>
+				<button onClick={changeToNextState} className="next-btn">
+					Next
+				</button>
+			</div>
+		</div>
+	);
+};
