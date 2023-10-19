@@ -47,21 +47,21 @@ router.route("/login").post((req, res) => {
   } 
 });
 
-router.route("/logout").post((req, res) => {
-  res.clearCookie('m_k');
-  console.log('Deleted cookie');
-  res.redirect('/');
-});
+// router.route("/logout").post((req, res) => {
+//   res.clearCookie('m_k');
+//   console.log('Deleted cookie');
+//   res.redirect('/');
+// });
 
-router.route("/check-user-able").post((req, res) => {
-  if(req.cookies['m_k']) {
-    console.log('able');
-    res.send({flag: true});
-  } else {
-    console.log('not able');
-    res.send({flag: false});
-  }
-});
+// router.route("/check-user-able").post((req, res) => {
+//   if(req.cookies['m_k']) {
+//     console.log('able');
+//     res.send({flag: true});
+//   } else {
+//     console.log('not able');
+//     res.send({flag: false});
+//   }
+// });
 
 router.route("/popular-wines").get((req, res) => {
   res.send(popularWines);
@@ -88,12 +88,22 @@ router.route("/getDataArray").post((req, res) => {
   res.send(items)
 });
 
-router.route("/getAllWines").get((req, res) => {
-  const query = req.query; // page=1,limit=10
+router.route("/getRangedWines").post((req, res) => {
+  const page = req.body.page;
 
   const allWines = [...popularWines, ...winesNewSale, ...winesPremium];
-  res.send(allWines)
+  const slicedWinesArr = allWines.slice(page * 8 - 8, page * 8);
+  console.log(slicedWinesArr);
+  res.send(slicedWinesArr);
 });
+
+router.route("/getAllWinesQuantity").get((req, res) => {
+  const allWines = [...popularWines, ...winesNewSale, ...winesPremium];
+  const length = allWines.length;
+  res.send(`${length}`);
+});
+
+//getAllWinesQuantity
 
 router.route("/getWine/:id").get((req, res) => {
   const id = req.params.id;
