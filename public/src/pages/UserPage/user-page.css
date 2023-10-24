@@ -1,0 +1,52 @@
+.user-profile-wrap {
+    display: flex;
+    height: 100vh;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.profile-sidebar {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid lightgray;
+    width: 265px;
+}
+
+.mainpage-link {
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.profile-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.dashboard-btn, .myorders-btn {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border: none;
+    border-top-right-radius: 26px;
+    border-bottom-right-radius: 26px;
+    height: 85px;
+    padding-inline: 11px;
+    background-color: transparent;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.btn-text {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dashboard-btn:hover, .myorders-btn:hover {
+    background-color: #EDF6FF;
+}
+
