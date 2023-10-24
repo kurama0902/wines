@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import './user-page.css';
+import { DashboardInformation } from "./components/DashboardInformation";
 
 export const UserPage = () => {
     return (
@@ -49,6 +50,7 @@ export const UserPage = () => {
                     </button>
                 </nav>
             </aside>
+            <DashboardInformation />
         </div>
     )
 }

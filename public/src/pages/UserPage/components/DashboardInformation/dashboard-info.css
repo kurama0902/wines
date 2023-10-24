@@ -1,0 +1,42 @@
+.dashboard-info-wrap {
+    flex: 1;
+    background-color: #FBF7F4;
+}
+
+.dashboard-header {
+    display: flex;
+    align-items: center;
+    padding-inline: 28px;
+    border-bottom: 1px solid var(--black-10, rgba(0, 0, 0, 0.10));
+    background-color: white;
+    height: 72px;
+}
+
+.name-of-page {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.name-of-page p {
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    padding: 4px 8px;
+
+}
+
+.settings-text {
+    color: var(--black-40, rgba(0, 0, 0, 0.40));
+}
+
+.user-profile-text {
+    color: #384D6C;
+}
+
+.slash-text {
+    font-family: Inter;
+    color: var(--black-20, rgba(0, 0, 0, 0.20));
+    font-size: 14px;
+}
