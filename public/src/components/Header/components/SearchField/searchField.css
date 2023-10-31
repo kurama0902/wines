@@ -64,7 +64,7 @@
 		display: none;
 	}
 
-	.second-section {
+	/* .second-section {
 		display: flex;
 		justify-content: end;
 	}
@@ -77,5 +77,5 @@
 	.second-section .search-input-visible {
 		padding-left: 5px;
 		width: 290px;
-	}
+	} */
 }

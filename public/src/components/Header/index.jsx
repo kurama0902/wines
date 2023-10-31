@@ -4,6 +4,7 @@ import { SearchField } from './components/SearchField';
 import { LikesPopup } from './components/LikesPopup';
 import { MenuModel } from '../../shared/consts';
 import { NotificationsPopup } from './components/NotificactionsPopup';
+import { MobileNavigation } from '../MobileNavigation';
 import { UserPopup } from './components/UserPopup';
 import { BagLink } from './components/BagLink';
 import { Link } from 'react-router-dom';
