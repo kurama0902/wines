@@ -1,7 +1,8 @@
 .user-profile-wrap {
     display: flex;
-    height: 100vh;
+    min-height: 100vh;
     font-family: 'Montserrat', sans-serif;
+    overflow-y: scroll;
     margin: auto;
 }
 

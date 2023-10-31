@@ -40,3 +40,185 @@
     color: var(--black-20, rgba(0, 0, 0, 0.20));
     font-size: 14px;
 }
+
+.users-info-wrap {
+    display: flex;
+    flex-direction: column;
+    max-width: 1116px;
+    margin: auto;
+    padding-inline: 10px;
+    margin-top: 46px;
+}
+
+.users-description-wrap {
+    display: flex;
+    flex-direction: column;
+}
+
+.users-desc-text-wrap {
+    display: flex;
+    flex-direction: column;
+    color: #384D6C;
+    font-family: Lato;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 20px;
+    margin-bottom: 61px;
+    gap: 16px;
+}
+
+.users-desc-text-wrap::after {
+    content: " ";
+    height: 1px;
+    background: lightgray;
+}
+
+.users-desc-text {
+    padding-inline: 12px;
+}
+
+
+.text-wrap {
+    display: flex;
+}
+
+.users-description {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 54px;
+}
+
+.users-position {
+    display: flex;
+    align-items: center;
+    gap: 19px;
+}
+
+.users-picture {
+    width: 105px;
+    height: 105px;
+    border-radius: 50%;
+}
+
+.update-picture-wrap {
+    display: flex;
+    gap: 56px;
+}
+
+.upload-photo,
+.delete-photo {
+    display: flex;
+    cursor: pointer;
+    text-align: center;
+    font-family: Montserrat;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 150%;
+    width: 176px;
+    height: 56px;
+    padding: 6px 2px;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 8px;
+    gap: 4px;
+}
+
+.upload-photo {
+    background: var(--peak-primary, #384D6C);
+    color: var(--white, #FFF);
+}
+
+.delete-photo {
+    border: 1px solid var(--peak-primary, #384D6C);
+    color: #384D6C;
+}
+
+.info-fields-wrap, .сhange-pass-wrap {
+    display: flex;
+    flex-direction: column;
+    padding: 32px 0px;
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    margin-bottom: 56px;
+    gap: 16px;
+}
+
+.first-and-last,
+.contact-info-wrap,
+.current-and-new {
+    display: flex;
+    gap: 46px;
+}
+
+.contact-info-wrap {
+    margin-bottom: 32px;
+}
+
+.first-name,
+.last-name,
+.user-name-wrap,
+.email-wrap,
+.phone-wrap,
+.current-pass,
+.new-pass,
+.confirming-new-pass {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.сhange-pass-wrap {
+    padding-top: 56px;
+}
+
+.input-name,
+.input-lastname,
+.input-username,
+.input-email,
+.input-phone,
+.input-current-pass,
+.input-new-pass,
+.input-cfnew-pass {
+    height: 52px;
+    border-radius: 8px;
+    border: 1px solid #D1D5DB;
+    background: #FFF;
+    padding-inline: 10px;
+}
+
+.email-wrap, .phone-wrap {
+    position: relative;
+}
+
+.input-email {
+    padding-left: 50px;
+}
+
+.input-phone {
+    padding-left: 44px;
+}
+
+.email-svg, .phone-svg {
+    position: absolute;
+    pointer-events: none;
+    top: 71%;
+    transform: translateY(-50%);
+    left: 19px;
+}
+
+.phone-svg {
+    left: 14px;
+}
+
+
+@media (max-width: 1170px) {
+    .users-description {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
