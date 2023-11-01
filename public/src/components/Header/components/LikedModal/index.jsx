@@ -3,8 +3,7 @@ import { fetchDataArray } from '../../../../functions/fetchDataArray';
 
 import './liked-modal.css';
 export const LikedModal = ({ updateLikedWines, closeModal }) => {
-	let [products, setProducts] = useState([]);
-	
+	let [products, setProducts] = useState([]);	
 
 	const deleteLikedItem = (id) => (event) => {
 		setProducts((currentItems) => {
@@ -28,7 +27,7 @@ export const LikedModal = ({ updateLikedWines, closeModal }) => {
 								<img src={product.imgURL} alt={product.description} />
 								<div className="liked-info-description-cost">
 									<p>
-										{product.description} | {product.cost}$
+										{product?.description} | {product?.cost}$
 									</p>
 								</div>
 								<button onClick={deleteLikedItem(product.id)} className="delete-liked-item">
