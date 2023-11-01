@@ -22,6 +22,7 @@
 
 .mob-nav-btn {
     display: flex;
+    position: relative;
     cursor: pointer;
     justify-content: center;
     align-items: center;
@@ -37,8 +38,20 @@
     background: var(--color-dark, #434960);
 }
 
+.mob-nav-btn:hover svg path {
+    stroke: white;
+}
+
+.mobile-nav-wrap svg path {
+    stroke: grey;
+}
+
 @media(max-width: 1345px) {
     .mobile-nav-wrap {
         display: flex;
+    }
+
+    body {
+        margin-bottom: 50px;
     }
 }

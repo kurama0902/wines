@@ -13,3 +13,9 @@
     bottom: 0;
     right: 0;
 }
+
+.mob-nav-btn .counter {
+    background-color: rgb(51, 51, 51);
+    bottom: 4px;
+    right: 6px;
+}
