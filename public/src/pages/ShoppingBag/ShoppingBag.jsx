@@ -10,7 +10,7 @@ import './shopping-bag.css';
 
 export const ShoppingBag = () => {
 	const { busketProductsIDs, setBusketAmount } = useOutletContext();
-	const [userLocalStorage, setUserLocalStorage] = useContext(AuthContext);
+	const { authStore } = useContext(AuthContext);
 	const productsArr = useRequestProductsInfo('addedToBusketIDs');
 
 	let [products, setProducts] = useState(productsArr);
@@ -26,14 +26,13 @@ export const ShoppingBag = () => {
 
 		setTotal(total - subtotal);
 		setProducts((currentItems) => {
-			return currentItems.filter(item => item.id !== id)
-		})
+			return currentItems.filter((item) => item.id !== id);
+		});
 		setBusketAmount(id);
-	}
-
+	};
 
 	// console.log(billTable);
-	function orderGoods () {
+	function orderGoods() {
 		let tableStart = `
 		<table border=1>
 		<tr>
@@ -50,31 +49,32 @@ export const ShoppingBag = () => {
 		`;
 		let htmlStr = '';
 		products.forEach((e, index) => {
-			htmlStr += billTable + `<tr><td style="text-align: center; padding: 10px;">${e.description}</td><td style="text-align: center; padding: 10px;">${productsQuant[index]}</td><td style="text-align: center; padding: 10px;">$${e.cost}</td></tr>`;
+			htmlStr +=
+				billTable +
+				`<tr><td style="text-align: center; padding: 10px;">${e.description}</td><td style="text-align: center; padding: 10px;">${productsQuant[index]}</td><td style="text-align: center; padding: 10px;">$${e.cost}</td></tr>`;
 		});
 		fetch('http://localhost:3010/api/feedback', {
 			method: 'POST',
 			headers: {
-				"Content-Type": "application/json",
+				'Content-Type': 'application/json',
 			},
 
 			body: JSON.stringify({
-				info: tableStart + htmlStr + tableEnd
-			})
-		})
+				info: tableStart + htmlStr + tableEnd,
+			}),
+		});
 	}
 
-
 	useEffect(() => {
-		fetchDataArray('addedToBusketIDs', setProducts)
+		fetchDataArray('addedToBusketIDs', setProducts);
 		let totalValue = 0;
-		productsArr.forEach(item => {
+		productsArr.forEach((item) => {
 			totalValue += item.cost >= 180 ? item.cost : item.cost + 10;
-		})
-		setTotal(totalValue)
+		});
+		setTotal(totalValue);
 		// console.log([...new Array(productsArr.length)].map(i => 1));
-		setProductsQuant([...new Array(productsArr.length)].map(i => 1))
-	}, [productsArr])
+		setProductsQuant([...new Array(productsArr.length)].map((i) => 1));
+	}, [productsArr]);
 
 	return (
 		<div className="shopping-bag-wrap">
@@ -84,29 +84,40 @@ export const ShoppingBag = () => {
 			</div>
 			<div className="products-bag-wrap">
 				{products?.map((item, index) => {
-					 return <Product
-						id={item.id}
-						key={item.id}
-						avaliableAmount={item.avaliableAmount}
-						cl={item.cl}
-						cost={item.cost}
-						description={item.description}
-						imgURL={item.imgURL}
-						type={item.type}
-						fixedPrice={item.fixedPrice}
-						deleteBusketItem={deleteBusketItem}
-						total={total}
-						setTotal={setTotal}
-						productsQuant={productsQuant}
-						setProductsQuant={setProductsQuant}
-						order={index}
-					/>
+					return (
+						<Product
+							id={item.id}
+							key={item.id}
+							avaliableAmount={item.avaliableAmount}
+							cl={item.cl}
+							cost={item.cost}
+							description={item.description}
+							imgURL={item.imgURL}
+							type={item.type}
+							fixedPrice={item.fixedPrice}
+							deleteBusketItem={deleteBusketItem}
+							total={total}
+							setTotal={setTotal}
+							productsQuant={productsQuant}
+							setProductsQuant={setProductsQuant}
+							order={index}
+						/>
+					);
 				})}
 			</div>
-			{total > 0 ? <div className="total-wrap">
-				<p className="total">Total: ${total}</p>
-				<button onClick={orderGoods} className={`order-btn ${(userLocalStorage) ? '' : 'order-btn-hide'}`}>Order</button>
-			</div> : <></>}
+			{total > 0 ? (
+				<div className="total-wrap">
+					<p className="total">Total: ${total}</p>
+					<button
+						onClick={orderGoods}
+						className={`order-btn ${authStore ? '' : 'order-btn-hide'}`}
+					>
+						Order
+					</button>
+				</div>
+			) : (
+				<></>
+			)}
 		</div>
-	)
-}
+	);
+};

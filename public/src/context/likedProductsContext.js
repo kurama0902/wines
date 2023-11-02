@@ -1,3 +1,8 @@
-import { createContext } from "react";
+import { createContext } from 'react';
 
-export const LikedProductsContext = createContext([])
+export const LikedProductsContext = createContext({
+	likedProductsIDs: [],
+	setAmount: () => {},
+	isActive: false,
+	setIsActive: () => {},
+});

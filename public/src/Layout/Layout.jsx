@@ -10,7 +10,7 @@ export const Layout = () => {
 	const { pathname } = useLocation();
 
 	// const [likedProductsIDs, setAmount] = useLikedWines();
-	const [likedProductsIDs, setAmount] = useContext(LikedProductsContext);
+	const {setAmount, likedProductsIDs} = useContext(LikedProductsContext);
 	const [busketProductsIDs, setBusketAmount] = useBusketIDs();
 
 	const valuesOfRoutesMap = Object.keys(routesMap).map((key) => {

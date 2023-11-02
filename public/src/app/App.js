@@ -1,40 +1,52 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useRoutes } from 'react-router-dom';
 import { routes } from './routes';
-import { ScrollContext } from '../context/scrollContext';
 import { AuthContext } from '../context/authContext';
 import { LikedProductsContext } from '../context/likedProductsContext';
 import { MobileNavigation } from '../components/MobileNavigation';
 import { useLikedWines } from '../shared/hooks/likedWines';
-
-import cn from 'classnames';
+import { WindowSizeContainer } from './WindowSizeContainer';
 
 import './App.css';
 
 function App() {
-	const [isScrollAble, setIsScrollAble] = useState(true);
-	const [userLocalStorage, setUserLocalStorage] = useState(localStorage.getItem('auth'))
+	const [userLocalStorage, setUserLocalStorage] = useState(localStorage.getItem('auth') || null);
 	const [likedProductsIDs, setAmount] = useLikedWines();
 	const [isActive, setIsActive] = useState(false);
 
 	const components = useRoutes(routes);
 
-	const classNames = cn('App', {
-		'on-scroll': isScrollAble,
-		'off-scrolll': !isScrollAble,
-	});
+	const authContextValues = useMemo(
+		() => ({
+			authStore: userLocalStorage,
+			authAction: setUserLocalStorage,
+		}),
+		[userLocalStorage]
+	);
 
+	const likedProductsContextValues = useMemo(
+		() => ({
+			likedProductsIDs,
+			setAmount,
+			isActive,
+			setIsActive,
+		}),
+		[isActive, likedProductsIDs, setAmount]
+	);
 
 	return (
-		<div className={classNames} id="root">
-			<AuthContext.Provider value={[userLocalStorage, setUserLocalStorage]}>
-					<ScrollContext.Provider value={setIsScrollAble}>
-						<LikedProductsContext.Provider value={[likedProductsIDs, setAmount, isActive, setIsActive]}>
+		<div className="App" id="root">
+			<WindowSizeContainer>
+				{(width) => (
+					<AuthContext.Provider value={authContextValues}>
+						<LikedProductsContext.Provider value={likedProductsContextValues}>
 							{components}
-							<MobileNavigation />
+
+							{width <= 1024 && <MobileNavigation width={width} />}
 						</LikedProductsContext.Provider>
-					</ScrollContext.Provider>
-			</AuthContext.Provider>
+					</AuthContext.Provider>
+				)}
+			</WindowSizeContainer>
 		</div>
 	);
 }

@@ -10,7 +10,7 @@ export const UserPopup = () => {
 	let [display, setDisplay] = useState(false);
 	let [isUserLogined, setIsUserLogined] = useState(localStorage.getItem('auth'));
 	let [loginModalDisplay, setLoginModalDisplay] = useState(false);
-	const [userLocalStorage, setUserLocalStorage] = useContext(AuthContext);
+	const {authAction} = useContext(AuthContext);
 	const loginLogoutText = isUserLogined ? 'Log out' : 'Login'
 
 	const handleUsersPopup = () => {
@@ -26,12 +26,12 @@ export const UserPopup = () => {
 	const Logout = () => {
 		localStorage.removeItem('auth');
 		setIsUserLogined(false);
-		setUserLocalStorage(false);
+		authAction(false);
 	};
 
 	const handleLoginAction = () => {
 		setIsUserLogined(true);
-		setUserLocalStorage(localStorage.getItem('auth'));
+		authAction(localStorage.getItem('auth'));
 	}
 
 	return (
