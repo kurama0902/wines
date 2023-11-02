@@ -49,7 +49,7 @@ export const UserPopup = () => {
 								to="/user-page"
 								className={`user-page-link ${loginLogoutText === 'Login' ? 'user-link-hide' : ''}`}
 							>
-								User's Page
+								My Profile
 							</Link>
 							{isUserLogined && (
 								<button onClick={Logout} className="login-btn">

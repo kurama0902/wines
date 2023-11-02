@@ -7,6 +7,11 @@
     left: 0;
 }
 
+.search-wrap-container .popup-bg {
+    width: 100%;
+    top: 45px;
+}
+
 .searched-items-wrap {
     flex-direction: column;
     /* padding-top: 10px; */

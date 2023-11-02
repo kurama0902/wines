@@ -1,14 +1,18 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { LikedProductsContext } from "../../context/likedProductsContext";
 import { Counter } from "../../shared/components/Counter";
 import { LikedModal } from "../Header/components/LikedModal";
+import { SearchModal } from "../SearchModal";
 
 import './mobile-nav.css'
 
 export const MobileNavigation = () => {
 
     let [likedProductsIDs, setAmount, isActive, setIsActive] = useContext(LikedProductsContext);
+
+    const [isShowSearchModal, setIsShowSearchModal] = useState(false);
+
 
     return (
         <div className="mobile-nav-wrap">
@@ -18,15 +22,15 @@ export const MobileNavigation = () => {
                         <path d="M9.90002 22V12H15.9V22M3.90002 9L12.9 2L21.9 9V20C21.9 21.1046 21.0046 22 19.9 22H5.90002C4.79545 22 3.90002 21.1046 3.90002 20V9Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </Link>
-                <button className="mob-nav-btn">
+                <Link to={'/all-wines'} className="mob-nav-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
                         <path d="M3.70007 3H10.7001V10H3.70007V3Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         <path d="M14.7001 3H21.7001V10H14.7001V3Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         <path d="M14.7001 14H21.7001V21H14.7001V14Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         <path d="M3.70007 14H10.7001V21H3.70007V14Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
-                </button>
-                <button className="mob-nav-btn">
+                </Link>
+                <button onClick={() => setIsShowSearchModal(!isShowSearchModal)} className="mob-nav-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
                         <path d="M21.5 21L17.15 16.65M11.5 19C15.9183 19 19.5 15.4183 19.5 11C19.5 6.58172 15.9183 3 11.5 3C7.08172 3 3.5 6.58172 3.5 11C3.5 15.4183 7.08172 19 11.5 19Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
@@ -44,6 +48,7 @@ export const MobileNavigation = () => {
                 </button>
             </div>
             {isActive && <LikedModal updateLikedWines={setAmount} closeModal={() => setIsActive(!isActive)} />}
+            {isShowSearchModal && <SearchModal isShowSearchModal={isShowSearchModal} closeModal={setIsShowSearchModal} />}
         </div>
     )
 }

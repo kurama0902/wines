@@ -32,7 +32,7 @@
     display: flex;
     flex-direction: column;
     padding: 10px;
-    background-color: white;
+    background-color: rgba(0, 0, 0, 0.503);
     position: absolute;
     border-radius: 5px;
     border: 1px solid grey;
@@ -50,15 +50,17 @@
     height: 35px;
     cursor: pointer;
     border-radius: 12px;
-    background-color: blue;
+    background-color: rgb(180, 125, 23);
     border: none;
     color: white;
+    font-family: Lato, sans-serif;
+    font-weight: 700;
 }
 
 .user-link-hide {
     display: none;
 }
 
-.user-page-btn:hover, .login-btn:hover {
-    background-color: rgb(38, 38, 255);
+.user-page-link:hover, .login-btn:hover {
+    background-color: rgb(208, 145, 28);
 }
