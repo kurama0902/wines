@@ -1,27 +1,24 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 
 import './login-modal.css';
 
-export const LoginModal = ({
-	handleLoginAction,
-	handleLoginBgClick,
-}) => {
-
-	// const [inputs, setInputs] = useState({});
+export const LoginModal = ({ handleLoginBgClick, loginUser }) => {
 	const authFormData = useRef({
 		email: '',
-		pass: ''
+		pass: '',
 	});
 
 	const onChangeInput = (event) => {
 		const inputName = event.target.name;
 		const inputValue = event.target.value;
-		
+
 		authFormData.current[inputName] = inputValue;
 	};
 
 	const onSubmit = async (event) => {
 		event.preventDefault();
+
+		const { email } = authFormData.current;
 
 		try {
 			let result = await fetch('http://localhost:3010/api/login', {
@@ -32,8 +29,10 @@ export const LoginModal = ({
 				body: JSON.stringify(authFormData.current),
 			});
 			if (result.status === 200) {
-				localStorage.setItem('auth', `user=${authFormData.current.email}`);
-				handleLoginAction();
+				loginUser({
+					userName: 'Kurama',
+					email,
+				});
 			}
 		} catch (error) {
 			console.log('Error -', error);
@@ -42,7 +41,7 @@ export const LoginModal = ({
 
 	return (
 		<div className="login-modal-wrap">
-			<div className="login-modal-bg" onClick={handleLoginBgClick}></div>
+			<div className="login-modal-bg" onClick={handleLoginBgClick} />
 			<div className="login-modal">
 				<h1>Login</h1>
 				<form onSubmit={onSubmit} className="login-form">

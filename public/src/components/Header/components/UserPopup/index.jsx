@@ -1,17 +1,23 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { UserSVG } from '../../../../shared/SVG/UserSVG';
 import { LoginModal } from '../LoginModal';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../../../../context/authContext';
 
 import './user-popup.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteUser, saveUser } from '../../../../redux/actions/authActions';
 
 export const UserPopup = () => {
 	let [display, setDisplay] = useState(false);
-	let [isUserLogined, setIsUserLogined] = useState(localStorage.getItem('auth'));
 	let [loginModalDisplay, setLoginModalDisplay] = useState(false);
-	const {authAction} = useContext(AuthContext);
-	const loginLogoutText = isUserLogined ? 'Log out' : 'Login'
+
+	const dispatch = useDispatch();
+	const { user } = useSelector((state) => ({
+		user: state.auth.user,
+	}));
+
+	const isUserLogined = !!user;
+	const loginLogoutText = user ? 'Log out' : 'Login';
 
 	const handleUsersPopup = () => {
 		setDisplay((prevState) => {
@@ -23,16 +29,12 @@ export const UserPopup = () => {
 		setLoginModalDisplay((prevState) => !prevState);
 	};
 
-	const Logout = () => {
-		localStorage.removeItem('auth');
-		setIsUserLogined(false);
-		authAction(false);
-	};
+	const logout = () => dispatch(deleteUser());
 
-	const handleLoginAction = () => {
-		setIsUserLogined(true);
-		authAction(localStorage.getItem('auth'));
-	}
+	const loginUser = (user) => {
+		dispatch(saveUser(user));
+		setLoginModalDisplay(false);
+	};
 
 	return (
 		<>
@@ -42,7 +44,7 @@ export const UserPopup = () => {
 				</button>
 				{display && (
 					<>
-						<div className="back" onClick={handleUsersPopup}></div>
+						<div className="back" onClick={handleUsersPopup} />
 
 						<div className="user-popup-wrap">
 							<Link
@@ -52,7 +54,7 @@ export const UserPopup = () => {
 								My Profile
 							</Link>
 							{isUserLogined && (
-								<button onClick={Logout} className="login-btn">
+								<button onClick={logout} className="login-btn">
 									Logout
 								</button>
 							)}
@@ -66,10 +68,7 @@ export const UserPopup = () => {
 				)}
 			</div>
 			{loginModalDisplay && (
-				<LoginModal
-					handleLoginBgClick={handleLoginBgClick}
-					handleLoginAction={handleLoginAction}
-				/>
+				<LoginModal handleLoginBgClick={handleLoginBgClick} loginUser={loginUser} />
 			)}
 		</>
 	);

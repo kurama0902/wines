@@ -1,17 +1,20 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useOutletContext } from 'react-router-dom';
-import { AuthContext } from '../../context/authContext';
 
 import { Product } from './Components/Product';
 import { useRequestProductsInfo } from '../../shared/hooks/requestProductsInfo';
 import { fetchDataArray } from '../../functions/fetchDataArray';
 
 import './shopping-bag.css';
+import { useSelector } from 'react-redux';
 
 export const ShoppingBag = () => {
 	const { busketProductsIDs, setBusketAmount } = useOutletContext();
-	const { authStore } = useContext(AuthContext);
 	const productsArr = useRequestProductsInfo('addedToBusketIDs');
+
+	const { user } = useSelector((state) => ({
+		user: state.auth.user,
+	}));
 
 	let [products, setProducts] = useState(productsArr);
 	let [productsQuant, setProductsQuant] = useState([]);
@@ -108,10 +111,7 @@ export const ShoppingBag = () => {
 			{total > 0 ? (
 				<div className="total-wrap">
 					<p className="total">Total: ${total}</p>
-					<button
-						onClick={orderGoods}
-						className={`order-btn ${authStore ? '' : 'order-btn-hide'}`}
-					>
+					<button onClick={orderGoods} className={`order-btn ${user?.email ? '' : 'order-btn-hide'}`}>
 						Order
 					</button>
 				</div>
