@@ -47,9 +47,6 @@
 }
 
 @media(max-width: 1345px) {
-    .mobile-nav-wrap {
-        display: flex;
-    }
 
     body {
         margin-bottom: 50px;

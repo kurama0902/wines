@@ -5,12 +5,19 @@ import { Counter } from '../../shared/components/Counter';
 import { LikedModal } from '../Header/components/LikedModal';
 import { SearchModal } from '../SearchModal';
 
-import './mobile-nav.css';
+import { useDispatch } from 'react-redux';
+import { showLoginModal } from '../../redux/actions/loginModalActions';
 
+import './mobile-nav.css';
 export const MobileNavigation = ({ width }) => {
+	const dispatch = useDispatch();
 	let { likedProductsIDs, isActive, setAmount, setIsActive } = useContext(LikedProductsContext);
 
 	const [isShowSearchModal, setIsShowSearchModal] = useState(false);
+
+	const handleOpenLoginModal = () => {
+		dispatch(showLoginModal())
+	};
 
 	return (
 		<div className="mobile-nav-wrap">
@@ -100,7 +107,7 @@ export const MobileNavigation = ({ width }) => {
 					</svg>
 					{likedProductsIDs.length > 0 && <Counter amount={likedProductsIDs.length} />}
 				</button>
-				<button className="mob-nav-btn">
+				<button className="mob-nav-btn" onClick={handleOpenLoginModal}>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						width="25"

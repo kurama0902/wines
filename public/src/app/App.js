@@ -5,6 +5,8 @@ import { LikedProductsContext } from '../context/likedProductsContext';
 import { MobileNavigation } from '../components/MobileNavigation';
 import { useLikedWines } from '../shared/hooks/likedWines';
 import { WindowSizeContainer } from './WindowSizeContainer';
+import { LoginModal } from '../components/LoginModal';
+import { useSelector } from 'react-redux';
 
 import './App.css';
 
@@ -35,6 +37,7 @@ function App() {
 					</LikedProductsContext.Provider>
 				)}
 			</WindowSizeContainer>
+			<LoginModal />
 		</div>
 	);
 }

@@ -1,74 +1,77 @@
 .header-wrap {
-  display: flex;
-  flex-direction: column;
-  padding-left: 10px;
-  padding-right: 10px;
-  max-width: 1460px;
-  margin-bottom: 24px;
-  margin: auto;
-  gap: 10px;
+	display: flex;
+	flex-direction: column;
+	padding-left: 10px;
+	padding-right: 10px;
+	max-width: 1460px;
+	margin-bottom: 24px;
+	margin: auto;
+	gap: 10px;
 }
 
 .first-section {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 70px;
-  width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	min-height: 70px;
+	width: 100%;
 }
 
 .logo-link {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  cursor: pointer;
-  gap: 6px;
+	display: flex;
+	align-items: center;
+	text-decoration: none;
+	cursor: pointer;
+	gap: 6px;
 }
 
 .logo-link::before {
-  display: block;
-  content: "";
-  width: 32px;
-  height: 32px;
-  border-radius: 100%;
-  background-color: #434960;
+	display: block;
+	content: '';
+	width: 32px;
+	height: 32px;
+	border-radius: 100%;
+	background-color: #434960;
 }
 
 .left-side {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 747px;
-  width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	max-width: 747px;
+	width: 100%;
 }
 
 .right-side {
-  display: flex;
-  align-items: center;
-  gap: 13px;
+	display: flex;
+	align-items: center;
+	gap: 13px;
 }
 
-
 menu ul {
-  display: flex;
-  width: 620px;
-  align-items: center;
-  list-style: none;
-  justify-content: space-between;
+	display: flex;
+	width: 620px;
+	align-items: center;
+	list-style: none;
+	justify-content: space-between;
 }
 
 @media (max-width: 1345px) {
+	menu,
+	.search-wrap,
+	.liked-items-btn,
+	.liked-items-btn-wrap {
+		display: none;
+	}
 
-  menu,
-  .search-wrap,
-  .liked-items-btn,
-  .liked-items-btn-wrap,
+	.right-side {
+		display: flex;
+		gap: 38px;
+	}
+}
+
+@media (width <= 1024px) {
   .user-btn-wrap {
     display: none;
-  }
-
-  .right-side {
-    display: flex;
-    gap: 38px;
   }
 }

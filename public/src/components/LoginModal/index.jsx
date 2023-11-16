@@ -1,12 +1,20 @@
 import React, { useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { saveUser } from '../../redux/actions/authActions';
+import { closeLoginModal } from '../../redux/actions/loginModalActions';
+import { isShowLoginModal } from '../../redux/slices/loginModalSlice';
 
 import './login-modal.css';
 
-export const LoginModal = ({ handleLoginBgClick, loginUser }) => {
+export const LoginModal = () => {
+	const dispatch = useDispatch();
+	const isShowModal = useSelector(isShowLoginModal);
 	const authFormData = useRef({
 		email: '',
 		pass: '',
 	});
+
+	if (!isShowModal) return null;
 
 	const onChangeInput = (event) => {
 		const inputName = event.target.name;
@@ -14,6 +22,10 @@ export const LoginModal = ({ handleLoginBgClick, loginUser }) => {
 
 		authFormData.current[inputName] = inputValue;
 	};
+
+	const handleLoginUser = (user) => dispatch(saveUser(user));
+
+	const handleClose = () => dispatch(closeLoginModal());
 
 	const onSubmit = async (event) => {
 		event.preventDefault();
@@ -29,7 +41,7 @@ export const LoginModal = ({ handleLoginBgClick, loginUser }) => {
 				body: JSON.stringify(authFormData.current),
 			});
 			if (result.status === 200) {
-				loginUser({
+				handleLoginUser({
 					userName: 'Kurama',
 					email,
 				});
@@ -41,7 +53,7 @@ export const LoginModal = ({ handleLoginBgClick, loginUser }) => {
 
 	return (
 		<div className="login-modal-wrap">
-			<div className="login-modal-bg" onClick={handleLoginBgClick} />
+			<div className="login-modal-bg" onClick={handleClose} />
 			<div className="login-modal">
 				<h1>Login</h1>
 				<form onSubmit={onSubmit} className="login-form">
