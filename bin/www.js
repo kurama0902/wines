@@ -3,7 +3,7 @@
 /**
  * Module dependencies.
  */
-
+const defaultPort = process.env.PORT || 3010;
 const app = require('../app');
 const debug = require('debug')('test-serv:server');
 const http = require('http');
@@ -12,7 +12,7 @@ const http = require('http');
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort('3010');
+const port = normalizePort(defaultPort);
 app.set('port', port);
 
 /**
