@@ -9,7 +9,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "start_dev": "nodemone ./bin/www"
+    "start_dev": "nodemon ./bin/www"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -25,5 +25,9 @@
   },
   "devDependencies": {
     "nodemon": "^1.14.9"
+  },
+
+  "engines": {
+    "node": "18.17.1"
   }
 }
