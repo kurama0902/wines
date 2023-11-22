@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
+import { API } from '../API';
 
 export const useGetRangedWines = (pageNum) => {
 	const [data, setData] = useState();
 
 	const getData = useCallback(async () => {
 		try {
-			let res = await fetch('http://localhost:3010/api/getRangedWines', {
+			let res = await fetch(`${API}api/getRangedWines`, {
 				method: 'post',
 				headers: {
 					'Content-Type': 'application/json',

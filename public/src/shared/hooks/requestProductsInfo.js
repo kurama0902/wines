@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { API } from '../API';
 
 export const useRequestProductsInfo = (name) => {
 	const productsIDs = localStorage.getItem(name);
@@ -6,7 +7,7 @@ export const useRequestProductsInfo = (name) => {
 
 	const getData = async () => {
 		try {
-			const res = await fetch(`http://127.0.0.1:3010/api/getDataArray`, {
+			const res = await fetch(`${API}api/getDataArray`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from 'react';
+import { API } from '../API';
 
 export const useGetWine = (id) => {
 	const [data, setData] = useState();
 
 	const getData = useCallback(async () => {
 		try {
-			let res = await fetch(`http://localhost:3010/api/getWine/${id}`);
+			let res = await fetch(`${API}api/getWine/${id}`);
 			let wines = await res.json();
 			setData(wines);
 		} catch (error) {

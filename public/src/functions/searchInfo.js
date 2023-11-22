@@ -1,10 +1,12 @@
+import { API } from "../shared/API";
+
 let flag = true;
 
 export const searchInfo = (e, setSeacrhedProducts) => {
 	if (flag) {
 		flag = false;
 		setTimeout(() => {
-			fetch('http://localhost:3010/api/search-info', {
+			fetch(`${API}api/search-info`, {
 				method: 'post',
 				headers: {
 					'Content-Type': 'application/json',

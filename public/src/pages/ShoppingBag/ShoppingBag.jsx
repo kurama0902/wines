@@ -4,6 +4,7 @@ import { Link, useOutletContext } from 'react-router-dom';
 import { Product } from './Components/Product';
 import { useRequestProductsInfo } from '../../shared/hooks/requestProductsInfo';
 import { fetchDataArray } from '../../functions/fetchDataArray';
+import { API } from '../../shared/API';
 
 import './shopping-bag.css';
 import { useSelector } from 'react-redux';
@@ -56,7 +57,7 @@ export const ShoppingBag = () => {
 				billTable +
 				`<tr><td style="text-align: center; padding: 10px;">${e.description}</td><td style="text-align: center; padding: 10px;">${productsQuant[index]}</td><td style="text-align: center; padding: 10px;">$${e.cost}</td></tr>`;
 		});
-		fetch('http://localhost:3010/api/feedback', {
+		fetch(`${API}api/feedback`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',

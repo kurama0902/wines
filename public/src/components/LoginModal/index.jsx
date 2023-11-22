@@ -5,6 +5,7 @@ import { closeLoginModal } from '../../redux/actions/loginModalActions';
 import { isShowLoginModal } from '../../redux/slices/loginModalSlice';
 
 import './login-modal.css';
+import { API } from '../../shared/API';
 
 export const LoginModal = () => {
 	const dispatch = useDispatch();
@@ -33,7 +34,7 @@ export const LoginModal = () => {
 		const { email } = authFormData.current;
 
 		try {
-			let result = await fetch('http://localhost:3010/api/login', {
+			let result = await fetch(`${API}api/login`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

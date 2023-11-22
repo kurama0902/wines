@@ -1,7 +1,10 @@
+import { API } from "../shared/API";
+
 export async function fetchDataArray(name, setProducts) {
+    console.log(API, 'API');
     if(localStorage.getItem(name)) {
         try {
-            const res = await fetch(`http://127.0.0.1:3010/api/getDataArray`, {
+            const res = await fetch(`${API}api/getDataArray`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
