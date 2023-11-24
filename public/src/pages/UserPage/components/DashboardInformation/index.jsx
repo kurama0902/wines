@@ -1,5 +1,5 @@
 import React from "react";
-import MobContentSwitcher from "../../MobContentSwitcher";
+// import MobContentSwitcher from "../../MobContentSwitcher";
 
 import './dashboard-info.css'
 
@@ -12,7 +12,7 @@ export const DashboardInformation = (props) => {
                     <span className="slash-text">/</span>
                     <p className="user-profile-text">User Profile</p>
                 </div>
-                <MobContentSwitcher flag={props.flag} setFlag={props.setFlag}/>
+                {/* <MobContentSwitcher flag={props.flag} setFlag={props.setFlag}/> */}
             </header>
             <main className="users-info-wrap">
                 <div className="users-description-wrap">
