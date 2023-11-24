@@ -72,7 +72,7 @@ export const LoginModal = () => {
 						type="password"
 						name="pass"
 					/>
-					<input className="submit" type="submit" value={'Submit'} />
+					<button className="submit" type="submit">Submit</button>
 				</form>
 			</div>
 		</div>

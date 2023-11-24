@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { DashboardInformation } from './components/DashboardInformation';
 import { NotFound } from '../NotFound/NotFound';
+import { MyOrders } from './components/DashboardInformation/MyOrders';
 
 import './user-page.css';
 
+
 export const UserPage = () => {
+
+	const [flag, setFlag] = useState(false);
+
 	return localStorage.getItem('auth') ? (
 		<div className="user-profile-wrap">
 			<aside className="profile-sidebar">
@@ -79,7 +84,7 @@ export const UserPage = () => {
 					</button>
 				</nav>
 			</aside>
-			<DashboardInformation />
+			{!flag ? <DashboardInformation flag={flag} setFlag={setFlag} /> : <MyOrders />}
 		</div>
 	) : (
 		<NotFound />

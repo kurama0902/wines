@@ -3,6 +3,8 @@ const bodyParser = require("body-parser");
 const express = require("express");
 // const logger = require("morgan");
 
+const DEFAULT_FOLDER = process.env.DEFAULT_FOLDER;
+
 const cors = require('cors');
 const corsDefault = require('./corsSettings');
 
@@ -25,7 +27,7 @@ app.set("view engine", "pug");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public/build"), { maxAge: 10 }));
+app.use(express.static(path.join(__dirname, DEFAULT_FOLDER), { maxAge: 10 }));
 
 app.use("/", index);
 app.use("/api", api);

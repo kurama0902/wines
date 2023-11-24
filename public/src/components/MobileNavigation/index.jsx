@@ -123,6 +123,7 @@ export const MobileNavigation = ({ width }) => {
 						/>
 					</svg>
 				</button>
+
 			</div>
 			{isActive && (
 				<LikedModal updateLikedWines={setAmount} closeModal={() => setIsActive(!isActive)} />
