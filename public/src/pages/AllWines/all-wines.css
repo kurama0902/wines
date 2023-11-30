@@ -43,6 +43,10 @@
     border-radius: 12px;
 }
 
+.pag-wrap {
+    padding-bottom: 10px;
+}
+
 .wines-pagination {
     display: inline-flex;
     border-radius: 12px;

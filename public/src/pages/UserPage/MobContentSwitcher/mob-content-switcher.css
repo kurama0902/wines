@@ -1,0 +1,149 @@
+.user-page-switcher-wrap {
+    position: relative;
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+}
+
+.switch-btn {
+    display: flex;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    background-color: transparent;
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+}
+
+.cross-svg {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    opacity: 0;
+}
+
+.switch-btn:hover {
+    background-color: lightgrey;
+}
+
+
+.up-dropdown-wrap {
+    display: none;
+    position: absolute;
+    padding-top: 7px;
+    right: 0;
+}
+
+div[animated='1'] {
+    display: block;
+    animation: changeOpacity .3s forwards;
+}
+
+div[animated='0'] {
+    display: block;
+    animation: changeOpacity2 .3s forwards;
+    pointer-events: none;
+}
+
+button[animated='1'] .burger-svg {
+    animation-name: Rotation, changeOpacity2;
+    animation-duration: .2s, .2s;
+    animation-fill-mode: forwards;
+}
+
+button[animated='1'] .cross-svg {
+    animation-name: Rotation, changeOpacity;
+    animation-duration: .2s, .2s;
+    animation-delay: .2s, .2s;
+    animation-fill-mode: forwards;
+}
+
+button[animated='0'] .burger-svg {
+    opacity: 0;
+   animation-name: BackRotation, changeOpacity4;
+   animation-delay: .2s, .2s;
+   animation-duration: .2s, .2s;
+   animation-fill-mode: forwards;
+}
+
+button[animated='0'] .cross-svg {
+    animation-name: BackRotation, changeOpacity3;
+    animation-duration: .2s, .2s;
+    animation-fill-mode: forwards;
+}
+
+.my-orders-btn {
+    display: flex;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 17px;
+    background-color: rgb(160, 104, 209);
+    width: 150px;
+    height: 45px;
+    color: rgb(244, 236, 236);
+    font-weight: 600;
+}
+
+@keyframes changeOpacity {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes changeOpacity2 {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes changeOpacity3 {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes changeOpacity4 {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes Rotation {
+    from {
+        transform: rotate(0);
+    }
+
+    to {
+        transform: rotate(90deg);
+    }
+}
+
+@keyframes BackRotation {
+    from {
+        transform: rotate(90deg);
+    }
+
+    to {
+        transform: rotate(0);
+    }
+}

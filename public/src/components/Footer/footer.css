@@ -20,6 +20,10 @@
     
 }
 
+.links-container h4 {
+    text-align: center;
+}
+
 .links-container a {
     display: block;
     width: 211px;
@@ -31,6 +35,8 @@
 
 .sellers-text, .links-container svg {
     margin-top: 18px;
+    margin-left: 50%;
+    transform: translateX(-50%);
 }
 
 .links-container a {

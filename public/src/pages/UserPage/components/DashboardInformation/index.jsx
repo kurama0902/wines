@@ -12,7 +12,7 @@ export const DashboardInformation = (props) => {
                     <span className="slash-text">/</span>
                     <p className="user-profile-text">User Profile</p>
                 </div>
-                <MobContentSwitcher flag={props.flag} setFlag={props.setFlag}/>
+                <MobContentSwitcher flag={props.flag} setFlag={props.setFlag} sectionName={props.sectionName}/>
             </header>
             <main className="users-info-wrap">
                 <div className="users-description-wrap">
@@ -31,7 +31,7 @@ export const DashboardInformation = (props) => {
                             </div>
                         </div>
                         <div className="update-picture-wrap">
-                            <label for="u-img" className="upload-photo">Upload Photo</label>
+                            <label htmlFor="u-img" className="upload-photo">Upload Photo</label>
                             <input id="u-img" type="file" />
                             <button className="delete-photo">Delete</button>
                         </div>

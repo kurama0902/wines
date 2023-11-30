@@ -19,13 +19,14 @@
     left: 100px;
     top: 50%;
     transform: translateY(-50%);
+    line-height: 1;
     color: white;
 }
 
 @media (max-width: 570px) {
     .slide-wrap h1 {
         left: 50%;
-        transform: translateX(-50%);
+        transform: translate(-50%, -50%);
     }
 }
 
