@@ -26,6 +26,7 @@
     margin: auto;
     margin-top: 30px;
     padding-inline: 10px;
+    padding-bottom: 15px;
     max-width: 1480px;
     gap: 10px;
 }
@@ -53,6 +54,15 @@
     background-color: rgb(41, 41, 255);
 }
 
+a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+}
+
 @media (max-width: 955px) {
     .product {
         flex-direction: column;
@@ -69,7 +79,7 @@
     }
 
     .bag-amount h1 {
-        line-height: 30px;
+        line-height: 47px;
     }
     
 

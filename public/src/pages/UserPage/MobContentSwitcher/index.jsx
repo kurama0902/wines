@@ -1,47 +1,26 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Fade from '@mui/material/Fade';
+import React, { useEffect, useRef, useState } from 'react';
+
 import { BurgerSVG } from '../../../shared/SVG/BurgerSVG';
+import { CrossSVG } from '../../../shared/SVG/CrossSVG';
+
+import './mob-content-switcher.css'
 
 export default function MobContentSwitcher(props) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
-  const goTo = () => {
-    props.setFlag(!props.flag);
-  }
+  const [isAnimated, setIsAnimated] = useState(null);
 
   return (
-    <div>
-      <Button
-        id="fade-button"
-        aria-controls={open ? 'fade-menu' : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? 'true' : undefined}
-        onClick={handleClick}
-      >
+    <div className="user-page-switcher-wrap">
+      <button animated={isAnimated} onClick={() => setIsAnimated(isAnimated ? 0 : 1)}
+        className="switch-btn">
         <BurgerSVG />
-      </Button>
-      <Menu
-        id="fade-menu"
-        MenuListProps={{
-          'aria-labelledby': 'fade-button',
-        }}
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        TransitionComponent={Fade}
-      >
-        <MenuItem onClick={goTo}>My Orders</MenuItem>
-      </Menu>
+        <CrossSVG />
+      </button>
+      <div className='up-dropdown-wrap' animated={isAnimated}>
+        <div className="up-dropdown">
+          <button onClick={() => props.setFlag(!props.flag)} className="my-orders-btn">{props.sectionName}</button>
+        </div>
+      </div>
     </div>
   );
 }

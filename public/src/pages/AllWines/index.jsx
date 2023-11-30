@@ -49,20 +49,22 @@ export const AllWines = () => {
 					);
 				})}
 			</div>
-			<div className="wines-pagination">
-				<button onClick={changeToPreviousState} className="previous-btn">
-					Previous
-				</button>
-				<div className="pagination-numbers">
-					<GeneratePageBtns
-						pageNumber={pageNumber}
-						changeRange={changeRange}
-						pagesCount={pagesCount}
-					/>
+			<div className="pag-wrap">
+				<div className="wines-pagination">
+					<button onClick={changeToPreviousState} className="previous-btn">
+						Previous
+					</button>
+					<div className="pagination-numbers">
+						<GeneratePageBtns
+							pageNumber={pageNumber}
+							changeRange={changeRange}
+							pagesCount={pagesCount}
+						/>
+					</div>
+					<button onClick={changeToNextState} className="next-btn">
+						Next
+					</button>
 				</div>
-				<button onClick={changeToNextState} className="next-btn">
-					Next
-				</button>
 			</div>
 		</div>
 	);

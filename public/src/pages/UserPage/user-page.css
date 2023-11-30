@@ -52,8 +52,16 @@
     background-color: #EDF6FF;
 }
 
+.user-page-switcher-wrap {
+    display: none;
+}
+
 @media (max-width: 745px) {
     .profile-sidebar {
         display: none;
+    }
+
+    .user-page-switcher-wrap {
+        display: block;
     }
 }

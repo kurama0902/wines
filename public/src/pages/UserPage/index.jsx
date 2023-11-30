@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { DashboardInformation } from './components/DashboardInformation';
 import { NotFound } from '../NotFound/NotFound';
@@ -11,14 +12,17 @@ export const UserPage = () => {
 
 	const [flag, setFlag] = useState(false);
 
-	return localStorage.getItem('auth') ? (
+	const isLogined = useSelector((state) => state.auth.user)
+	console.log(isLogined)
+
+	return isLogined ? (
 		<div className="user-profile-wrap">
 			<aside className="profile-sidebar">
 				<Link className="mainpage-link" to="/">
 					JustWine
 				</Link>
 				<nav className="profile-nav">
-					<button className="dashboard-btn">
+					<button onClick={() => setFlag(!flag)} className="dashboard-btn">
 						<div className="btn-text">
 							Dashboard
 							<svg
@@ -50,7 +54,7 @@ export const UserPage = () => {
 							</svg>
 						</div>
 					</button>
-					<button className="myorders-btn">
+					<button onClick={() => setFlag(!flag)} className="myorders-btn">
 						<div className="btn-text">
 							My orders
 							<svg
@@ -84,7 +88,7 @@ export const UserPage = () => {
 					</button>
 				</nav>
 			</aside>
-			{!flag ? <DashboardInformation flag={flag} setFlag={setFlag} /> : <MyOrders />}
+			{!flag ? <DashboardInformation flag={flag} setFlag={setFlag} sectionName='My orders' /> : <MyOrders flag={flag} setFlag={setFlag} sectionName='Dashboard' />}
 		</div>
 	) : (
 		<NotFound />

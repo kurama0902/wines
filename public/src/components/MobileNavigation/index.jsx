@@ -5,7 +5,7 @@ import { Counter } from '../../shared/components/Counter';
 import { LikedModal } from '../Header/components/LikedModal';
 import { SearchModal } from '../SearchModal';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { showLoginModal } from '../../redux/actions/loginModalActions';
 
 import './mobile-nav.css';
@@ -18,6 +18,8 @@ export const MobileNavigation = ({ width }) => {
 	const handleOpenLoginModal = () => {
 		dispatch(showLoginModal())
 	};
+
+	const isLogined = useSelector((state) => state.auth.user)
 
 	return (
 		<div className="mobile-nav-wrap">
@@ -107,6 +109,10 @@ export const MobileNavigation = ({ width }) => {
 					</svg>
 					{likedProductsIDs.length > 0 && <Counter amount={likedProductsIDs.length} />}
 				</button>
+				{!isLogined?.email
+				
+					? 
+				
 				<button className="mob-nav-btn" onClick={handleOpenLoginModal}>
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
@@ -122,7 +128,27 @@ export const MobileNavigation = ({ width }) => {
 							strokeLinejoin="round"
 						/>
 					</svg>
-				</button>
+				</button> 
+				
+				:
+
+				<Link to='/user-page' className="mob-nav-btn">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="25"
+						height="24"
+						viewBox="0 0 25 24"
+						fill="none"
+					>
+						<path
+							d="M20.1 21V19C20.1 16.7909 18.3091 15 16.1 15H8.09998C5.89084 15 4.09998 16.7909 4.09998 19V21M12.1 11C14.3091 11 16.1 9.20914 16.1 7C16.1 4.79086 14.3091 3 12.1 3C9.89084 3 8.09998 4.79086 8.09998 7C8.09998 9.20914 9.89084 11 12.1 11Z"
+							strokeWidth="2"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+						/>
+					</svg>
+				</Link>
+			}
 
 			</div>
 			{isActive && (
