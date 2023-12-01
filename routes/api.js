@@ -3,9 +3,14 @@ const router = require("express").Router();
 const nodemailer = require("nodemailer");
 const { popularWines, winesNewSale, winesPremium } = require("../db/index");
 const { brandCategories } = require("../db/brandCategories");
+const db = require("../firebaseConfig");
 
 const adminEmail = "creepysimbaplay@gmail.com";
 const adminPass = 1234;
+
+function generateUserId(key1, key2) {
+  return `${key1}_${key2}`;
+}
 
 /* GET api listing. */
 router.route("/feedback").post((req, res, next) => {
@@ -35,15 +40,38 @@ router.route("/feedback").post((req, res, next) => {
   });
 });
 
-router.route("/login").post((req, res) => {
+router.route("/login").post(async (req, res) => {
   const { email, pass } = req?.body;
-  console.log(email, pass);
-  if (email === adminEmail && Number(pass) === adminPass) {
-    console.log("You succsessfully logged");
-    res.sendStatus(200);
-  } else {
+  const userKey = generateUserId(email, pass);
+
+  try {
+    const user = await db.collection("users").doc(userKey).get();
+    if (user.exists) {
+      console.log("You succsessfully logged");
+      console.log(user.get('email'), ' user');
+      res.sendStatus(200);
+    } 
+  } catch (error) {
     console.log("Not registered");
     res.sendStatus(404);
+  }
+});
+
+router.route("/register").post(async (req, res) => {
+  const { email, pass, mobile, address } = req?.body;
+  const userKey = generateUserId(email, pass);
+  const userData = {
+    email,
+    pass,
+    mobile, //for exemple
+    address, //for exemple
+  };
+  try {
+    await db.collection("users").doc(userKey).set(userData);
+    res.sendStatus(200);
+  } catch (error) {
+    console.error(error, " error");
+    res.sendStatus(403);
   }
 });
 

@@ -1,12 +1,12 @@
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const express = require("express");
-// const logger = require("morgan");
 
 const DEFAULT_FOLDER = process.env.DEFAULT_FOLDER;
 
-const cors = require('cors');
-const corsDefault = require('./corsSettings');
+const cors = require("cors");
+const corsDefault = require("./corsSettings");
+const db = require("./firebaseConfig");
 
 const path = require("path");
 const app = express();

@@ -6,7 +6,7 @@ import { MobileNavigation } from '../components/MobileNavigation';
 import { useLikedWines } from '../shared/hooks/likedWines';
 import { WindowSizeContainer } from './WindowSizeContainer';
 import { LoginModal } from '../components/LoginModal';
-import { useSelector } from 'react-redux';
+import { RegisterUserModal } from '../components/RegisterUserModal';
 
 import './App.css';
 
@@ -38,6 +38,7 @@ function App() {
 				)}
 			</WindowSizeContainer>
 			<LoginModal />
+			<RegisterUserModal />
 		</div>
 	);
 }

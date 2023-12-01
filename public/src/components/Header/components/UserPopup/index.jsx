@@ -4,16 +4,16 @@ import { Link } from 'react-router-dom';
 
 import './user-popup.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteUser, saveUser } from '../../../../redux/actions/authActions';
+import { deleteUser } from '../../../../redux/actions/authActions';
 import { showLoginModal } from '../../../../redux/actions/loginModalActions';
+import { showRegisterUserModal } from '../../../../redux/slices/registerUserModalSlice';
 
 export const UserPopup = () => {
 	let [display, setDisplay] = useState(false);
 
 	const dispatch = useDispatch();
-	const { user, isShowLoginModal } = useSelector((state) => ({
+	const { user } = useSelector((state) => ({
 		user: state.auth.user,
-		isShowLoginModal: state.loginModal.show
 	}));
 
 	const isUserLogined = !!user;
@@ -26,7 +26,11 @@ export const UserPopup = () => {
 	};
 
 	const handleOpenLoginModal = () => {
-		dispatch(showLoginModal())
+		dispatch(showLoginModal());
+	};
+
+	const handleOpenRegisterUserModal = () => {
+		dispatch(showRegisterUserModal());
 	};
 
 	const logout = () => dispatch(deleteUser());
@@ -55,6 +59,11 @@ export const UserPopup = () => {
 						{!isUserLogined && (
 							<button onClick={handleOpenLoginModal} className="login-btn">
 								Login
+							</button>
+						)}
+						{!isUserLogined && (
+							<button onClick={handleOpenRegisterUserModal} className="login-btn">
+								Register user
 							</button>
 						)}
 					</div>
