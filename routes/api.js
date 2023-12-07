@@ -48,9 +48,9 @@ router.route("/login").post(async (req, res) => {
     const user = await db.collection("users").doc(userKey).get();
     if (user.exists) {
       console.log("You succsessfully logged");
-      console.log(user.get('email'), ' user');
+      console.log(user.get("email"), " user");
       res.sendStatus(200);
-    } 
+    }
   } catch (error) {
     console.log("Not registered");
     res.sendStatus(404);

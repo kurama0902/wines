@@ -45,6 +45,7 @@ export const LoginModal = () => {
 					userName: 'Kurama',
 					email,
 				});
+				handleClose();
 			}
 		} catch (error) {
 			console.log('Error -', error);

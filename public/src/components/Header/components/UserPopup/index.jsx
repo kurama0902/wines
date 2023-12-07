@@ -57,14 +57,14 @@ export const UserPopup = () => {
 							</button>
 						)}
 						{!isUserLogined && (
-							<button onClick={handleOpenLoginModal} className="login-btn">
-								Login
-							</button>
-						)}
-						{!isUserLogined && (
-							<button onClick={handleOpenRegisterUserModal} className="login-btn">
-								Register user
-							</button>
+							<>
+								<button onClick={handleOpenLoginModal} className="login-btn">
+									Login
+								</button>
+								<button onClick={handleOpenRegisterUserModal} className="login-btn">
+									Register user
+								</button>
+							</>
 						)}
 					</div>
 				</>
