@@ -49,7 +49,14 @@ router.route("/login").post(async (req, res) => {
     if (user.exists) {
       console.log("You succsessfully logged");
       console.log(user.get("email"), " user");
-      res.sendStatus(200);
+      res.send({
+        firstname: user.get('firstname'),
+        lastname: user.get('lastname'),
+        username: user.get('username'),
+        email: user.get('email'),
+        address: user.get('address'),
+        mobile: user.get('mobile')
+      });
     }
   } catch (error) {
     console.log("Not registered");
@@ -58,13 +65,16 @@ router.route("/login").post(async (req, res) => {
 });
 
 router.route("/register").post(async (req, res) => {
-  const { email, pass, mobile, address } = req?.body;
+  const { firstname, lastname, username, email, pass, address, mobile } = req?.body;
   const userKey = generateUserId(email, pass);
   const userData = {
+    firstname,
+    lastname,
+    username,
     email,
     pass,
-    mobile, //for exemple
-    address, //for exemple
+    address,
+    mobile
   };
   try {
     await db.collection("users").doc(userKey).set(userData);

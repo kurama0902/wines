@@ -9,9 +9,11 @@ export const RegisterUserModal = () => {
 	const dispatch = useDispatch();
 	const isShowModal = useSelector(isShowRegisterUserModal);
 	const authFormData = useRef({
+		firstname: '',
+		lastname: '',
+		username: '',
 		email: '',
 		pass: '',
-		name: '',
 		address: '',
 		mobile: '',
 	});
@@ -62,7 +64,21 @@ export const RegisterUserModal = () => {
 						className="email"
 						placeholder="Please, enter your name.."
 						type="text"
-						name="name"
+						name="firstname"
+					/>
+					<input
+						onChange={onChangeInput}
+						className="email"
+						placeholder="Please, enter your name.."
+						type="text"
+						name="lastname"
+					/>
+					<input
+						onChange={onChangeInput}
+						className="email"
+						placeholder="Please, enter your name.."
+						type="text"
+						name="username"
 					/>
 					<input
 						onChange={onChangeInput}

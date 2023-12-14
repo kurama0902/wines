@@ -30,7 +30,7 @@ export const LoginModal = () => {
 	const onSubmit = async (event) => {
 		event.preventDefault();
 
-		const { email } = authFormData.current;
+		const { email, pass } = authFormData.current;
 
 		try {
 			let result = await fetch('http://localhost:3010/api/login', {
@@ -40,11 +40,13 @@ export const LoginModal = () => {
 				},
 				body: JSON.stringify(authFormData.current),
 			});
+			const userObj = await result.clone().json()
+
 			if (result.status === 200) {
 				handleLoginUser({
-					userName: 'Kurama',
-					email,
+					...userObj
 				});
+				console.log(await result.json())
 				handleClose();
 			}
 		} catch (error) {
