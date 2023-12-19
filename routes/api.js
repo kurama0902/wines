@@ -1,12 +1,31 @@
 require("dotenv").config();
+
+var os = require('os');
 const router = require("express").Router();
 const nodemailer = require("nodemailer");
-const { popularWines, winesNewSale, winesPremium } = require("../db/index");
 const { brandCategories } = require("../db/brandCategories");
 const db = require("../firebaseConfig");
 
-const adminEmail = "creepysimbaplay@gmail.com";
-const adminPass = 1234;
+
+var networkInterfaces = os.networkInterfaces();
+
+
+let popularWines = winesNewSale = winesPremium = IP = null;
+
+const setWinesValues = async () => {
+  const popularWinesCollection = await db.collection('popularWines').get();
+  popularWines = popularWinesCollection.docs.map(e => e.data());
+
+  const winesNewSaleCollection = await db.collection('winesNewSale').get();
+  winesNewSale = winesNewSaleCollection.docs.map(e => e.data());
+
+  const winesPremiumCollection = await db.collection('winesPremium').get();
+  winesPremium = winesPremiumCollection.docs.map(e => e.data());
+
+  IP = networkInterfaces.wlp3s0[0]['address'];
+}
+
+setWinesValues()
 
 function generateUserId(key1, key2) {
   return `${key1}_${key2}`;
@@ -45,17 +64,34 @@ router.route("/login").post(async (req, res) => {
   const userKey = generateUserId(email, pass);
 
   try {
+
     const user = await db.collection("users").doc(userKey).get();
     if (user.exists) {
       console.log("You succsessfully logged");
       console.log(user.get("email"), " user");
+
+      let IPsCollection = await db.collection('IPs').get();
+      const IPs = IPsCollection.docs.map(ipData => ipData.data());
+      
+      if(IPs) {
+        const ipID = `ip_${IPs.length}`;
+        if(!IPs.includes(IP)) {
+          // IPs.push({ipID: IP});
+          await db.collection('IPs').doc(email).set(IPs)
+
+        }
+      } else {
+        await db.collection('IPs').doc(email).set({ipID: IP})
+      }
+
       res.send({
         firstname: user.get('firstname'),
         lastname: user.get('lastname'),
         username: user.get('username'),
         email: user.get('email'),
         address: user.get('address'),
-        mobile: user.get('mobile')
+        mobile: user.get('mobile'),
+        pass: user.get('pass')
       });
     }
   } catch (error) {
@@ -63,6 +99,16 @@ router.route("/login").post(async (req, res) => {
     res.sendStatus(404);
   }
 });
+
+router.route('/logout').post(async (req, res) => {
+  const {email} = req?.body;
+  try {
+    await db.collection("IPs").doc(email).delete()
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+  }
+})
 
 router.route("/register").post(async (req, res) => {
   const { firstname, lastname, username, email, pass, address, mobile } = req?.body;
@@ -85,31 +131,15 @@ router.route("/register").post(async (req, res) => {
   }
 });
 
-// router.route("/logout").post((req, res) => {
-//   res.clearCookie('m_k');
-//   console.log('Deleted cookie');
-//   res.redirect('/');
-// });
-
-// router.route("/check-user-able").post((req, res) => {
-//   if(req.cookies['m_k']) {
-//     console.log('able');
-//     res.send({flag: true});
-//   } else {
-//     console.log('not able');
-//     res.send({flag: false});
-//   }
-// });
-
-router.route("/popular-wines").get((req, res) => {
+router.route("/popular-wines").get(async (req, res) => {
   res.send(popularWines);
 });
 
-router.route("/winesNewSale").get((req, res) => {
+router.route("/winesNewSale").get(async (req, res) => {
   res.send(winesNewSale);
 });
 
-router.route("/winesPremium").get((req, res) => {
+router.route("/winesPremium").get(async (req, res) => {
   res.send(winesPremium);
 });
 

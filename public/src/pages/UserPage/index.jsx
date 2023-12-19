@@ -22,7 +22,7 @@ export const UserPage = () => {
 					JustWine
 				</Link>
 				<nav className="profile-nav">
-					<button onClick={() => setFlag(!flag)} className="dashboard-btn">
+					<button onClick={() => setFlag(false)} className="dashboard-btn">
 						<div className="btn-text">
 							Dashboard
 							<svg
@@ -54,7 +54,7 @@ export const UserPage = () => {
 							</svg>
 						</div>
 					</button>
-					<button onClick={() => setFlag(!flag)} className="myorders-btn">
+					<button onClick={() => setFlag(true)} className="myorders-btn">
 						<div className="btn-text">
 							My orders
 							<svg

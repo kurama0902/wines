@@ -46,6 +46,7 @@ export const LoginModal = () => {
 				handleLoginUser({
 					...userObj
 				});
+				document.cookie = `auth=${userObj.email}`
 				console.log(await result.json())
 				handleClose();
 			}

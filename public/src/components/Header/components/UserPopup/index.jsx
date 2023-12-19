@@ -33,7 +33,19 @@ export const UserPopup = () => {
 		dispatch(showRegisterUserModal());
 	};
 
-	const logout = () => dispatch(deleteUser());
+	const logout = async () => {
+		await fetch('http://localhost:3010/api/logout', {
+			method: "POST",
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				email: user.email
+			})
+		})
+		dispatch(deleteUser())
+		document.cookie = `auth=${user.email}; Max-Age=-1`
+	}
 
 	return (
 		<div className="user-btn-wrap">
