@@ -1,29 +1,27 @@
 require("dotenv").config();
 
-var os = require('os');
+const os = require("os");
 const router = require("express").Router();
 const nodemailer = require("nodemailer");
 const { brandCategories } = require("../db/brandCategories");
 const db = require("../firebaseConfig");
 
+const networkInterfaces = os.networkInterfaces();
 
-var networkInterfaces = os.networkInterfaces();
+const IP = networkInterfaces.en0[0]["address"];
 
-
-let popularWines = winesNewSale = winesPremium = IP = null;
+let popularWines = (winesNewSale = winesPremium = null);
 
 const setWinesValues = async () => {
-  const popularWinesCollection = await db.collection('popularWines').get();
-  popularWines = popularWinesCollection.docs.map(e => e.data());
+  const popularWinesCollection = await db.collection("popularWines").get();
+  popularWines = popularWinesCollection.docs.map((e) => e.data());
 
-  const winesNewSaleCollection = await db.collection('winesNewSale').get();
-  winesNewSale = winesNewSaleCollection.docs.map(e => e.data());
+  const winesNewSaleCollection = await db.collection("winesNewSale").get();
+  winesNewSale = winesNewSaleCollection.docs.map((e) => e.data());
 
-  const winesPremiumCollection = await db.collection('winesPremium').get();
-  winesPremium = winesPremiumCollection.docs.map(e => e.data());
-
-  IP = networkInterfaces.wlp3s0[0]['address'];
-}
+  const winesPremiumCollection = await db.collection("winesPremium").get();
+  winesPremium = winesPremiumCollection.docs.map((e) => e.data());
+};
 
 setWinesValues()
 
@@ -60,58 +58,57 @@ router.route("/feedback").post((req, res, next) => {
 });
 
 router.route("/login").post(async (req, res) => {
-  const { email, pass } = req?.body;
+  const { email, pass } = req?.body || {};
   const userKey = generateUserId(email, pass);
 
   try {
-
     const user = await db.collection("users").doc(userKey).get();
     if (user.exists) {
-      console.log("You succsessfully logged");
-      console.log(user.get("email"), " user");
+      let IPsCollection = await db.collection("IPs").get();
+      const IPs = IPsCollection.docs.map((ipData) => ipData.data());
 
-      let IPsCollection = await db.collection('IPs').get();
-      const IPs = IPsCollection.docs.map(ipData => ipData.data());
-      
-      if(IPs) {
-        const ipID = `ip_${IPs.length}`;
-        if(!IPs.includes(IP)) {
-          // IPs.push({ipID: IP});
-          await db.collection('IPs').doc(email).set(IPs)
+      const ipID = `ip_${IPs.length}`;
 
+      if (IPs) {
+        if (!IPs.includes(IP)) {
+          await db.collection("IPs").doc(email).set(IPs);
         }
       } else {
-        await db.collection('IPs').doc(email).set({ipID: IP})
+        await db.collection("IPs").doc(email).set({ [ipID]: IP });
       }
 
       res.send({
-        firstname: user.get('firstname'),
-        lastname: user.get('lastname'),
-        username: user.get('username'),
-        email: user.get('email'),
-        address: user.get('address'),
-        mobile: user.get('mobile'),
-        pass: user.get('pass')
+        firstname: user.get("firstname"),
+        lastname: user.get("lastname"),
+        username: user.get("username"),
+        email: user.get("email"),
+        address: user.get("address"),
+        mobile: user.get("mobile"),
+        // pass: user.get('pass')
       });
+    } else {
+      console.log("Not registered");
+      res.sendStatus(404);
     }
   } catch (error) {
-    console.log("Not registered");
+    console.log(error, " Not registered catch");
     res.sendStatus(404);
   }
 });
 
-router.route('/logout').post(async (req, res) => {
-  const {email} = req?.body;
+router.route("/logout").post(async (req, res) => {
+  const { email } = req?.body || {};
   try {
-    await db.collection("IPs").doc(email).delete()
+    await db.collection("IPs").doc(email).delete();
     res.sendStatus(200);
   } catch (error) {
     console.log(error);
   }
-})
+});
 
 router.route("/register").post(async (req, res) => {
-  const { firstname, lastname, username, email, pass, address, mobile } = req?.body;
+  const { firstname, lastname, username, email, pass, address, mobile } =
+    req?.body || {};
   const userKey = generateUserId(email, pass);
   const userData = {
     firstname,
@@ -120,7 +117,7 @@ router.route("/register").post(async (req, res) => {
     email,
     pass,
     address,
-    mobile
+    mobile,
   };
   try {
     await db.collection("users").doc(userKey).set(userData);
