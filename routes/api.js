@@ -69,12 +69,11 @@ router.route("/login").post(async (req, res) => {
 
       const ipID = `ip_${IPs.length}`;
 
-      if (IPs) {
-        if (!IPs.includes(IP)) {
-          await db.collection("IPs").doc(email).set(IPs);
-        }
-      } else {
-        await db.collection("IPs").doc(email).set({ [ipID]: IP });
+      if (!IPs.includes(IP)) {
+        await db
+          .collection("IPs")
+          .doc(email)
+          .set({ [ipID]: IP });
       }
 
       res.send({
@@ -84,11 +83,10 @@ router.route("/login").post(async (req, res) => {
         email: user.get("email"),
         address: user.get("address"),
         mobile: user.get("mobile"),
-        // pass: user.get('pass')
       });
     } else {
       console.log("Not registered");
-      res.sendStatus(404);
+      res.sendStatus(401);
     }
   } catch (error) {
     console.log(error, " Not registered catch");
