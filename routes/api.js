@@ -7,25 +7,8 @@ const { brandCategories } = require("../db/brandCategories");
 const db = require("../firebaseConfig");
 
 
-var networkInterfaces = os.networkInterfaces();
+const networkInterfaces = os.networkInterfaces();
 
-
-let popularWines = winesNewSale = winesPremium = IP = null;
-
-const setWinesValues = async () => {
-  const popularWinesCollection = await db.collection('popularWines').get();
-  popularWines = popularWinesCollection.docs.map(e => e.data());
-
-  const winesNewSaleCollection = await db.collection('winesNewSale').get();
-  winesNewSale = winesNewSaleCollection.docs.map(e => e.data());
-
-  const winesPremiumCollection = await db.collection('winesPremium').get();
-  winesPremium = winesPremiumCollection.docs.map(e => e.data());
-
-  IP = networkInterfaces.wlp3s0[0]['address'];
-}
-
-setWinesValues()
 
 function generateUserId(key1, key2) {
   return `${key1}_${key2}`;
@@ -70,19 +53,35 @@ router.route("/login").post(async (req, res) => {
       console.log("You succsessfully logged");
       console.log(user.get("email"), " user");
 
-      let IPsCollection = await db.collection('IPs').get();
-      const IPs = IPsCollection.docs.map(ipData => ipData.data());
-      
-      if(IPs) {
-        const ipID = `ip_${IPs.length}`;
-        if(!IPs.includes(IP)) {
-          // IPs.push({ipID: IP});
-          await db.collection('IPs').doc(email).set(IPs)
+      const IP = networkInterfaces.wlp3s0[0]['address'];
+      let IPsDoc = await db.collection('IPs').doc(email).get();
+      const IPs = [IPsDoc.data()];
 
+
+      const ipsObject = {};
+
+      IPs?.forEach((e, index) => {
+        ipsObject[`ip_${index + 1}`] = e[`ip_${index + 1}`]
+      })
+
+      
+      const ipsKeys = Object.keys(ipsObject);
+
+      if(ipsKeys.length) {
+
+        let foundIpID = ipsKeys.find((id) => ipsObject[id] === IP)
+
+        console.log(foundIpID);
+
+        if(foundIpID === undefined && ipsKeys.length < 5) {
+          ipsObject[`ip_${ipsKeys.length + 1}`] = IP
+          await db.collection('IPs').doc(email).set(ipsObject)
         }
       } else {
-        await db.collection('IPs').doc(email).set({ipID: IP})
+        await db.collection('IPs').doc(email).set({'ip_1': IP})
       }
+
+      console.log(ipsObject);
 
       res.send({
         firstname: user.get('firstname'),
@@ -91,11 +90,10 @@ router.route("/login").post(async (req, res) => {
         email: user.get('email'),
         address: user.get('address'),
         mobile: user.get('mobile'),
-        pass: user.get('pass')
       });
     }
   } catch (error) {
-    console.log("Not registered");
+    console.log(error, "Not registered");
     res.sendStatus(404);
   }
 });
@@ -132,14 +130,20 @@ router.route("/register").post(async (req, res) => {
 });
 
 router.route("/popular-wines").get(async (req, res) => {
+  const popularWinesCollection = await db.collection('popularWines').get();
+  const popularWines = popularWinesCollection.docs.map(e => e.data());
   res.send(popularWines);
 });
 
 router.route("/winesNewSale").get(async (req, res) => {
+  const winesNewSaleCollection = await db.collection('winesNewSale').get();
+  const winesNewSale = winesNewSaleCollection.docs.map(e => e.data());
   res.send(winesNewSale);
 });
 
 router.route("/winesPremium").get(async (req, res) => {
+  const winesPremiumCollection = await db.collection('winesPremium').get();
+  const winesPremium = winesPremiumCollection.docs.map(e => e.data());
   res.send(winesPremium);
 });
 
@@ -147,8 +151,90 @@ router.route("/brands").get((req, res) => {
   res.send(brandCategories);
 });
 
-router.route("/getDataArray").post((req, res) => {
+router.route('/addToOrderHistory').post(async (req, res) => {
+  const {email, productsInfo} = req?.body;
+  const date = new Date()
+
+  const historyDoc = await db.collection('Orders').doc(email).get();
+  const historyList = historyDoc.data() ? Object.entries(historyDoc.data()) : [];
+
+  productsInfo[1].forEach((e, index) => {
+    historyList.push([`${historyList.length}`,{name: productsInfo[0][index].description, quantity: e, cost: productsInfo[0][index].cost * e, date: `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`}])
+  });
+
+  await db.collection('Orders').doc(email).set(Object.fromEntries(historyList))
+
+  res.sendStatus(200)
+})
+
+router.route('/getUsersOrderHistory').post(async (req, res) => {
+  const {email} = req.body;
+
+  try {
+    const ordersHistoryDoc = await db.collection('Orders').doc(email).get()
+    const ordersHistory = Object.entries(ordersHistoryDoc.data()).map(e => e[1]);
+
+    res.send(ordersHistory)
+  } catch(e) {
+    console.log(e, 'orders history error');
+  }
+})
+
+router.route('/changeGoodsQuantity').post(async (req, res) => {
+
+  const {IDs, productsQuant} = req.body;
+
+  console.log(IDs, "IDS");
+  console.log(productsQuant, "products quant");
+
+
+  try {
+    const popularWinesCollection = await db.collection('popularWines').get();
+    const popularWines = popularWinesCollection.docs.map(e => e.data());
+
+    const winesNewSaleCollection = await db.collection('winesNewSale').get();
+    const winesNewSale = winesNewSaleCollection.docs.map(e => e.data());
+
+    const winesPremiumCollection = await db.collection('winesPremium').get();
+    const winesPremium = winesPremiumCollection.docs.map(e => e.data());
+
+    const allWinesArr = [popularWines, winesNewSale, winesPremium];
+    const winesCategoriesNames = ['popularWines', 'winesNewSale', 'winesPremium'];
+
+    for(let i = 0; i < IDs.length; i++) {
+      allWinesArr.forEach((arr, index) => {
+
+        return arr.forEach(async e => {
+          if(e.id === IDs[i]) {
+            e.avaliableAmount -= productsQuant[i];
+            await db.collection(winesCategoriesNames[index]).doc(`${e.id}`).set(e);
+          }
+        })
+      })
+    }
+
+    res.sendStatus(200)
+
+  } catch(error) {
+    console.log(error, 'quantity changing error');
+    res.sendStatus(400)
+  }
+
+
+})
+
+router.route("/getDataArray").post(async (req, res) => {
   let items = [];
+
+  const popularWinesCollection = await db.collection('popularWines').get();
+  const popularWines = popularWinesCollection.docs.map(e => e.data());
+
+  const winesNewSaleCollection = await db.collection('winesNewSale').get();
+  const winesNewSale = winesNewSaleCollection.docs.map(e => e.data());  
+
+  const winesPremiumCollection = await db.collection('winesPremium').get();
+  const winesPremium = winesPremiumCollection.docs.map(e => e.data());
+
   for (let ID of req.body) {
     items.push(
       [...popularWines, ...winesNewSale, ...winesPremium].find(
@@ -160,8 +246,17 @@ router.route("/getDataArray").post((req, res) => {
   res.send(items);
 });
 
-router.route("/getRangedWines").post((req, res) => {
+router.route("/getRangedWines").post(async (req, res) => {
   const page = req.body.page;
+
+  const popularWinesCollection = await db.collection('popularWines').get();
+  const popularWines = popularWinesCollection.docs.map(e => e.data());
+
+  const winesNewSaleCollection = await db.collection('winesNewSale').get();
+  const winesNewSale = winesNewSaleCollection.docs.map(e => e.data());  
+
+  const winesPremiumCollection = await db.collection('winesPremium').get();
+  const winesPremium = winesPremiumCollection.docs.map(e => e.data());
 
   const allWines = [...popularWines, ...winesNewSale, ...winesPremium];
   const slicedWinesArr = allWines.slice(page * 8 - 8, page * 8);
@@ -173,7 +268,17 @@ router.route("/getRangedWines").post((req, res) => {
   });
 });
 
-router.route("/getAllWinesQuantity").get((req, res) => {
+router.route("/getAllWinesQuantity").get(async (req, res) => {
+
+  const popularWinesCollection = await db.collection('popularWines').get();
+  const popularWines = popularWinesCollection.docs.map(e => e.data());
+
+  const winesNewSaleCollection = await db.collection('winesNewSale').get();
+  const winesNewSale = winesNewSaleCollection.docs.map(e => e.data());  
+
+  const winesPremiumCollection = await db.collection('winesPremium').get();
+  const winesPremium = winesPremiumCollection.docs.map(e => e.data());
+
   const allWines = [...popularWines, ...winesNewSale, ...winesPremium];
   const length = allWines.length;
   res.send(`${length}`);
@@ -181,16 +286,36 @@ router.route("/getAllWinesQuantity").get((req, res) => {
 
 //getAllWinesQuantity
 
-router.route("/getWine/:id").get((req, res) => {
+router.route("/getWine/:id").get(async (req, res) => {
   const id = req.params.id;
+
+  const popularWinesCollection = await db.collection('popularWines').get();
+  const popularWines = popularWinesCollection.docs.map(e => e.data());
+
+  const winesNewSaleCollection = await db.collection('winesNewSale').get();
+  const winesNewSale = winesNewSaleCollection.docs.map(e => e.data());  
+
+  const winesPremiumCollection = await db.collection('winesPremium').get();
+  const winesPremium = winesPremiumCollection.docs.map(e => e.data());
+
   const allWines = [...popularWines, ...winesNewSale, ...winesPremium];
   const wine = allWines.find((wine) => Number(wine.id) === Number(id)) || null;
   res.send(wine);
 });
 
-router.route("/search-info").post((req, res) => {
+router.route("/search-info").post(async (req, res) => {
   const { inputValue } = req.body;
   console.log(inputValue);
+
+  const popularWinesCollection = await db.collection('popularWines').get();
+  const popularWines = popularWinesCollection.docs.map(e => e.data());
+
+  const winesNewSaleCollection = await db.collection('winesNewSale').get();
+  const winesNewSale = winesNewSaleCollection.docs.map(e => e.data());  
+
+  const winesPremiumCollection = await db.collection('winesPremium').get();
+  const winesPremium = winesPremiumCollection.docs.map(e => e.data());
+
   const seachedProductsResult =
     inputValue.length > 0
       ? [...popularWines, ...winesNewSale, ...winesPremium].filter((item) =>

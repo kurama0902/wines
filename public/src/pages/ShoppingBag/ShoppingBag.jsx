@@ -35,7 +35,7 @@ export const ShoppingBag = () => {
 	};
 
 	// console.log(billTable);
-	function orderGoods() {
+	async function orderGoods() {
 		let tableStart = `
 		<table border=1>
 		<tr>
@@ -51,21 +51,51 @@ export const ShoppingBag = () => {
 	</table>
 		`;
 		let htmlStr = '';
+
+		await fetch('http://localhost:3010/api/addToOrderHistory', {
+			method: 'POST',
+       		headers: {
+      			"Content-Type": "application/json",
+    		},
+			body: JSON.stringify({
+				email: user.email,
+				productsInfo: [products, productsQuant]
+			})
+		})
 		products.forEach((e, index) => {
 			htmlStr +=
 				billTable +
 				`<tr><td style="text-align: center; padding: 10px;">${e.description}</td><td style="text-align: center; padding: 10px;">${productsQuant[index]}</td><td style="text-align: center; padding: 10px;">$${e.cost}</td></tr>`;
 		});
-		fetch('http://localhost:3010/api/feedback', {
-			method: 'POST',
+		// fetch('http://localhost:3010/api/feedback', {
+		// 	method: 'POST',
+		// 	headers: {
+		// 		'Content-Type': 'application/json',
+		// 	},
+
+		// 	body: JSON.stringify({
+		// 		info: tableStart + htmlStr + tableEnd,
+		// 	}),
+		// });
+
+		// setProducts([]);
+		// setTotal(0);
+
+		await fetch('http://localhost:3010/api/changeGoodsQuantity', {
+			method: "POST",
 			headers: {
 				'Content-Type': 'application/json',
 			},
-
 			body: JSON.stringify({
-				info: tableStart + htmlStr + tableEnd,
-			}),
-		});
+				IDs: JSON.parse(localStorage.getItem('addedToBusketIDs')),
+				productsQuant: productsQuant
+			})
+		})
+
+		setBusketAmount(null, true)
+		setProducts([]);
+		setProductsQuant([]);
+		setTotal(0);
 	}
 
 	useEffect(() => {
