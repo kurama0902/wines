@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { UserSVG } from '../../../../shared/SVG/UserSVG';
 import { Link } from 'react-router-dom';
 
@@ -7,11 +7,64 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteUser } from '../../../../redux/actions/authActions';
 import { showLoginModal } from '../../../../redux/actions/loginModalActions';
 import { showRegisterUserModal } from '../../../../redux/slices/registerUserModalSlice';
+import { saveUser } from '../../../../redux/actions/authActions';
 
 export const UserPopup = () => {
 	let [display, setDisplay] = useState(false);
 
+
+
+
+
+
+
+
+
+
+
 	const dispatch = useDispatch();
+
+
+	// const checkAuth = async () => {
+	// 	try {
+	// 		const response = await fetch('http://localhost:3010/api/checkAuthorization', {
+	// 			method: 'POST',
+	// 			headers: {
+	// 				"Content-Type": "application/json",
+	// 			},
+
+	// 			body: JSON.stringify({ email: (document.cookie.split('=')[1] || '') })
+
+	// 		})
+
+	// 		const result = await response.clone().json();
+	// 		console.log(result);
+
+	// 		console.log(response.status);
+
+	// 		if (response.status === 200) {
+	// 			console.log('ahuenno sho pizda');
+	// 			dispatch(saveUser(result))
+	// 		}
+	// 	} catch (error) {
+	// 		console.log('lol');
+	// 	}
+	// }
+
+	// useEffect(() => {
+	// 	checkAuth()
+	// }, [])
+
+
+
+
+
+
+
+
+
+
+
 	const { user } = useSelector((state) => ({
 		user: state.auth.user,
 	}));

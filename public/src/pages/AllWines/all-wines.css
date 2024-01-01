@@ -48,19 +48,20 @@
 }
 
 .wines-pagination {
-    display: inline-flex;
+    display: flex;
+    max-width: max-content;
     border-radius: 12px;
     padding: 5px;
-    margin-left: 50%;
-    transform: translate(-50%);
     margin-top: 15px;
     margin-bottom: 20px;
+    margin-inline: auto;
     gap: 10px;
     background-color: cadetblue;
 }
 
 .pagination-numbers {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     border-left: 1px solid gray;

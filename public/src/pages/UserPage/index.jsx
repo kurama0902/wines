@@ -13,6 +13,7 @@ export const UserPage = () => {
 	const [flag, setFlag] = useState(false);
 
 	const isLogined = useSelector((state) => state.auth.user)
+
 	console.log(isLogined)
 
 	return isLogined ? (

@@ -6,13 +6,46 @@ const nodemailer = require("nodemailer");
 const { brandCategories } = require("../db/brandCategories");
 const db = require("../firebaseConfig");
 
-
 const networkInterfaces = os.networkInterfaces();
 
 
 function generateUserId(key1, key2) {
   return `${key1}_${key2}`;
 }
+
+router.route("/checkAuthorization").post(async (req, res) => {
+  let { email } = req?.body;
+
+  try {
+    if (email) {
+      const IP = networkInterfaces.wlp3s0[0]['address'];
+      const IPs = (await db.collection('IPs').doc(email).get()).data();
+      const user = (await db.collection('users').get()).docs.map(e => e.data()).find(e => e.email === email);
+
+      console.log(user, 'users');
+      console.log(IPs);
+
+      if (IPs !== undefined && user !== undefined) {
+        for (ipNum of Object.keys(IPs)) {
+          console.log(ipNum);
+          if (IPs[`${ipNum}`] === IP) {
+            console.log('Successfully loged')
+            res.send({
+              ...user
+            });
+          }
+        }
+      } else {
+        res.sendStatus(400)
+      }
+    } else {
+      res.sendStatus(400);
+    }
+
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 /* GET api listing. */
 router.route("/feedback").post((req, res, next) => {
@@ -61,24 +94,28 @@ router.route("/login").post(async (req, res) => {
       const ipsObject = {};
 
       IPs?.forEach((e, index) => {
-        ipsObject[`ip_${index + 1}`] = e[`ip_${index + 1}`]
+        if (ipsObject[`ip_${index + 1}`]) {
+          ipsObject[`ip_${index + 1}`] = e[`ip_${index + 1}`]
+          console.log(ipsObject);
+        }
       })
 
-      
+
       const ipsKeys = Object.keys(ipsObject);
 
-      if(ipsKeys.length) {
+      if (ipsKeys.length) {
 
         let foundIpID = ipsKeys.find((id) => ipsObject[id] === IP)
 
         console.log(foundIpID);
 
-        if(foundIpID === undefined && ipsKeys.length < 5) {
+        if (foundIpID === undefined && ipsKeys.length < 5) {
+          console.log(IP, "Ip address");
           ipsObject[`ip_${ipsKeys.length + 1}`] = IP
           await db.collection('IPs').doc(email).set(ipsObject)
         }
       } else {
-        await db.collection('IPs').doc(email).set({'ip_1': IP})
+        await db.collection('IPs').doc(email).set({ 'ip_1': IP })
       }
 
       console.log(ipsObject);
@@ -99,7 +136,7 @@ router.route("/login").post(async (req, res) => {
 });
 
 router.route('/logout').post(async (req, res) => {
-  const {email} = req?.body;
+  const { email } = req?.body;
   try {
     await db.collection("IPs").doc(email).delete()
     res.sendStatus(200);
@@ -152,14 +189,14 @@ router.route("/brands").get((req, res) => {
 });
 
 router.route('/addToOrderHistory').post(async (req, res) => {
-  const {email, productsInfo} = req?.body;
+  const { email, productsInfo } = req?.body;
   const date = new Date()
 
   const historyDoc = await db.collection('Orders').doc(email).get();
   const historyList = historyDoc.data() ? Object.entries(historyDoc.data()) : [];
 
   productsInfo[1].forEach((e, index) => {
-    historyList.push([`${historyList.length}`,{name: productsInfo[0][index].description, quantity: e, cost: productsInfo[0][index].cost * e, date: `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`}])
+    historyList.push([`${historyList.length}`, { name: productsInfo[0][index].description, quantity: e, cost: productsInfo[0][index].cost * e, date: `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}` }])
   });
 
   await db.collection('Orders').doc(email).set(Object.fromEntries(historyList))
@@ -168,21 +205,21 @@ router.route('/addToOrderHistory').post(async (req, res) => {
 })
 
 router.route('/getUsersOrderHistory').post(async (req, res) => {
-  const {email} = req.body;
+  const { email } = req.body;
 
   try {
     const ordersHistoryDoc = await db.collection('Orders').doc(email).get()
     const ordersHistory = Object.entries(ordersHistoryDoc.data()).map(e => e[1]);
 
     res.send(ordersHistory)
-  } catch(e) {
+  } catch (e) {
     console.log(e, 'orders history error');
   }
 })
 
 router.route('/changeGoodsQuantity').post(async (req, res) => {
 
-  const {IDs, productsQuant} = req.body;
+  const { IDs, productsQuant } = req.body;
 
   console.log(IDs, "IDS");
   console.log(productsQuant, "products quant");
@@ -201,11 +238,11 @@ router.route('/changeGoodsQuantity').post(async (req, res) => {
     const allWinesArr = [popularWines, winesNewSale, winesPremium];
     const winesCategoriesNames = ['popularWines', 'winesNewSale', 'winesPremium'];
 
-    for(let i = 0; i < IDs.length; i++) {
+    for (let i = 0; i < IDs.length; i++) {
       allWinesArr.forEach((arr, index) => {
 
         return arr.forEach(async e => {
-          if(e.id === IDs[i]) {
+          if (e.id === IDs[i]) {
             e.avaliableAmount -= productsQuant[i];
             await db.collection(winesCategoriesNames[index]).doc(`${e.id}`).set(e);
           }
@@ -215,7 +252,7 @@ router.route('/changeGoodsQuantity').post(async (req, res) => {
 
     res.sendStatus(200)
 
-  } catch(error) {
+  } catch (error) {
     console.log(error, 'quantity changing error');
     res.sendStatus(400)
   }
@@ -230,7 +267,7 @@ router.route("/getDataArray").post(async (req, res) => {
   const popularWines = popularWinesCollection.docs.map(e => e.data());
 
   const winesNewSaleCollection = await db.collection('winesNewSale').get();
-  const winesNewSale = winesNewSaleCollection.docs.map(e => e.data());  
+  const winesNewSale = winesNewSaleCollection.docs.map(e => e.data());
 
   const winesPremiumCollection = await db.collection('winesPremium').get();
   const winesPremium = winesPremiumCollection.docs.map(e => e.data());
@@ -253,10 +290,12 @@ router.route("/getRangedWines").post(async (req, res) => {
   const popularWines = popularWinesCollection.docs.map(e => e.data());
 
   const winesNewSaleCollection = await db.collection('winesNewSale').get();
-  const winesNewSale = winesNewSaleCollection.docs.map(e => e.data());  
+  const winesNewSale = winesNewSaleCollection.docs.map(e => e.data());
 
   const winesPremiumCollection = await db.collection('winesPremium').get();
   const winesPremium = winesPremiumCollection.docs.map(e => e.data());
+
+
 
   const allWines = [...popularWines, ...winesNewSale, ...winesPremium];
   const slicedWinesArr = allWines.slice(page * 8 - 8, page * 8);
@@ -268,13 +307,33 @@ router.route("/getRangedWines").post(async (req, res) => {
   });
 });
 
+router.route("/getRangedHistory").post(async (req, res) => {
+  const { page, email } = req?.body;
+  console.log(req?.body, 'req body');
+
+  const ordersHistoryObj = (await db.collection('Orders').doc(email).get()).data();
+  const ordersHistoryArr = [];
+
+  for (let id of Object.keys(ordersHistoryObj)) {
+    ordersHistoryArr.push(ordersHistoryObj[id])
+  }
+
+  const slicedHistoryArr = ordersHistoryArr.slice(page * 8 - 8, page * 8);
+  const historyLength = ordersHistoryArr.length;
+
+  res.send({
+    items: slicedHistoryArr,
+    pagesCount: Math.ceil(historyLength / 8),
+  });
+});
+
 router.route("/getAllWinesQuantity").get(async (req, res) => {
 
   const popularWinesCollection = await db.collection('popularWines').get();
   const popularWines = popularWinesCollection.docs.map(e => e.data());
 
   const winesNewSaleCollection = await db.collection('winesNewSale').get();
-  const winesNewSale = winesNewSaleCollection.docs.map(e => e.data());  
+  const winesNewSale = winesNewSaleCollection.docs.map(e => e.data());
 
   const winesPremiumCollection = await db.collection('winesPremium').get();
   const winesPremium = winesPremiumCollection.docs.map(e => e.data());
@@ -293,7 +352,7 @@ router.route("/getWine/:id").get(async (req, res) => {
   const popularWines = popularWinesCollection.docs.map(e => e.data());
 
   const winesNewSaleCollection = await db.collection('winesNewSale').get();
-  const winesNewSale = winesNewSaleCollection.docs.map(e => e.data());  
+  const winesNewSale = winesNewSaleCollection.docs.map(e => e.data());
 
   const winesPremiumCollection = await db.collection('winesPremium').get();
   const winesPremium = winesPremiumCollection.docs.map(e => e.data());
@@ -311,7 +370,7 @@ router.route("/search-info").post(async (req, res) => {
   const popularWines = popularWinesCollection.docs.map(e => e.data());
 
   const winesNewSaleCollection = await db.collection('winesNewSale').get();
-  const winesNewSale = winesNewSaleCollection.docs.map(e => e.data());  
+  const winesNewSale = winesNewSaleCollection.docs.map(e => e.data());
 
   const winesPremiumCollection = await db.collection('winesPremium').get();
   const winesPremium = winesPremiumCollection.docs.map(e => e.data());
@@ -319,10 +378,10 @@ router.route("/search-info").post(async (req, res) => {
   const seachedProductsResult =
     inputValue.length > 0
       ? [...popularWines, ...winesNewSale, ...winesPremium].filter((item) =>
-          item.description
-            .toLocaleLowerCase()
-            .includes(inputValue.toLocaleLowerCase())
-        )
+        item.description
+          .toLocaleLowerCase()
+          .includes(inputValue.toLocaleLowerCase())
+      )
       : [];
   res.send(seachedProductsResult);
 });
