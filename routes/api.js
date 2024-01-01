@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-var os = require('os');
+const os = require("os");
 const router = require("express").Router();
 const nodemailer = require("nodemailer");
 const { brandCategories } = require("../db/brandCategories");
@@ -76,11 +76,10 @@ router.route("/feedback").post((req, res, next) => {
 });
 
 router.route("/login").post(async (req, res) => {
-  const { email, pass } = req?.body;
+  const { email, pass } = req?.body || {};
   const userKey = generateUserId(email, pass);
 
   try {
-
     const user = await db.collection("users").doc(userKey).get();
     if (user.exists) {
       console.log("You succsessfully logged");
@@ -138,15 +137,16 @@ router.route("/login").post(async (req, res) => {
 router.route('/logout').post(async (req, res) => {
   const { email } = req?.body;
   try {
-    await db.collection("IPs").doc(email).delete()
+    await db.collection("IPs").doc(email).delete();
     res.sendStatus(200);
   } catch (error) {
     console.log(error);
   }
-})
+});
 
 router.route("/register").post(async (req, res) => {
-  const { firstname, lastname, username, email, pass, address, mobile } = req?.body;
+  const { firstname, lastname, username, email, pass, address, mobile } =
+    req?.body || {};
   const userKey = generateUserId(email, pass);
   const userData = {
     firstname,
@@ -155,7 +155,7 @@ router.route("/register").post(async (req, res) => {
     email,
     pass,
     address,
-    mobile
+    mobile,
   };
   try {
     await db.collection("users").doc(userKey).set(userData);
