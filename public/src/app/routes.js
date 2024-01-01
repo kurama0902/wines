@@ -5,6 +5,7 @@ import { Main } from '../components/Main';
 import { UserPage } from '../pages/UserPage';
 import { AllWines } from '../pages/AllWines';
 import { WinePage } from '../pages/WinePage';
+import { AdminAuthorization } from '../pages/AdminPanel/AdminAuthorization';
 
 export const routesMap = {
 	Home: {
@@ -27,6 +28,10 @@ export const routesMap = {
 		path: '/wine',
 		isVisible: true,
 	},
+	adminAuthPage: {
+		path: '/admin',
+		isVisible: false
+	}
 };
 
 export const routes = [
@@ -50,6 +55,10 @@ export const routes = [
 			{
 				path: routesMap.WinePage.path,
 				element: <WinePage />,
+			},
+			{
+				path: routesMap.adminAuthPage.path,
+				element: <AdminAuthorization />
 			},
 			{ path: '*', element: <NotFound /> },
 		],

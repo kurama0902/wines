@@ -1,0 +1,61 @@
+.admin-authorization-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url('https://images.wallpaperscraft.com/image/single/wine_glasses_lighting_holder_115030_1600x1200.jpg');
+}
+
+.auth-log-label {
+    margin-top: 15px;
+    color: white;
+}
+
+.admin-form-auth {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 500px;
+    width: 100%;
+    min-height: 300px;
+    padding: 15px;
+    border: 1px solid white;
+    border-radius: 12px;
+}
+
+.auth-inputs {
+    display: flex;
+    flex-direction: column;
+    margin-top: 70px;
+    max-width: 300px;
+    width: 100%;
+    gap: 10px;
+}
+
+.auth-input {
+    height: 30px;
+    border: none;
+    border-radius: 5px;
+    padding-left: 5px;
+    font-size: 15px;
+}
+
+.auth-input::placeholder {
+    font-size: 15px;
+}
+
+.auth-submit {
+    cursor: pointer;
+    margin-top: 15px;
+    width: 150px;
+    height: 40px;
+    background-color: blue;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    color: white;
+}
+
+.auth-submit:hover {
+    background-color: rgb(29, 29, 252);
+}

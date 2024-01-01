@@ -134,6 +134,22 @@ router.route("/login").post(async (req, res) => {
   }
 });
 
+router.route('/admin-auth').post(async (req, res) => {
+  const {email, password} = req?.body;
+
+  console.log(email, password, "|  admin-auth data");
+
+  try {
+    const adminData = (await db.collection('adminsAccounts').doc(email).get()).data();
+    console.log(adminData);
+    if(adminData.pass === password) {
+      res.sendStatus(200)
+    }
+  } catch (error) {
+    console.error(error);
+  }
+})
+
 router.route('/logout').post(async (req, res) => {
   const { email } = req?.body;
   try {
@@ -343,7 +359,6 @@ router.route("/getAllWinesQuantity").get(async (req, res) => {
   res.send(`${length}`);
 });
 
-//getAllWinesQuantity
 
 router.route("/getWine/:id").get(async (req, res) => {
   const id = req.params.id;
