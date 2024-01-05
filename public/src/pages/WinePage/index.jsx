@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useGetWine } from '../../shared/hooks/useGetWine';
+import { Preloader } from '../../shared/components/Counter/Preloader';
 
 import './wine-page.css';
 
@@ -11,9 +12,6 @@ export const WinePage = () => {
 
 	const wine = useGetWine(wineID);
 
-	if (!wine) {
-		return 'Sorry but this wine is not avaliable!';
-	}
 	return (
 		<div className="wine-description-wrap">
 			<div className="wine-description">
@@ -24,6 +22,7 @@ export const WinePage = () => {
 					dolore quo. Voluptate eius corrupti ducimus. Nemo, excepturi!
 				</p>
 			</div>
+			<Preloader />
 		</div>
 	);
 };

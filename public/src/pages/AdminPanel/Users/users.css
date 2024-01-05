@@ -1,0 +1,30 @@
+.users-ad-wrap {
+    flex-grow: 1;
+    height: 100vh;
+}
+
+.users {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 250px);
+    margin: auto;
+    max-width: 790px;
+    width: 100%;
+    grid-template-rows: 250px;
+    justify-content: center;
+    padding: 10px;
+    padding-top: 25px;
+    gap: 10px;
+}
+
+.user-data {
+    display: flex;
+    width: 250px;
+    height: 250px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    gap: 7px;
+}

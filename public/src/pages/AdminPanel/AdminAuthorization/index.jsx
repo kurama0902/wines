@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 
 import './admin-authorization.css'
 import { AdminPanel } from "..";
+import { Preloader } from "../../../shared/components/Counter/Preloader";
 
 export const AdminAuthorization = () => {
 
@@ -46,6 +47,7 @@ export const AdminAuthorization = () => {
                 </div>
                 <input className="auth-submit" type="submit" value={'Submit'} />
             </form>
+            <Preloader />
         </div>
     )
 }

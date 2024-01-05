@@ -4,9 +4,10 @@ import { Link } from 'react-router-dom';
 import { DashboardInformation } from './components/DashboardInformation';
 import { NotFound } from '../NotFound/NotFound';
 import { MyOrders } from './components/DashboardInformation/MyOrders';
+import { Preloader } from '../../shared/components/Counter/Preloader';
+
 
 import './user-page.css';
-
 
 export const UserPage = () => {
 
@@ -90,6 +91,7 @@ export const UserPage = () => {
 				</nav>
 			</aside>
 			{!flag ? <DashboardInformation flag={flag} setFlag={setFlag} sectionName='My orders' /> : <MyOrders flag={flag} setFlag={setFlag} sectionName='Dashboard' />}
+			<Preloader />
 		</div>
 	) : (
 		<NotFound />

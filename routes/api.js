@@ -7,10 +7,11 @@ const { brandCategories } = require("../db/brandCategories");
 const db = require("../firebaseConfig");
 
 const networkInterfaces = os.networkInterfaces();
+console.log(networkInterfaces);
 
-function generateUserId(key1, key2) {
-  return `${key1}_${key2}`;
-}
+// function generateUserId(key1, key2) {
+//   return `${key1}_${key2}`;
+// }
 
 router.route("/checkAuthorization").post(async (req, res) => {
   console.log(req?.ip, " req");
@@ -21,7 +22,7 @@ router.route("/checkAuthorization").post(async (req, res) => {
 
   try {
     if (email) {
-      const IP = networkInterfaces.en0?.[1]["address"];
+      const IP = networkInterfaces.wlp3s0?.[1]["address"];
       const IPs = (await db.collection("IPs").doc(email).get()).data();
       const user = (await db.collection("users").get()).docs
         .map((e) => e.data())
@@ -78,14 +79,16 @@ router.route("/feedback").post((req, res, next) => {
 
 router.route("/login").post(async (req, res) => {
   const { email, pass } = req?.body || {};
-  const userKey = generateUserId(email, pass);
+  // const userKey = generateUserId(email, pass);
 
   try {
     var startTime = performance.now();
-    const user = await db.collection("users").doc(userKey).get();
+    const user = await db.collection("users").doc(email).get();
 
-    if (user.exists) {
-      const IP = networkInterfaces.en0?.[1]["address"];
+    // console.log(user);
+
+    if (user.exists && user.data().pass === pass) {
+      const IP = networkInterfaces.wlp3s0?.[1]["address"];
       let IPsDoc = await db.collection("IPs").doc(email).get();
       const IPs = [IPsDoc.data()];
 
@@ -167,7 +170,7 @@ router.route("/logout").post(async (req, res) => {
 router.route("/register").post(async (req, res) => {
   const { firstname, lastname, username, email, pass, address, mobile } =
     req?.body || {};
-  const userKey = generateUserId(email, pass);
+  // const userKey = generateUserId(email, pass);
   const userData = {
     firstname,
     lastname,
@@ -178,7 +181,7 @@ router.route("/register").post(async (req, res) => {
     mobile,
   };
   try {
-    await db.collection("users").doc(userKey).set(userData);
+    await db.collection("users").doc(email).set(userData);
     res.sendStatus(200);
   } catch (error) {
     console.error(error, " error");
@@ -347,17 +350,50 @@ router.route("/getRangedHistory").post(async (req, res) => {
   ).data();
   const ordersHistoryArr = [];
 
-  for (let id of Object.keys(ordersHistoryObj)) {
-    ordersHistoryArr.push(ordersHistoryObj[id]);
+  console.log(ordersHistoryObj);
+
+  if(ordersHistoryObj !== undefined) {
+    for (let id of Object.keys(ordersHistoryObj)) {
+      ordersHistoryArr.push(ordersHistoryObj[id]);
+    }
+  
+    const slicedHistoryArr = ordersHistoryArr.slice(page * 8 - 8, page * 8);
+    const historyLength = ordersHistoryArr.length;
+  
+    res.send({
+      items: slicedHistoryArr,
+      pagesCount: Math.ceil(historyLength / 8),
+    });
+  } else {
+    res.sendStatus(403)
   }
 
-  const slicedHistoryArr = ordersHistoryArr.slice(page * 8 - 8, page * 8);
-  const historyLength = ordersHistoryArr.length;
+  
+});
 
-  res.send({
-    items: slicedHistoryArr,
-    pagesCount: Math.ceil(historyLength / 8),
-  });
+router.route("/getRangedUsers").post(async (req, res) => {
+  const { page } = req?.body;
+  console.log(req?.body, "req body");
+
+  const ordersHistoryArr = (
+    (await db.collection("users").get()).docs
+  ).map(e => e.data());
+
+  console.log(ordersHistoryArr, "HISTORY");
+
+  if(ordersHistoryArr?.length) {
+
+    const slicedHistoryArr = ordersHistoryArr.slice(page * 9 - 9, page * 9);
+    const historyLength = ordersHistoryArr.length;
+  
+    res.send({
+      items: slicedHistoryArr,
+      pagesCount: Math.ceil(historyLength / 9),
+    });
+  } else {
+    res.sendStatus(401)
+  }
+
 });
 
 router.route("/getAllWinesQuantity").get(async (req, res) => {

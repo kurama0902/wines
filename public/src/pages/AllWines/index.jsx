@@ -5,6 +5,7 @@ import { GeneratePageBtns } from './components/GeneratePageBtns';
 import { useGetRangedWines } from '../../shared/hooks/useGetRangedWines';
 
 import './all-wines.css';
+import { Preloader } from '../../shared/components/Counter/Preloader';
 
 export const AllWines = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
@@ -38,6 +39,7 @@ export const AllWines = () => {
 
 	return (
 		<div className="all-wines-wrap">
+			<Preloader />
 			<h1 className="wines-list-label">Wines list:</h1>
 			<div className="all-wines-section">
 				{items?.map((wine) => {

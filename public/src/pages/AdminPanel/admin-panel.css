@@ -1,0 +1,39 @@
+.admin-panel-wrap {
+    display: flex;
+    max-width: 1440px;
+    height: 100vh;
+}
+
+.options-nav {
+    display: flex;
+    flex-direction: column;
+    padding-inline: 10px;
+    padding-top: 30px;
+    border-right: 1px solid lightgray;
+    gap: 35px;
+}
+
+.options-label {
+    text-align: center;
+}
+
+.nav-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.nav-btn {
+    cursor: pointer;
+    width: 200px;
+    height: 40px;
+    border: none;
+    background-color: darkseagreen;
+    color: white;
+    border-radius: 15px;
+}
+
+.nav-btn:hover {
+    background-color: rgb(171, 218, 171);
+}
+

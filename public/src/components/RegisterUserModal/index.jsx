@@ -69,14 +69,14 @@ export const RegisterUserModal = () => {
 					<input
 						onChange={onChangeInput}
 						className="email"
-						placeholder="Please, enter your name.."
+						placeholder="Please, enter your lastname.."
 						type="text"
 						name="lastname"
 					/>
 					<input
 						onChange={onChangeInput}
 						className="email"
-						placeholder="Please, enter your name.."
+						placeholder="Please, enter your username.."
 						type="text"
 						name="username"
 					/>

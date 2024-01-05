@@ -8,10 +8,11 @@ import { WindowSizeContainer } from './WindowSizeContainer';
 import { LoginModal } from '../components/LoginModal';
 import { RegisterUserModal } from '../components/RegisterUserModal';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { saveUser } from '../redux/actions/authActions';
+import { Preloader } from '../shared/components/Counter/Preloader';
 
 import './App.css';
-import { saveUser } from '../redux/actions/authActions';
+
 
 function App() {
 	const [likedProductsIDs, setAmount] = useLikedWines();
@@ -67,6 +68,7 @@ function App() {
 
 	return (
 		<div className="App" id="root">
+			{/* <Preloader /> */}
 			<WindowSizeContainer>
 				{(width) => (
 					<LikedProductsContext.Provider value={likedProductsContextValues}>
