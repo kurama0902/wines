@@ -17,7 +17,7 @@ export const useGetRangedHistory = (pageNum, email) => {
 		} catch (error) {
 			console.error('Error');
 		}
-	}, [pageNum]);
+	}, [email, pageNum]);
 
 	useEffect(() => {
 		getData();

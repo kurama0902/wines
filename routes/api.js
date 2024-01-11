@@ -6,7 +6,6 @@ const nodemailer = require("nodemailer");
 const { brandCategories } = require("../db/brandCategories");
 const db = require("../firebaseConfig");
 const dbb = require("../db/index");
-const e = require("express");
 
 const networkInterfaces = os.networkInterfaces();
 // console.log(networkInterfaces);
