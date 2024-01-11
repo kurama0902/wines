@@ -6,6 +6,9 @@ import { isShowLoginModal } from '../../redux/slices/loginModalSlice';
 
 import './login-modal.css';
 
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const passwordPattern = /^(?=.*[A-Z])(?=.*[\W_]).{8,}$/;
+
 export const LoginModal = () => {
 	const dispatch = useDispatch();
 	const isShowModal = useSelector(isShowLoginModal);
@@ -32,32 +35,25 @@ export const LoginModal = () => {
 
 		const { email, pass } = authFormData.current;
 
-		if (email.length && pass.length >= 8) {
-			const splitedEmail = email.split('@');
-			if (splitedEmail[0].length && (splitedEmail[1].length > 4 && splitedEmail[1].endsWith('.com'))) {
-				if (pass.startsWith(pass.charAt(0).toUpperCase())) {
-					try {
-						let result = await fetch('http://localhost:3010/api/login', {
-							method: 'POST',
-							headers: {
-								'Content-Type': 'application/json',
-							},
-							body: JSON.stringify(authFormData.current),
-						});
-						const userObj = await result.clone().json()
+		if (emailPattern.test(email) && passwordPattern.test(pass)) {
+			try {
+				const response = await fetch('http://localhost:3010/api/login', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(authFormData.current),
+				});
 
-						if (result.status === 200) {
-							handleLoginUser({
-								...userObj
-							});
-							document.cookie = `auth=${userObj.email}`
-							console.log(await result.json())
-							handleClose();
-						}
-					} catch (error) {
-						console.log('Error -', error);
-					}
+				if (response.status === 200) {
+					const userObj = await response.json();
+
+					handleLoginUser(userObj);
+					
+					handleClose();
 				}
+			} catch (error) {
+				console.log('Error -', error);
 			}
 		}
 	};
@@ -84,7 +80,9 @@ export const LoginModal = () => {
 						name="pass"
 						required
 					/>
-					<button className="submit" type="submit">Submit</button>
+					<button className="submit" type="submit">
+						Submit
+					</button>
 				</form>
 			</div>
 		</div>
