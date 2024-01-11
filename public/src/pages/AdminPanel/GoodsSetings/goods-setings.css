@@ -1,0 +1,35 @@
+.wine-settings-wrap {
+    flex: 1;
+    margin-top: 50px;
+}
+
+.wines-list {
+    display: grid;
+    padding-inline: 5px;
+    grid-template-columns: repeat(auto-fill, 316px);
+    max-width: 978px;
+    width: 100%;
+    grid-gap: 10px;
+    margin: auto;
+}
+
+.update {
+    display: flex;
+    gap: 10px;
+}
+
+.update-btn {
+    flex-grow: 1;
+    cursor: pointer;
+    background-color: black;
+    border: none;
+    border-radius: 12px;
+    transition: background-color .3s;
+    color: white;
+}
+
+.update-btn:hover {
+    background-color: white;
+    border: 1px solid black;
+    color: black;
+}

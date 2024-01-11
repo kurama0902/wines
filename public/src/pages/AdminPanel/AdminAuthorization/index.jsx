@@ -47,7 +47,6 @@ export const AdminAuthorization = () => {
                 </div>
                 <input className="auth-submit" type="submit" value={'Submit'} />
             </form>
-            <Preloader />
         </div>
     )
 }

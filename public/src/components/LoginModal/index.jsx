@@ -32,26 +32,33 @@ export const LoginModal = () => {
 
 		const { email, pass } = authFormData.current;
 
-		try {
-			let result = await fetch('http://localhost:3010/api/login', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(authFormData.current),
-			});
-			const userObj = await result.clone().json()
+		if (email.length && pass.length >= 8) {
+			const splitedEmail = email.split('@');
+			if (splitedEmail[0].length && (splitedEmail[1].length > 4 && splitedEmail[1].endsWith('.com'))) {
+				if (pass.startsWith(pass.charAt(0).toUpperCase())) {
+					try {
+						let result = await fetch('http://localhost:3010/api/login', {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+							},
+							body: JSON.stringify(authFormData.current),
+						});
+						const userObj = await result.clone().json()
 
-			if (result.status === 200) {
-				handleLoginUser({
-					...userObj
-				});
-				document.cookie = `auth=${userObj.email}`
-				console.log(await result.json())
-				handleClose();
+						if (result.status === 200) {
+							handleLoginUser({
+								...userObj
+							});
+							document.cookie = `auth=${userObj.email}`
+							console.log(await result.json())
+							handleClose();
+						}
+					} catch (error) {
+						console.log('Error -', error);
+					}
+				}
 			}
-		} catch (error) {
-			console.log('Error -', error);
 		}
 	};
 
@@ -67,6 +74,7 @@ export const LoginModal = () => {
 						placeholder="Please, enter your email.."
 						type="email"
 						name="email"
+						required
 					/>
 					<input
 						onChange={onChangeInput}
@@ -74,6 +82,7 @@ export const LoginModal = () => {
 						placeholder="Please, enter your password.."
 						type="password"
 						name="pass"
+						required
 					/>
 					<button className="submit" type="submit">Submit</button>
 				</form>

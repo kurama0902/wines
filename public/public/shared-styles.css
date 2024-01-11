@@ -11,5 +11,28 @@ body {
     font-style: normal;
     font-size: 16px;
     line-height: 140%;
-    /* background-color: #1b1b1b; */
+}
+
+*::-webkit-scrollbar {
+    width: 10px;
+    /* width of the entire scrollbar */
+}
+
+.products-wrap::-webkit-scrollbar, .brands-wrap::-webkit-scrollbar  {
+    height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+    background: white;
+    /* color of the tracking area */
+}
+
+*::-webkit-scrollbar-thumb {
+    border: 3px solid white;
+    border-radius: 10px;
+    background-color: black;
+    /* color of the scroll thumb */
+    /* border-radius: 20px; */
+    /* roundness of the scroll thumb */
+    /* creates padding around scroll thumb */
 }

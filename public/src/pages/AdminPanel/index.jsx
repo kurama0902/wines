@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Users } from "./Users";
+import { GoodsSettings } from "./GoodsSetings";
+
 
 import './admin-panel.css';
 
@@ -9,7 +11,7 @@ export const AdminPanel = () => {
 
     const options = {
         users: <Users/>,
-        // goods: <Goods/>
+        goods: <GoodsSettings/>
     }
 
     return (
@@ -18,7 +20,7 @@ export const AdminPanel = () => {
                 <h1 className="options-label">Options</h1>
                 <div className="nav-btns">
                     <button onClick={() => setOption('users')} className="nav-btn">Users</button>
-                    <button onClick={() => setOption('goods')} className="nav-btn">Goods</button>
+                    <button onClick={() => setOption('goods')} className="nav-btn">Goods Panel</button>
                 </div>
             </nav>
             {options[option]}

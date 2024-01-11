@@ -34,6 +34,7 @@
     position: absolute;
     padding-top: 7px;
     right: 0;
+    z-index: 100;
 }
 
 div[animated='1'] {

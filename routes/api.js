@@ -5,13 +5,24 @@ const router = require("express").Router();
 const nodemailer = require("nodemailer");
 const { brandCategories } = require("../db/brandCategories");
 const db = require("../firebaseConfig");
+const dbb = require("../db/index");
+const e = require("express");
 
 const networkInterfaces = os.networkInterfaces();
-console.log(networkInterfaces);
+// console.log(networkInterfaces);
 
-// function generateUserId(key1, key2) {
-//   return `${key1}_${key2}`;
-// }
+// const fn = () => {
+//   for (let ctg of ['popularWines', 'winesNewSale', 'winesPremium']) {
+//     console.log(ctg);
+//     dbb[ctg].forEach(async e => {
+//       await db.collection(ctg).doc(`${e.id}`).set(e)
+//     })
+//   }
+// };
+
+// fn();
+
+
 
 router.route("/checkAuthorization").post(async (req, res) => {
   console.log(req?.ip, " req");
@@ -81,58 +92,71 @@ router.route("/login").post(async (req, res) => {
   const { email, pass } = req?.body || {};
   // const userKey = generateUserId(email, pass);
 
-  try {
-    var startTime = performance.now();
-    const user = await db.collection("users").doc(email).get();
-
-    // console.log(user);
-
-    if (user.exists && user.data().pass === pass) {
-      const IP = networkInterfaces.wlp3s0?.[1]["address"];
-      let IPsDoc = await db.collection("IPs").doc(email).get();
-      const IPs = [IPsDoc.data()];
-
-      const ipsObject = {};
-
-      IPs?.forEach((e, index) => {
-        if (ipsObject[`ip_${index + 1}`]) {
-          ipsObject[`ip_${index + 1}`] = e[`ip_${index + 1}`];
-          console.log(ipsObject);
-        }
-      });
-
-      const ipsKeys = Object.keys(ipsObject);
-
-      if (ipsKeys.length) {
-        let foundIpID = ipsKeys.find((id) => ipsObject[id] === IP);
-
-        console.log(foundIpID);
-
-        if (foundIpID === undefined && ipsKeys.length < 5) {
-          console.log(IP, "Ip address");
-          ipsObject[`ip_${ipsKeys.length + 1}`] = IP;
-          await db.collection("IPs").doc(email).set(ipsObject);
+  if (email.length && pass.length >= 8) {
+    const splitedEmail = email.split('@');
+    if (splitedEmail[0].length && (splitedEmail[1].length > 4 && splitedEmail[1].endsWith('.com'))) {
+      if (pass.startsWith(pass.charAt(0).toUpperCase())) {
+        try {
+          var startTime = performance.now();
+          const user = await db.collection("users").doc(email).get();
+      
+          // console.log(user);
+      
+          if (user.exists && user.data().pass === pass) {
+            const IP = networkInterfaces.wlp3s0?.[1]["address"];
+            let IPsDoc = await db.collection("IPs").doc(email).get();
+            const IPs = [IPsDoc.data()];
+      
+            const ipsObject = {};
+      
+            IPs?.forEach((e, index) => {
+              if (ipsObject[`ip_${index + 1}`]) {
+                ipsObject[`ip_${index + 1}`] = e[`ip_${index + 1}`];
+                console.log(ipsObject);
+              }
+            });
+      
+            const ipsKeys = Object.keys(ipsObject);
+      
+            if (ipsKeys.length) {
+              let foundIpID = ipsKeys.find((id) => ipsObject[id] === IP);
+      
+              console.log(foundIpID);
+      
+              if (foundIpID === undefined && ipsKeys.length < 5) {
+                console.log(IP, "Ip address");
+                ipsObject[`ip_${ipsKeys.length + 1}`] = IP;
+                await db.collection("IPs").doc(email).set(ipsObject);
+              }
+            } else {
+              await db.collection("IPs").doc(email).set({ ip_1: IP });
+            }
+      
+            res.send({
+              firstname: user.get("firstname"),
+              lastname: user.get("lastname"),
+              username: user.get("username"),
+              email: user.get("email"),
+              address: user.get("address"),
+              mobile: user.get("mobile"),
+            });
+          } else {
+            res.sendStatus(401);
+          }
+          var endTime = performance.now();
+          console.log(`work for login took ${endTime - startTime} milliseconds`);
+        } catch (error) {
+          console.log(error, "Not registered");
+          res.sendStatus(401);
         }
       } else {
-        await db.collection("IPs").doc(email).set({ ip_1: IP });
+        res.sendStatus(401)
       }
-
-      res.send({
-        firstname: user.get("firstname"),
-        lastname: user.get("lastname"),
-        username: user.get("username"),
-        email: user.get("email"),
-        address: user.get("address"),
-        mobile: user.get("mobile"),
-      });
     } else {
-      res.sendStatus(401);
+      res.sendStatus(401)
     }
-    var endTime = performance.now();
-    console.log(`work for login took ${endTime - startTime} milliseconds`);
-  } catch (error) {
-    console.log(error, "Not registered");
-    res.sendStatus(401);
+  } else {
+    res.sendStatus(401)
   }
 });
 
@@ -194,6 +218,60 @@ router.route("/popular-wines").get(async (req, res) => {
   const popularWines = popularWinesCollection.docs.map((e) => e.data());
   res.send(popularWines);
 });
+
+router.route("/deleteWine").post(async (req, res) => {
+
+  const { id } = req?.body;
+
+  try {
+    const popularWinesCollection = await db.collection("popularWines").get();
+    const popularWines = popularWinesCollection.docs.map((e) => e.data());
+
+    const winesNewSaleCollection = await db.collection("winesNewSale").get();
+    const winesNewSale = winesNewSaleCollection.docs.map((e) => e.data());
+
+    const winesPremiumCollection = await db.collection("winesPremium").get();
+    const winesPremium = winesPremiumCollection.docs.map((e) => e.data());
+
+    let allWinesArr = [popularWines, winesNewSale, winesPremium];
+    const winesCategoriesNames = [
+      "popularWines",
+      "winesNewSale",
+      "winesPremium",
+    ];
+
+
+    let newAllWinesArr = [];
+
+    allWinesArr.forEach(async (arr, index) => {
+      let foundItem = arr.find(e => e.id === id);
+      if (foundItem !== undefined) {
+        newAllWinesArr = [...newAllWinesArr, (arr.filter(e => e.id !== id))]
+        await db.collection(winesCategoriesNames[index]).doc(`${id}`).delete();
+      }
+      newAllWinesArr = [...newAllWinesArr, (arr.filter(e => e.id !== id))]
+
+    })
+
+
+    console.log(newAllWinesArr);
+
+    newAllWinesArr.forEach((arr, index) => {
+      arr.forEach(async elem => {
+        try {
+          await db.collection(winesCategoriesNames[index]).doc(`${elem.id}`).set(elem);
+        } catch (error) {
+          console.log('DELETE ERROR', error);
+        }
+      })
+    })
+
+    res.sendStatus(200);
+  } catch (error) {
+    console.log("Delete user error", error);
+    res.sendStatus(403);
+  }
+})
 
 router.route("/winesNewSale").get(async (req, res) => {
   const winesNewSaleCollection = await db.collection("winesNewSale").get();
@@ -320,7 +398,7 @@ router.route("/getDataArray").post(async (req, res) => {
 });
 
 router.route("/getRangedWines").post(async (req, res) => {
-  const page = req.body.page;
+  const { page } = req?.body;
 
   const popularWinesCollection = await db.collection("popularWines").get();
   const popularWines = popularWinesCollection.docs.map((e) => e.data());
@@ -352,14 +430,14 @@ router.route("/getRangedHistory").post(async (req, res) => {
 
   console.log(ordersHistoryObj);
 
-  if(ordersHistoryObj !== undefined) {
+  if (ordersHistoryObj !== undefined) {
     for (let id of Object.keys(ordersHistoryObj)) {
       ordersHistoryArr.push(ordersHistoryObj[id]);
     }
-  
+
     const slicedHistoryArr = ordersHistoryArr.slice(page * 8 - 8, page * 8);
     const historyLength = ordersHistoryArr.length;
-  
+
     res.send({
       items: slicedHistoryArr,
       pagesCount: Math.ceil(historyLength / 8),
@@ -368,7 +446,7 @@ router.route("/getRangedHistory").post(async (req, res) => {
     res.sendStatus(403)
   }
 
-  
+
 });
 
 router.route("/getRangedUsers").post(async (req, res) => {
@@ -381,20 +459,32 @@ router.route("/getRangedUsers").post(async (req, res) => {
 
   console.log(ordersHistoryArr, "HISTORY");
 
-  if(ordersHistoryArr?.length) {
+  if (ordersHistoryArr?.length) {
 
     const slicedHistoryArr = ordersHistoryArr.slice(page * 9 - 9, page * 9);
     const historyLength = ordersHistoryArr.length;
-  
+
     res.send({
       items: slicedHistoryArr,
       pagesCount: Math.ceil(historyLength / 9),
     });
   } else {
-    res.sendStatus(401)
+    res.send({ flag: true })
   }
 
 });
+
+router.route('/deleteUser').post(async (req, res) => {
+  const { email } = req?.body;
+
+  try {
+    await db.collection('users').doc(email).delete();
+    res.sendStatus(200);
+  } catch (error) {
+    console.error('User can not be deleted', error);
+    res.sendStatus(403);
+  }
+})
 
 router.route("/getAllWinesQuantity").get(async (req, res) => {
   const popularWinesCollection = await db.collection("popularWines").get();
@@ -410,6 +500,40 @@ router.route("/getAllWinesQuantity").get(async (req, res) => {
   const length = allWines.length;
   res.send(`${length}`);
 });
+
+router.route("/updateWineQuantity").post(async (req, res) => {
+  const { id, quantity } = req?.body;
+
+  console.log(id, " | ", quantity);
+
+  const popularWinesCollection = await db.collection("popularWines").get();
+  const popularWines = popularWinesCollection.docs.map((e) => e.data());
+
+  const winesNewSaleCollection = await db.collection("winesNewSale").get();
+  const winesNewSale = winesNewSaleCollection.docs.map((e) => e.data());
+
+  const winesPremiumCollection = await db.collection("winesPremium").get();
+  const winesPremium = winesPremiumCollection.docs.map((e) => e.data());
+
+  const allWines = [popularWines, winesNewSale, winesPremium];
+  const winesNames = ['popularWines', 'winesNewSale', 'winesPremium'];
+
+  allWines.forEach(async (arr, index) => {
+    // console.log(arr);
+    const foundWine = arr.find(e => e.id == id);
+    console.log(foundWine);
+    if (foundWine !== undefined) {
+      foundWine.avaliableAmount = quantity;
+      try {
+        res.sendStatus(200);
+        await db.collection(winesNames[index]).doc(`${id}`).set(foundWine);
+      } catch (error) {
+        console.error("QUANTITY UPDATE ERROR", error);
+        res.sendStatus(403)
+      }
+    }
+  })
+})
 
 router.route("/getWine/:id").get(async (req, res) => {
   const id = req.params.id;
@@ -444,12 +568,14 @@ router.route("/search-info").post(async (req, res) => {
   const seachedProductsResult =
     inputValue.length > 0
       ? [...popularWines, ...winesNewSale, ...winesPremium].filter((item) =>
-          item.description
-            .toLocaleLowerCase()
-            .includes(inputValue.toLocaleLowerCase())
-        )
+        item.description
+          .toLocaleLowerCase()
+          .includes(inputValue.toLocaleLowerCase())
+      )
       : [];
   res.send(seachedProductsResult);
 });
+
+// router.route()
 
 module.exports = router;

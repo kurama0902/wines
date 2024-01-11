@@ -23,5 +23,5 @@ export const useGetRangedHistory = (pageNum, email) => {
 		getData();
 	}, [getData, pageNum]);
 
-	return data;
+	return [data, setData];
 };

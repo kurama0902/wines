@@ -91,7 +91,6 @@ export const UserPage = () => {
 				</nav>
 			</aside>
 			{!flag ? <DashboardInformation flag={flag} setFlag={setFlag} sectionName='My orders' /> : <MyOrders flag={flag} setFlag={setFlag} sectionName='Dashboard' />}
-			<Preloader />
 		</div>
 	) : (
 		<NotFound />

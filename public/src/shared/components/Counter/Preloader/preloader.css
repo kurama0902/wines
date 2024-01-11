@@ -9,9 +9,14 @@
     right: 0;
     left: 0;
     background-color: white;
-    animation: HidePreloader .3s 1.2s 1 forwards;
+    /* animation: HidePreloader .3s 1.2s 1 forwards; */
+    /* animation: HidePreloader; */
     z-index: 1000;
     gap: 50px;
+}
+
+.order-history .preloader-wrap {
+    position: absolute;
 }
 
 .preloader {
@@ -21,7 +26,7 @@
     border-radius: 100%;
 }
 
-@keyframes HidePreloader {
+/* @keyframes HidePreloader {
     from {
         opacity: 1;
     }
@@ -30,4 +35,4 @@
         opacity: 0;
         pointer-events: none;
     }
-}
+} */

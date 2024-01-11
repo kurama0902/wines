@@ -15,14 +15,14 @@ export const WinePage = () => {
 	return (
 		<div className="wine-description-wrap">
 			<div className="wine-description">
-				<img className="wine-picture" src={`${wine?.imgURL}`} alt="" />
+				{wine === undefined ? <Preloader/> : <img className="wine-picture" src={`${wine?.imgURL}`} alt="" />}
 				<p>
 					Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum non consectetur neque
 					architecto corporis velit suscipit tempore laboriosam dolor magnam, placeat, deleniti
 					dolore quo. Voluptate eius corrupti ducimus. Nemo, excepturi!
 				</p>
 			</div>
-			<Preloader />
+			{/* <Preloader /> */}
 		</div>
 	);
 };

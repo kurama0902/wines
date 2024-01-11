@@ -8,6 +8,7 @@
 
 .order-history {
     display: flex;
+    position: relative;
     flex-direction: column;
     max-width: 1000px;
     width: 100%;

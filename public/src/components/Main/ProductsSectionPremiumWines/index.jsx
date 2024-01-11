@@ -5,6 +5,7 @@ import { ProductsSections } from '../ProductsSections/ProductsSections';
 import { enums } from '../../../shared/enums';
 
 import './products-section.css';
+import { Preloader } from '../../../shared/components/Counter/Preloader';
 
 export const ProductsSectionPremiumWines = () => {
 	const initialProducts = useGetRequest(enums.winesPremium);
@@ -16,7 +17,8 @@ export const ProductsSectionPremiumWines = () => {
 	}, [initialProducts]);
 
 	return (
-		<ProductsSections
+		<>
+		{!filterdProducts.length ? <Preloader /> : <ProductsSections
 			title="Premium wines"
 			products={initialProducts}
 			initialProducts={initialProducts}
@@ -26,6 +28,7 @@ export const ProductsSectionPremiumWines = () => {
 			<section className="products-wrap popularWines">
 				<RenderItems products={filterdProducts} />
 			</section>
-		</ProductsSections>
+		</ProductsSections>}
+		</>
 	);
 };

@@ -20,7 +20,6 @@ export const ShoppingBag = () => {
 
 	let [products, setProducts] = useState(productsArr);
 	let [productsQuant, setProductsQuant] = useState([]);
-	// console.log(productsArr.length);
 	let [billTable, setBillTable] = useState('');
 	let [total, setTotal] = useState(0);
 
@@ -69,18 +68,18 @@ export const ShoppingBag = () => {
 				billTable +
 				`<tr><td style="text-align: center; padding: 10px;">${e.description}</td><td style="text-align: center; padding: 10px;">${productsQuant[index]}</td><td style="text-align: center; padding: 10px;">$${e.cost}</td></tr>`;
 		});
-		// fetch('http://localhost:3010/api/feedback', {
-		// 	method: 'POST',
-		// 	headers: {
-		// 		'Content-Type': 'application/json',
-		// 	},
+		fetch('http://localhost:3010/api/feedback', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
 
-		// 	body: JSON.stringify({
-		// 		info: tableStart + htmlStr + tableEnd,
-		// 	}),
-		// });
+			body: JSON.stringify({
+				info: tableStart + htmlStr + tableEnd,
+			}),
+		});
 
-		// setProducts([]);
+		setProducts([]);
 		// setTotal(0);
 
 		await fetch('http://localhost:3010/api/changeGoodsQuantity', {
@@ -98,6 +97,7 @@ export const ShoppingBag = () => {
 		setProducts([]);
 		setProductsQuant([]);
 		setTotal(0);
+
 	}
 
 	useEffect(() => {
@@ -107,18 +107,16 @@ export const ShoppingBag = () => {
 			totalValue += item.cost >= 180 ? item.cost : item.cost + 10;
 		});
 		setTotal(totalValue);
-		// console.log([...new Array(productsArr.length)].map(i => 1));
 		setProductsQuant([...new Array(productsArr.length)].map((i) => 1));
 	}, [productsArr]);
 
 	return (
 		<div className="shopping-bag-wrap">
-			<Preloader />
 			<div className="bag-amount">
 				<h1>My shopping bag ({busketProductsIDs.length})</h1>
 				<Link to="/">Back to shopping</Link>
 			</div>
-			<div className="products-bag-wrap">
+			{!busketProductsIDs.length ? <h1 className='no-label' >No wines in the bag..</h1> : !products.length ? <Preloader/> : <div className="products-bag-wrap">
 				{products?.map((item, index) => {
 					return (
 						<Product
@@ -140,7 +138,7 @@ export const ShoppingBag = () => {
 						/>
 					);
 				})}
-			</div>
+			</div>}
 			{total > 0 ? (
 				<div className="total-wrap">
 					<p className="total">Total: ${total}</p>

@@ -3,20 +3,26 @@ import { Link } from 'react-router-dom';
 import { useSearchParams } from 'react-router-dom';
 import { GeneratePageBtns } from './components/GeneratePageBtns';
 import { useGetRangedWines } from '../../shared/hooks/useGetRangedWines';
+import { Preloader } from '../../shared/components/Counter/Preloader';
+
 
 import './all-wines.css';
-import { Preloader } from '../../shared/components/Counter/Preloader';
+
 
 export const AllWines = () => {
 	const [searchParams, setSearchParams] = useSearchParams();
 
 	const pageNumber = Number(searchParams.get('page')) || 1;
 
-	const winesData = useGetRangedWines(pageNumber) || {};
-	const { items, pagesCount } = winesData;
+	const winesData = useGetRangedWines(pageNumber) || [];
+	const { items, pagesCount } = winesData[0] || [];
+	const setData = winesData[1];
+
+	// console.log(items);
 
 
 	function changePageUrl(page) {
+		setData(undefined)
 		setSearchParams(`page=${page}`);
 	}
 
@@ -39,10 +45,9 @@ export const AllWines = () => {
 
 	return (
 		<div className="all-wines-wrap">
-			<Preloader />
 			<h1 className="wines-list-label">Wines list:</h1>
 			<div className="all-wines-section">
-				{items?.map((wine) => {
+				{items === undefined ? <Preloader/> : items?.map((wine) => {
 					return (
 						<Link to={`/wine?id=${wine.id}`} key={wine.id} className="wine-wrap">
 							<img className="wine-img" src={wine.imgURL} alt={wine.description} />

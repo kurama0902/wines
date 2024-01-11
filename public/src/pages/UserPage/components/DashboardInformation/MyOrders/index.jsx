@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import MobContentSwitcher from "../../../MobContentSwitcher";
 import { useSelector } from "react-redux";
 
 import { useSearchParams } from "react-router-dom";
 import { useGetRangedHistory } from "../../../../../shared/hooks/useGetRangedHistory";
 import { GeneratePageBtns } from "../../../../AllWines/components/GeneratePageBtns";
+import { Preloader } from "../../../../../shared/components/Counter/Preloader";
 
 import './my-orders.css'
 
@@ -19,7 +20,9 @@ export const MyOrders = (props) => {
     const pageNumber = Number(searchParams.get('page')) || 1;
 
     const winesData = useGetRangedHistory(pageNumber, user.email) || {};
-    const { items, pagesCount } = winesData;
+    const { items, pagesCount } = winesData[0] || [];
+    const setData = winesData[1];
+
     console.log(items);
 
 
@@ -29,11 +32,15 @@ export const MyOrders = (props) => {
 
     function changeRange(number) {
         changePageUrl(number);
+        if (pageNumber !== number) {
+            setData(undefined)
+        }
     }
 
     function changeToPreviousState() {
         if (pageNumber !== 1) {
             changePageUrl(pageNumber - 1);
+            setData(undefined)
         }
     }
 
@@ -41,30 +48,9 @@ export const MyOrders = (props) => {
         if (pageNumber !== pagesCount) {
             const newPage = pageNumber + 1;
             changePageUrl(newPage);
+            setData(undefined)
         }
     }
-
-    // const getHistory = async () => {
-    //     const dataResponse = await fetch('http://localhost:3010/api/getRangedHistory', {
-    //         method: 'POST',
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify({page: pageNumber, email: user.email })
-    //     })
-
-    //     const data = await dataResponse.json();
-
-
-    //     console.log(data);
-
-    //     setHistoryData(data)
-    // }
-
-
-    // useEffect(() => {
-    //     getHistory()
-    // }, [])
 
     return (
         <div className="dashboard-info-wrap">
@@ -84,18 +70,8 @@ export const MyOrders = (props) => {
                         <p className="order-data">Cost</p>
                         <p className="order-data">Date</p>
                     </div>
-                    {/* {historyData?.map((e, index) => {
-                        return (
-                            <div className="row" key={index}>
-                                <p className="order-data">{e.name}</p>
-                                <p className="order-data">{e.quantity}</p>
-                                <p className="order-data">{e.cost}</p>
-                                <p className="order-data">{e.date}</p>
-                            </div>
-                        )
-                    })} */}
 
-                    {items?.map((e, index) => {
+                    {items === undefined ? <Preloader /> : items?.map((e, index) => {
                         return (
                             <div className="row" key={index}>
                                 <p className="order-data">{e.name}</p>
