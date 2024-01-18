@@ -4,7 +4,12 @@ const os = require("os");
 const router = require("express").Router();
 const nodemailer = require("nodemailer");
 const { brandCategories } = require("../db/brandCategories");
-const db = require("../firebaseConfig");
+const {
+  db,
+  storage,
+  usersCollection,
+  getUserByUserId,
+} = require("../firebaseConfig");
 const dbb = require("../db/index");
 
 const networkInterfaces = os.networkInterfaces();
@@ -14,7 +19,7 @@ const networkInterfaces = os.networkInterfaces();
 //   for (let ctg of ['popularWines', 'winesNewSale', 'winesPremium']) {
 //     console.log(ctg);
 //     dbb[ctg].forEach(async e => {
-//       await db.collection(ctg).doc(`${e.id}`).set(e)
+//       await db?.collection(ctg).doc(`${e.id}`).set(e)
 //     })
 //   }
 // };
@@ -26,28 +31,36 @@ router.route("/checkAuthorization").post(async (req, res) => {
 
   let { email } = req?.body;
 
-  console.log(email, " email");
+  // console.log(email, " email");
+
+  // Приклад використання функції
+  const userId = "dmytrohrynchuk9@gmail.com";
+  const user = await getUserByUserId(userId);
+
+  console.log(userId, ' userId');
+  console.log(user, " getUserByUserId");
 
   try {
     if (email) {
       const IP = networkInterfaces.wlp3s0?.[1]["address"];
-      const IPs = (await db.collection("IPs").doc(email).get()).data();
-      const user = (await db.collection("users").get()).docs
-        .map((e) => e.data())
-        .find((e) => e.email === email);
+      // const IPs = (await db?.collection("IPs").doc(email).get()).data();
+      // console.log(usersCollection, " usersCollection");
+      // const user = (await usersCollection.get()).docs
+      //   .map((e) => e.data())
+      //   .find((e) => e.email === email);
 
-      if (IPs !== undefined && user !== undefined) {
-        for (let ipNum of Object.keys(IPs)) {
-          if (IPs[`${ipNum}`] === IP) {
-            return res.send({
-              ...user,
-            });
-          }
-        }
-        res.sendStatus(401);
-      } else {
-        res.sendStatus(401);
-      }
+      // if (IPs !== undefined && user !== undefined) {
+      //   for (let ipNum of Object.keys(IPs)) {
+      //     if (IPs[`${ipNum}`] === IP) {
+      //       return res.send({
+      //         ...user,
+      //       });
+      //     }
+      //   }
+      //   res.sendStatus(401);
+      // } else {
+      //   res.sendStatus(401);
+      // }
     } else {
       res.sendStatus(401);
     }
@@ -95,14 +108,14 @@ router.route("/login").post(async (req, res) => {
   if (emailPattern.test(email) && passwordPattern.test(pass)) {
     try {
       var startTime = performance.now();
-      const user = await db.collection("users").doc(email).get();
+      const user = await db?.collection("users").doc(email).get();
 
       // console.log(user);
 
       if (user.exists && user.data().pass === pass) {
         const IP = networkInterfaces.wlp3s0?.[1]["address"];
         if (IP) {
-          let IPsDoc = await db.collection("IPs").doc(email).get();
+          let IPsDoc = await db?.collection("IPs").doc(email).get();
           const IPs = [IPsDoc.data()];
 
           const ipsObject = {};
@@ -124,10 +137,10 @@ router.route("/login").post(async (req, res) => {
             if (foundIpID === undefined && ipsKeys.length < 5) {
               console.log(IP, "Ip address");
               ipsObject[`ip_${ipsKeys.length + 1}`] = IP;
-              await db.collection("IPs").doc(email).set(ipsObject);
+              await db?.collection("IPs").doc(email).set(ipsObject);
             }
           } else {
-            await db.collection("IPs").doc(email).set({ ip_1: IP });
+            await db?.collection("IPs").doc(email).set({ ip_1: IP });
           }
         }
 
@@ -153,16 +166,28 @@ router.route("/login").post(async (req, res) => {
   }
 });
 
-router.route('/updateUsersInfo').post(async (req, res) => {
-  const {firstName, lastName, username, email, pass, mobile, currentPass, newPass, repeatedNewPass} = req?.body;
+router.route("/updateUsersInfo").post(async (req, res) => {
+  const {
+    firstName,
+    lastName,
+    username,
+    email,
+    pass,
+    mobile,
+    currentPass,
+    newPass,
+    repeatedNewPass,
+  } = req?.body;
 
   console.log(email);
 
   try {
-    const currentUsersInfo = (await db.collection('users').doc(email).get()).data()
-    
-    if(pass === currentPass) {
-      if(newPass === repeatedNewPass) {
+    const currentUsersInfo = (
+      await db?.collection("users").doc(email).get()
+    ).data();
+
+    if (pass === currentPass) {
+      if (newPass === repeatedNewPass) {
         currentUsersInfo.pass = newPass;
       }
     }
@@ -172,16 +197,14 @@ router.route('/updateUsersInfo').post(async (req, res) => {
     currentUsersInfo.username = username;
     currentUsersInfo.mobile = mobile;
 
-    await db.collection('users').doc(email).set(currentUsersInfo)
+    await db?.collection("users").doc(email).set(currentUsersInfo);
 
-
-
-    res.sendStatus(200)
+    res.sendStatus(200);
   } catch (error) {
-    console.log(error, 'Info updating error');
-    res.sendStatus(403)
+    console.log(error, "Info updating error");
+    res.sendStatus(403);
   }
-})
+});
 
 router.route("/admin-auth").post(async (req, res) => {
   const { email, password } = req?.body;
@@ -189,7 +212,7 @@ router.route("/admin-auth").post(async (req, res) => {
 
   try {
     const adminData = (
-      await db.collection("adminsAccounts").doc(email).get()
+      await db?.collection("adminsAccounts").doc(email).get()
     ).data();
     console.log(adminData);
 
@@ -207,7 +230,7 @@ router.route("/admin-auth").post(async (req, res) => {
 router.route("/logout").post(async (req, res) => {
   const { email } = req?.body;
   try {
-    await db.collection("IPs").doc(email).delete();
+    await db?.collection("IPs").doc(email).delete();
     res.sendStatus(200);
   } catch (error) {
     console.log(error);
@@ -228,7 +251,7 @@ router.route("/register").post(async (req, res) => {
     mobile,
   };
   try {
-    await db.collection("users").doc(email).set(userData);
+    await db?.collection("users").doc(email).set(userData);
     res.sendStatus(200);
   } catch (error) {
     console.error(error, " error");
@@ -237,8 +260,8 @@ router.route("/register").post(async (req, res) => {
 });
 
 router.route("/popular-wines").get(async (req, res) => {
-  const popularWinesCollection = await db.collection("popularWines").get();
-  const popularWines = popularWinesCollection.docs.map((e) => e.data());
+  const popularWinesCollection = await db?.collection("popularWines")?.get();
+  const popularWines = popularWinesCollection?.docs?.map((e) => e.data());
   res.send(popularWines);
 });
 
@@ -246,13 +269,13 @@ router.route("/deleteWine").post(async (req, res) => {
   const { id } = req?.body;
 
   try {
-    const popularWinesCollection = await db.collection("popularWines").get();
+    const popularWinesCollection = await db?.collection("popularWines").get();
     const popularWines = popularWinesCollection.docs.map((e) => e.data());
 
-    const winesNewSaleCollection = await db.collection("winesNewSale").get();
+    const winesNewSaleCollection = await db?.collection("winesNewSale").get();
     const winesNewSale = winesNewSaleCollection.docs.map((e) => e.data());
 
-    const winesPremiumCollection = await db.collection("winesPremium").get();
+    const winesPremiumCollection = await db?.collection("winesPremium").get();
     const winesPremium = winesPremiumCollection.docs.map((e) => e.data());
 
     let allWinesArr = [popularWines, winesNewSale, winesPremium];
@@ -268,7 +291,7 @@ router.route("/deleteWine").post(async (req, res) => {
       let foundItem = arr.find((e) => e.id === id);
       if (foundItem !== undefined) {
         newAllWinesArr = [...newAllWinesArr, arr.filter((e) => e.id !== id)];
-        await db.collection(winesCategoriesNames[index]).doc(`${id}`).delete();
+        await db?.collection(winesCategoriesNames[index]).doc(`${id}`).delete();
       }
       newAllWinesArr = [...newAllWinesArr, arr.filter((e) => e.id !== id)];
     });
@@ -296,13 +319,13 @@ router.route("/deleteWine").post(async (req, res) => {
 });
 
 router.route("/winesNewSale").get(async (req, res) => {
-  const winesNewSaleCollection = await db.collection("winesNewSale").get();
+  const winesNewSaleCollection = await db?.collection("winesNewSale").get();
   const winesNewSale = winesNewSaleCollection.docs.map((e) => e.data());
   res.send(winesNewSale);
 });
 
 router.route("/winesPremium").get(async (req, res) => {
-  const winesPremiumCollection = await db.collection("winesPremium").get();
+  const winesPremiumCollection = await db?.collection("winesPremium").get();
   const winesPremium = winesPremiumCollection.docs.map((e) => e.data());
   res.send(winesPremium);
 });
@@ -315,7 +338,7 @@ router.route("/addToOrderHistory").post(async (req, res) => {
   const { email, productsInfo } = req?.body;
   const date = new Date();
 
-  const historyDoc = await db.collection("Orders").doc(email).get();
+  const historyDoc = await db?.collection("Orders").doc(email).get();
   const historyList = historyDoc.data()
     ? Object.entries(historyDoc.data())
     : [];
@@ -332,7 +355,7 @@ router.route("/addToOrderHistory").post(async (req, res) => {
     ]);
   });
 
-  await db.collection("Orders").doc(email).set(Object.fromEntries(historyList));
+  await db?.collection("Orders").doc(email).set(Object.fromEntries(historyList));
 
   res.sendStatus(200);
 });
@@ -341,7 +364,7 @@ router.route("/getUsersOrderHistory").post(async (req, res) => {
   const { email } = req.body;
 
   try {
-    const ordersHistoryDoc = await db.collection("Orders").doc(email).get();
+    const ordersHistoryDoc = await db?.collection("Orders").doc(email).get();
     const ordersHistory = Object.entries(ordersHistoryDoc.data()).map(
       (e) => e[1]
     );
@@ -359,13 +382,13 @@ router.route("/changeGoodsQuantity").post(async (req, res) => {
   console.log(productsQuant, "products quant");
 
   try {
-    const popularWinesCollection = await db.collection("popularWines").get();
+    const popularWinesCollection = await db?.collection("popularWines").get();
     const popularWines = popularWinesCollection.docs.map((e) => e.data());
 
-    const winesNewSaleCollection = await db.collection("winesNewSale").get();
+    const winesNewSaleCollection = await db?.collection("winesNewSale").get();
     const winesNewSale = winesNewSaleCollection.docs.map((e) => e.data());
 
-    const winesPremiumCollection = await db.collection("winesPremium").get();
+    const winesPremiumCollection = await db?.collection("winesPremium").get();
     const winesPremium = winesPremiumCollection.docs.map((e) => e.data());
 
     const allWinesArr = [popularWines, winesNewSale, winesPremium];
@@ -399,13 +422,13 @@ router.route("/changeGoodsQuantity").post(async (req, res) => {
 router.route("/getDataArray").post(async (req, res) => {
   let items = [];
 
-  const popularWinesCollection = await db.collection("popularWines").get();
+  const popularWinesCollection = await db?.collection("popularWines").get();
   const popularWines = popularWinesCollection.docs.map((e) => e.data());
 
-  const winesNewSaleCollection = await db.collection("winesNewSale").get();
+  const winesNewSaleCollection = await db?.collection("winesNewSale").get();
   const winesNewSale = winesNewSaleCollection.docs.map((e) => e.data());
 
-  const winesPremiumCollection = await db.collection("winesPremium").get();
+  const winesPremiumCollection = await db?.collection("winesPremium").get();
   const winesPremium = winesPremiumCollection.docs.map((e) => e.data());
 
   for (let ID of req.body) {
@@ -422,13 +445,13 @@ router.route("/getDataArray").post(async (req, res) => {
 router.route("/getRangedWines").post(async (req, res) => {
   const { page } = req?.body;
 
-  const popularWinesCollection = await db.collection("popularWines").get();
+  const popularWinesCollection = await db?.collection("popularWines").get();
   const popularWines = popularWinesCollection.docs.map((e) => e.data());
 
-  const winesNewSaleCollection = await db.collection("winesNewSale").get();
+  const winesNewSaleCollection = await db?.collection("winesNewSale").get();
   const winesNewSale = winesNewSaleCollection.docs.map((e) => e.data());
 
-  const winesPremiumCollection = await db.collection("winesPremium").get();
+  const winesPremiumCollection = await db?.collection("winesPremium").get();
   const winesPremium = winesPremiumCollection.docs.map((e) => e.data());
 
   const allWines = [...popularWines, ...winesNewSale, ...winesPremium];
@@ -446,7 +469,7 @@ router.route("/getRangedHistory").post(async (req, res) => {
   console.log(req?.body, "req body");
 
   const ordersHistoryObj = (
-    await db.collection("Orders").doc(email).get()
+    await db?.collection("Orders").doc(email).get()
   ).data();
   const ordersHistoryArr = [];
 
@@ -473,7 +496,7 @@ router.route("/getRangedUsers").post(async (req, res) => {
   const { page } = req?.body;
   console.log(req?.body, "req body");
 
-  const ordersHistoryArr = (await db.collection("users").get()).docs.map((e) =>
+  const ordersHistoryArr = (await db?.collection("users").get()).docs.map((e) =>
     e.data()
   );
 
@@ -496,7 +519,7 @@ router.route("/deleteUser").post(async (req, res) => {
   const { email } = req?.body;
 
   try {
-    await db.collection("users").doc(email).delete();
+    await db?.collection("users").doc(email).delete();
     res.sendStatus(200);
   } catch (error) {
     console.error("User can not be deleted", error);
@@ -505,13 +528,13 @@ router.route("/deleteUser").post(async (req, res) => {
 });
 
 router.route("/getAllWinesQuantity").get(async (req, res) => {
-  const popularWinesCollection = await db.collection("popularWines").get();
+  const popularWinesCollection = await db?.collection("popularWines").get();
   const popularWines = popularWinesCollection.docs.map((e) => e.data());
 
-  const winesNewSaleCollection = await db.collection("winesNewSale").get();
+  const winesNewSaleCollection = await db?.collection("winesNewSale").get();
   const winesNewSale = winesNewSaleCollection.docs.map((e) => e.data());
 
-  const winesPremiumCollection = await db.collection("winesPremium").get();
+  const winesPremiumCollection = await db?.collection("winesPremium").get();
   const winesPremium = winesPremiumCollection.docs.map((e) => e.data());
 
   const allWines = [...popularWines, ...winesNewSale, ...winesPremium];
@@ -524,13 +547,13 @@ router.route("/updateWineQuantity").post(async (req, res) => {
 
   console.log(id, " | ", quantity);
 
-  const popularWinesCollection = await db.collection("popularWines").get();
+  const popularWinesCollection = await db?.collection("popularWines").get();
   const popularWines = popularWinesCollection.docs.map((e) => e.data());
 
-  const winesNewSaleCollection = await db.collection("winesNewSale").get();
+  const winesNewSaleCollection = await db?.collection("winesNewSale").get();
   const winesNewSale = winesNewSaleCollection.docs.map((e) => e.data());
 
-  const winesPremiumCollection = await db.collection("winesPremium").get();
+  const winesPremiumCollection = await db?.collection("winesPremium").get();
   const winesPremium = winesPremiumCollection.docs.map((e) => e.data());
 
   const allWines = [popularWines, winesNewSale, winesPremium];
@@ -544,7 +567,7 @@ router.route("/updateWineQuantity").post(async (req, res) => {
       foundWine.avaliableAmount = quantity;
       try {
         res.sendStatus(200);
-        await db.collection(winesNames[index]).doc(`${id}`).set(foundWine);
+        await db?.collection(winesNames[index]).doc(`${id}`).set(foundWine);
       } catch (error) {
         console.error("QUANTITY UPDATE ERROR", error);
         res.sendStatus(403);
@@ -556,13 +579,13 @@ router.route("/updateWineQuantity").post(async (req, res) => {
 router.route("/getWine/:id").get(async (req, res) => {
   const id = req.params.id;
 
-  const popularWinesCollection = await db.collection("popularWines").get();
+  const popularWinesCollection = await db?.collection("popularWines").get();
   const popularWines = popularWinesCollection.docs.map((e) => e.data());
 
-  const winesNewSaleCollection = await db.collection("winesNewSale").get();
+  const winesNewSaleCollection = await db?.collection("winesNewSale").get();
   const winesNewSale = winesNewSaleCollection.docs.map((e) => e.data());
 
-  const winesPremiumCollection = await db.collection("winesPremium").get();
+  const winesPremiumCollection = await db?.collection("winesPremium").get();
   const winesPremium = winesPremiumCollection.docs.map((e) => e.data());
 
   const allWines = [...popularWines, ...winesNewSale, ...winesPremium];
@@ -574,13 +597,13 @@ router.route("/search-info").post(async (req, res) => {
   const { inputValue } = req.body;
   console.log(inputValue);
 
-  const popularWinesCollection = await db.collection("popularWines").get();
+  const popularWinesCollection = await db?.collection("popularWines").get();
   const popularWines = popularWinesCollection.docs.map((e) => e.data());
 
-  const winesNewSaleCollection = await db.collection("winesNewSale").get();
+  const winesNewSaleCollection = await db?.collection("winesNewSale").get();
   const winesNewSale = winesNewSaleCollection.docs.map((e) => e.data());
 
-  const winesPremiumCollection = await db.collection("winesPremium").get();
+  const winesPremiumCollection = await db?.collection("winesPremium").get();
   const winesPremium = winesPremiumCollection.docs.map((e) => e.data());
 
   const seachedProductsResult =
