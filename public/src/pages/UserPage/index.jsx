@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom';
 import { DashboardInformation } from './components/DashboardInformation';
 import { NotFound } from '../NotFound/NotFound';
 import { MyOrders } from './components/DashboardInformation/MyOrders';
-import { Preloader } from '../../shared/components/Counter/Preloader';
-
 
 import './user-page.css';
 

@@ -1,10 +1,23 @@
-input[type="file"] {
-    display: none;
-}
 
 .dashboard-info-wrap {
     flex: 1;
     background-color: #FBF7F4;
+}
+
+.update-info {
+    cursor: pointer;
+    border: none;
+    border-radius: 12px;
+    width: 150px;
+    height: 40px;
+    align-self: flex-end;
+    margin-bottom: 10px;
+    background-color: #384D6C;
+    color: #FBF7F4;
+}
+
+.update-info:hover {
+    background-color: #455e83;
 }
 
 .dashboard-header {
@@ -148,7 +161,7 @@ input[type="file"] {
     padding: 32px 0px;
     border-top: 1px solid lightgray;
     border-bottom: 1px solid lightgray;
-    margin-bottom: 56px;
+    margin-bottom: 18px;
     gap: 16px;
 }
 

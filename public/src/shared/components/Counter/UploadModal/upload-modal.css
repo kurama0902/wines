@@ -1,0 +1,60 @@
+.upload-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 10px;
+    z-index: 9;
+}
+
+.close-bg {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.24);
+    z-index: 10;
+}
+
+.upload-picture {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    max-width: 300px;
+    width: 100%;
+    height: 300px;
+    background-color: white;
+    z-index: 11;
+    padding: 5px;
+}
+
+.f-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px dashed gray;
+    height: 220px;
+}
+
+.update-picture-btn {
+    display: block;
+    border: none;
+    border-radius: 8px;
+    height: 60px;
+    background-color: rgb(49, 49, 124);
+    font-size: large;
+    color: white;
+}
+
+.update-picture-btn:hover {
+    background-color: rgb(60, 60, 143);
+}
+
+input[type="file"] {
+    display: none;
+}

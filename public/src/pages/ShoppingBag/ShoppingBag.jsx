@@ -76,6 +76,7 @@ export const ShoppingBag = () => {
 
 			body: JSON.stringify({
 				info: tableStart + htmlStr + tableEnd,
+				email: user.email
 			}),
 		});
 

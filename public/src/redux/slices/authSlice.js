@@ -18,12 +18,13 @@ export const authSlice = createSlice({
 			return state;
 		},
 		deleteUser: (state, action) => {
+			document.cookie = `auth=${state.user.email}; Max-Age=-1`
+			
 			state = {
 				...state,
 				user: null,
 			};
 
-			document.cookie = `auth=${state.user.email}; Max-Age=-1`
 
 			return state;
 		},

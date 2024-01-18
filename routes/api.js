@@ -71,7 +71,7 @@ router.route("/feedback").post((req, res, next) => {
 
   let mailOptions = {
     from: "creepysimbaplay@gmail.com",
-    to: "dmytrohrynchuk9@gmail.com",
+    to: req.body.email,
     subject: "Your order",
     html: `${req.body.info}`,
   };
@@ -152,6 +152,36 @@ router.route("/login").post(async (req, res) => {
     res.sendStatus(401);
   }
 });
+
+router.route('/updateUsersInfo').post(async (req, res) => {
+  const {firstName, lastName, username, email, pass, mobile, currentPass, newPass, repeatedNewPass} = req?.body;
+
+  console.log(email);
+
+  try {
+    const currentUsersInfo = (await db.collection('users').doc(email).get()).data()
+    
+    if(pass === currentPass) {
+      if(newPass === repeatedNewPass) {
+        currentUsersInfo.pass = newPass;
+      }
+    }
+
+    currentUsersInfo.firstname = firstName;
+    currentUsersInfo.lastname = lastName;
+    currentUsersInfo.username = username;
+    currentUsersInfo.mobile = mobile;
+
+    await db.collection('users').doc(email).set(currentUsersInfo)
+
+
+
+    res.sendStatus(200)
+  } catch (error) {
+    console.log(error, 'Info updating error');
+    res.sendStatus(403)
+  }
+})
 
 router.route("/admin-auth").post(async (req, res) => {
   const { email, password } = req?.body;
