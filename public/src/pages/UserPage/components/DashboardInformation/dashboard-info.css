@@ -117,7 +117,8 @@
 .users-picture {
     width: 105px;
     height: 105px;
-    border-radius: 50%;
+    border-radius: 100%;
+    object-fit: cover;
 }
 
 .update-picture-wrap {

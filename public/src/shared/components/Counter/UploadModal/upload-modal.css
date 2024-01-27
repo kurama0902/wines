@@ -35,6 +35,7 @@
 
 .f-label {
     display: flex;
+    cursor: pointer;
     justify-content: center;
     align-items: center;
     border: 1px dashed gray;
@@ -43,6 +44,7 @@
 
 .update-picture-btn {
     display: block;
+    cursor: pointer;
     border: none;
     border-radius: 8px;
     height: 60px;

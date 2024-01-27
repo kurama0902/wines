@@ -9,7 +9,6 @@ export const WinePage = () => {
 	let [searchParams] = useSearchParams();
 
 	const wineID = searchParams.get('id');
-
 	const wine = useGetWine(wineID);
 
 	return (
@@ -22,7 +21,6 @@ export const WinePage = () => {
 					dolore quo. Voluptate eius corrupti ducimus. Nemo, excepturi!
 				</p>
 			</div>
-			{/* <Preloader /> */}
 		</div>
 	);
 };

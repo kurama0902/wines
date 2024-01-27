@@ -2,7 +2,7 @@
     position: absolute;
     display: flex;
     align-items: end;
-    height: 110px;
+    height: 155px;
     top: 40px;
     left: 0;
 }
@@ -16,7 +16,7 @@
     flex-direction: column;
     /* padding-top: 10px; */
     width: inherit;
-    height: 100px;
+    height: 150px;
     background-color: white;
     box-shadow: 2px 2px 2px lightgray, -2px -2px 2px lightgrey;
     padding: 10px;
@@ -35,8 +35,9 @@
 
 .searched-item {
     display: flex;
+    justify-content: start;
     align-items: center;
-    gap: 5px;
+    gap: 15px;
 }
 
 .searched-item b, .searched-item p {

@@ -1,14 +1,18 @@
 import React, { useRef, useState } from "react";
 import MobContentSwitcher from "../../MobContentSwitcher";
 import { useSelector } from "react-redux";
+import { UploadModal } from "../../../../shared/components/Counter/UploadModal";
+import { Preloader } from "../../../../shared/components/Counter/Preloader";
 
 import './dashboard-info.css'
-import { UploadModal } from "../../../../shared/components/Counter/UploadModal";
 
 export const DashboardInformation = (props) => {
 
-    const { firstname, lastname, username, email, pass, address, mobile, } = useSelector(state => state.auth.user);
+    const { firstname, lastname, username, email, pass, address, mobile, imgURL } = useSelector(state => state.auth.user);
     const [visibility, setVisibility] = useState(false)
+    const [flag, setFlag] = useState(false);
+
+    console.log(imgURL);
 
     const usersInfo = useRef({
         firstName: firstname,
@@ -56,15 +60,14 @@ export const DashboardInformation = (props) => {
                         </div>
                         <div className="users-description">
                             <div className="users-position">
-                                <img className="users-picture" src="https://images.unsplash.com/photo-1628187832510-94b4d90445af?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" alt="" />
+                                <img className="users-picture" src={imgURL || 'https://artscimedia.case.edu/wp-content/uploads/sites/79/2016/12/14205134/no-user-image.gif'} alt="" />
                                 <div className="pi">
                                     <p className="users-name">{`${firstname} ${lastname}`}</p>
                                 </div>
                             </div>
                             <div className="update-picture-wrap">
                                 <button onClick={() => setVisibility(!visibility)} className="upload-photo">Upload Photo</button>
-                                <button className="delete-photo">Delete</button>
-                                {visibility && <UploadModal visibility={visibility} setVisibility={setVisibility}/>}
+                                {visibility && <UploadModal flag={flag} setFlag={setFlag} visibility={visibility} setVisibility={setVisibility}/>}
                             </div>
                         </div>
                     </div>
@@ -119,6 +122,7 @@ export const DashboardInformation = (props) => {
                     <button type="submit" className="update-info">Update</button>
                 </main>
             </form>
+            {flag && <Preloader />}
         </div>
     )
 }

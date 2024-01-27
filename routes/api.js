@@ -1,13 +1,23 @@
 require("dotenv").config();
 
 const os = require("os");
+const fs = require("fs")
+var ImageKit = require("imagekit");
 const router = require("express").Router();
 const nodemailer = require("nodemailer");
 const { brandCategories } = require("../db/brandCategories");
+const multer = require('multer')
 const db = require("../firebaseConfig");
 const dbb = require("../db/index");
 
 const networkInterfaces = os.networkInterfaces();
+
+var imagekit = new ImageKit({
+  publicKey: "public_o8GkazK+J8PCgWzn4e76LM4FNQk=",
+  privateKey: "private_fopWiUVI+uoahH5u+NlTZhqJO7M=",
+  urlEndpoint: "https://ik.imagekit.io/nw50elh8t/"
+});
+
 // console.log(networkInterfaces);
 
 // const fn = () => {
@@ -31,10 +41,15 @@ router.route("/checkAuthorization").post(async (req, res) => {
   try {
     if (email) {
       const IP = networkInterfaces.wlp3s0?.[1]["address"];
+      const img = (await db.collection('avatarURLS').doc(email).get()).data();
       const IPs = (await db.collection("IPs").doc(email).get()).data();
       const user = (await db.collection("users").get()).docs
         .map((e) => e.data())
         .find((e) => e.email === email);
+
+        if(img !== undefined) {
+          user.imgURL = img.url
+        }
 
       if (IPs !== undefined && user !== undefined) {
         for (let ipNum of Object.keys(IPs)) {
@@ -90,14 +105,11 @@ const passwordPattern = /^(?=.*[A-Z])(?=.*[\W_]).{8,}$/;
 
 router.route("/login").post(async (req, res) => {
   const { email, pass } = req?.body || {};
-  // const userKey = generateUserId(email, pass);
 
   if (emailPattern.test(email) && passwordPattern.test(pass)) {
     try {
       var startTime = performance.now();
       const user = await db.collection("users").doc(email).get();
-
-      // console.log(user);
 
       if (user.exists && user.data().pass === pass) {
         const IP = networkInterfaces.wlp3s0?.[1]["address"];
@@ -131,14 +143,29 @@ router.route("/login").post(async (req, res) => {
           }
         }
 
-        res.send({
-          firstname: user.get("firstname"),
-          lastname: user.get("lastname"),
-          username: user.get("username"),
-          email: user.get("email"),
-          address: user.get("address"),
-          mobile: user.get("mobile"),
-        });
+        const img = (await db.collection('avatarURLS').doc(email).get()).data();
+
+        if(img !== undefined) {
+          res.send({
+            firstname: user.get("firstname"),
+            lastname: user.get("lastname"),
+            username: user.get("username"),
+            email: user.get("email"),
+            address: user.get("address"),
+            mobile: user.get("mobile"),
+            imgURL: img.url
+          });
+        } else {
+          res.send({
+            firstname: user.get("firstname"),
+            lastname: user.get("lastname"),
+            username: user.get("username"),
+            email: user.get("email"),
+            address: user.get("address"),
+            mobile: user.get("mobile"),
+          });
+        }
+
       } else {
         res.sendStatus(401);
       }
@@ -154,15 +181,15 @@ router.route("/login").post(async (req, res) => {
 });
 
 router.route('/updateUsersInfo').post(async (req, res) => {
-  const {firstName, lastName, username, email, pass, mobile, currentPass, newPass, repeatedNewPass} = req?.body;
+  const { firstName, lastName, username, email, pass, mobile, currentPass, newPass, repeatedNewPass } = req?.body;
 
   console.log(email);
 
   try {
     const currentUsersInfo = (await db.collection('users').doc(email).get()).data()
-    
-    if(pass === currentPass) {
-      if(newPass === repeatedNewPass) {
+
+    if (pass === currentPass) {
+      if (newPass === repeatedNewPass) {
         currentUsersInfo.pass = newPass;
       }
     }
@@ -217,8 +244,8 @@ router.route("/logout").post(async (req, res) => {
 router.route("/register").post(async (req, res) => {
   const { firstname, lastname, username, email, pass, address, mobile } =
     req?.body || {};
-  // const userKey = generateUserId(email, pass);
-  const userData = {
+
+    const userData = {
     firstname,
     lastname,
     username,
@@ -586,14 +613,99 @@ router.route("/search-info").post(async (req, res) => {
   const seachedProductsResult =
     inputValue.length > 0
       ? [...popularWines, ...winesNewSale, ...winesPremium].filter((item) =>
-          item.description
-            .toLocaleLowerCase()
-            .includes(inputValue.toLocaleLowerCase())
-        )
+        item.description
+          .toLocaleLowerCase()
+          .includes(inputValue.toLocaleLowerCase())
+      )
       : [];
   res.send(seachedProductsResult);
 });
 
-// router.route()
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    return cb(null, "./uploads")
+  },
+
+  filename: function (req, file, cb) {
+    return cb(null, `${file.originalname}`)
+  }
+})
+
+const upload = multer({ storage })
+
+router.route('/updatePhoto').post(upload.single('avatar'), (req, res) => {
+  let { email } = req?.body;
+  const emailByDefault = req?.body.email;
+  email = email.split('@')[0]
+
+  const avatar = req?.file;
+
+  console.log(email, "EMAIL");
+  console.log(avatar, "AVATAR");
+
+  imagekit.listFiles({
+    tags: [email]
+  }, function (error, result) {
+    if (!result.length) {
+      const file = fs.readFileSync(`./${avatar.path}`);
+
+      const uploadOptions = {
+        file: file,
+        fileName: `${email}.${avatar.mimetype.split('/')[1]}`,
+        folder: '/home/',
+        tags: email,
+      };
+
+      imagekit.upload(uploadOptions, async (err, result) => {
+        if (err) {
+          console.error(err);
+          res.sendStatus(401)
+        } else {
+          try {
+            await db.collection('avatarURLS').doc(emailByDefault).set({url: result.url})
+          } catch (error) {
+            console.error("AVATAR URL ERROR", error);
+          }
+          console.log(result);
+          fs.unlinkSync(`./${avatar.path}`)
+          res.send(result.url)
+        }
+      });
+    } else {
+      imagekit.deleteFile(result[0].fileId, (err, result) => {
+        if (err) {
+          console.error(err);
+        } else {
+          console.log(result);
+        }
+      });
+
+      const file = fs.readFileSync(`./${avatar.path}`);
+
+      const uploadOptions = {
+        file: file,
+        fileName: `${email}.${avatar.mimetype.split('/')[1]}`,
+        folder: '/home/',
+        tags: email,
+      };
+
+      imagekit.upload(uploadOptions, async (err, result) => {
+        if (err) {
+          console.error(err);
+          res.sendStatus(401)
+        } else {
+          try {
+            await db.collection('avatarURLS').doc(emailByDefault).set({url: result.url})
+          } catch (error) {
+            console.error("AVATAR URL ERROR", error);
+          }
+          console.log(result);
+          fs.unlinkSync(`./${avatar.path}`)
+          res.send(result.url)
+        }
+      });
+    }
+  });
+})
 
 module.exports = router;
