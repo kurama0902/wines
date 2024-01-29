@@ -28,7 +28,7 @@ function App() {
 					'Content-Type': 'application/json',
 				},
 
-				body: JSON.stringify({ email: document.cookie.split('=')[1] || '' }),
+				body: JSON.stringify({ email: document.cookie.split('=')[1]}),
 			});
 
 			console.log(response.status);
@@ -44,7 +44,9 @@ function App() {
 	}, [dispatch]);
 
 	useEffect(() => {
-		checkAuth();
+		if(document.cookie.split('=')[1]) {
+			checkAuth();
+		}
 	}, [checkAuth]);
 
 	const likedProductsContextValues = useMemo(

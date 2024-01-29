@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 import { GeneratePageBtns } from '../../AllWines/components/GeneratePageBtns';
@@ -20,10 +20,12 @@ export const GoodsSettings = () => {
 
 	function changePageUrl(page) {
 		setSearchParams(`page=${page}`);
+		inputValue.current = {}
 	}
 
 	function changeRange(number) {
 		changePageUrl(number);
+		inputValue.current = {}
 		if (pageNumber !== number) {
 			setData(undefined);
 		}
@@ -31,6 +33,7 @@ export const GoodsSettings = () => {
 
 	function changeToPreviousState() {
 		if (pageNumber !== 1) {
+			inputValue.current = {}
 			changePageUrl(pageNumber - 1);
 			setData(undefined);
 		}
@@ -38,6 +41,7 @@ export const GoodsSettings = () => {
 
 	function changeToNextState() {
 		if (pageNumber !== pagesCount) {
+			inputValue.current = {}
 			const newPage = pageNumber + 1;
 			changePageUrl(newPage);
 			setData(undefined);
@@ -73,7 +77,7 @@ export const GoodsSettings = () => {
 	const changeInputValue = (id, value) => {
 		inputValue.current[id] = value;
 		console.log(inputValue.current, 'Quantity');
-	};
+	}
 
 	const updateWineQuantity = async (id) => {
 		console.log(id, 'ID');
@@ -81,7 +85,9 @@ export const GoodsSettings = () => {
 
 		const selectedQuantity = Number(inputValue.current[`${id}`]);
 
-		if (selectedQuantity || selectedQuantity === 0) {
+		console.log(selectedQuantity);
+
+		if (selectedQuantity) {
 			await fetch('http://localhost:3010/api/updateWineQuantity', {
 				method: 'POST',
 				headers: {
@@ -92,6 +98,20 @@ export const GoodsSettings = () => {
 					quantity: selectedQuantity,
 				}),
 			});
+
+			setData(
+				{
+					items: items.map(wine => {
+						if (wine.id === id) {
+							wine.avaliableAmount = selectedQuantity;
+							return wine;
+						} else {
+							return wine;
+						}
+					}),
+					pagesCount: pagesCount
+				}
+			);
 		}
 	};
 
@@ -105,6 +125,7 @@ export const GoodsSettings = () => {
 						<Preloader />
 					) : (
 						items?.map((e, index) => {
+							changeInputValue(e.id, e.avaliableAmount);
 							return (
 								<div className="product-wrap" key={e.id}>
 									<div className="picture-and-description">
@@ -149,7 +170,7 @@ export const GoodsSettings = () => {
 												min={1}
 												className="quantity-input"
 												type="number"
-												placeholder="quanity..."
+												placeholder="quantity..."
 											/>
 											<button onClick={() => updateWineQuantity(e.id)} className="update-btn">
 												Update

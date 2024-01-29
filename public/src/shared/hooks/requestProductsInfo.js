@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 export const useRequestProductsInfo = (name) => {
-	const productsIDs = localStorage.getItem(name);
+	const productsIDs = localStorage.getItem(name) || '[]';
 	const [data, setData] = useState([]);
 
 	const getData = async () => {

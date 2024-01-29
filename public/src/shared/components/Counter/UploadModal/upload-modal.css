@@ -53,9 +53,19 @@
     color: white;
 }
 
-.update-picture-btn:hover {
+.update-picture-btn:not(.disabled):hover {
     background-color: rgb(60, 60, 143);
 }
+
+.disabled {
+    cursor: not-allowed;
+    background-color: rgba(0, 0, 255, 0.377);
+}
+
+.disabled:active {
+    pointer-events: none;
+}
+
 
 input[type="file"] {
     display: none;

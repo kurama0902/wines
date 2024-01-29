@@ -1,35 +1,18 @@
 require("dotenv").config();
 
 const os = require("os");
-const fs = require("fs")
-var ImageKit = require("imagekit");
+
 const router = require("express").Router();
 const nodemailer = require("nodemailer");
 const { brandCategories } = require("../db/brandCategories");
-const multer = require('multer')
+const multer = require('multer');
+const updatePhotoFn = require('./../utils/updatePhotoFn');
 const db = require("../firebaseConfig");
-const dbb = require("../db/index");
+// const resetDatabaseByDefaultFn = require('../utils/resetDatabaseByDefaultFn'); import of 'set default DB data function'
 
 const networkInterfaces = os.networkInterfaces();
 
-var imagekit = new ImageKit({
-  publicKey: "public_o8GkazK+J8PCgWzn4e76LM4FNQk=",
-  privateKey: "private_fopWiUVI+uoahH5u+NlTZhqJO7M=",
-  urlEndpoint: "https://ik.imagekit.io/nw50elh8t/"
-});
-
-// console.log(networkInterfaces);
-
-// const fn = () => {
-//   for (let ctg of ['popularWines', 'winesNewSale', 'winesPremium']) {
-//     console.log(ctg);
-//     dbb[ctg].forEach(async e => {
-//       await db.collection(ctg).doc(`${e.id}`).set(e)
-//     })
-//   }
-// };
-
-// fn();
+// resetDatabaseByDefaultFn(db); Set default DB 
 
 router.route("/checkAuthorization").post(async (req, res) => {
   console.log(req?.ip, " req");
@@ -43,13 +26,14 @@ router.route("/checkAuthorization").post(async (req, res) => {
       const IP = networkInterfaces.wlp3s0?.[1]["address"];
       const img = (await db.collection('avatarURLS').doc(email).get()).data();
       const IPs = (await db.collection("IPs").doc(email).get()).data();
-      const user = (await db.collection("users").get()).docs
-        .map((e) => e.data())
-        .find((e) => e.email === email);
+      const user = (await db.collection("users").doc(email).get()).data()
 
         if(img !== undefined) {
           user.imgURL = img.url
         }
+
+        console.log(IPs, 'IPs');
+        console.log(user, 'USER');
 
       if (IPs !== undefined && user !== undefined) {
         for (let ipNum of Object.keys(IPs)) {
@@ -77,15 +61,15 @@ router.route("/feedback").post((req, res, next) => {
   let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "creepysimbaplay@gmail.com",
-      pass: "jcsvzpuqkmkygxej",
+      user: process.env.MAIN_EMAIL,
+      pass: process.env.MAIN_PASS,
     },
   });
 
   console.log(req.body.info);
 
   let mailOptions = {
-    from: "creepysimbaplay@gmail.com",
+    from: process.env.MAIN_EMAIL,
     to: req.body.email,
     subject: "Your order",
     html: `${req.body.info}`,
@@ -145,26 +129,20 @@ router.route("/login").post(async (req, res) => {
 
         const img = (await db.collection('avatarURLS').doc(email).get()).data();
 
+        const userInfo = {
+          firstname: user.get("firstname"),
+          lastname: user.get("lastname"),
+          username: user.get("username"),
+          email: user.get("email"),
+          address: user.get("address"),
+          mobile: user.get("mobile"),
+        };
+
         if(img !== undefined) {
-          res.send({
-            firstname: user.get("firstname"),
-            lastname: user.get("lastname"),
-            username: user.get("username"),
-            email: user.get("email"),
-            address: user.get("address"),
-            mobile: user.get("mobile"),
-            imgURL: img.url
-          });
-        } else {
-          res.send({
-            firstname: user.get("firstname"),
-            lastname: user.get("lastname"),
-            username: user.get("username"),
-            email: user.get("email"),
-            address: user.get("address"),
-            mobile: user.get("mobile"),
-          });
+          userInfo.imgURL = img.url
         }
+
+        res.send(userInfo);
 
       } else {
         res.sendStatus(401);
@@ -200,8 +178,6 @@ router.route('/updateUsersInfo').post(async (req, res) => {
     currentUsersInfo.mobile = mobile;
 
     await db.collection('users').doc(email).set(currentUsersInfo)
-
-
 
     res.sendStatus(200)
   } catch (error) {
@@ -564,7 +540,6 @@ router.route("/updateWineQuantity").post(async (req, res) => {
   const winesNames = ["popularWines", "winesNewSale", "winesPremium"];
 
   allWines.forEach(async (arr, index) => {
-    // console.log(arr);
     const foundWine = arr.find((e) => e.id == id);
     console.log(foundWine);
     if (foundWine !== undefined) {
@@ -623,89 +598,27 @@ router.route("/search-info").post(async (req, res) => {
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    return cb(null, "./uploads")
+    return cb(null, "./uploads");
   },
 
   filename: function (req, file, cb) {
-    return cb(null, `${file.originalname}`)
+    return cb(null, `${file.originalname}`);
   }
 })
 
-const upload = multer({ storage })
+const upload = multer({ storage });
 
 router.route('/updatePhoto').post(upload.single('avatar'), (req, res) => {
-  let { email } = req?.body;
   const emailByDefault = req?.body.email;
-  email = email.split('@')[0]
+  let { email } = req?.body;
+  email = email.split('@')[0];
 
   const avatar = req?.file;
 
   console.log(email, "EMAIL");
   console.log(avatar, "AVATAR");
 
-  imagekit.listFiles({
-    tags: [email]
-  }, function (error, result) {
-    if (!result.length) {
-      const file = fs.readFileSync(`./${avatar.path}`);
-
-      const uploadOptions = {
-        file: file,
-        fileName: `${email}.${avatar.mimetype.split('/')[1]}`,
-        folder: '/home/',
-        tags: email,
-      };
-
-      imagekit.upload(uploadOptions, async (err, result) => {
-        if (err) {
-          console.error(err);
-          res.sendStatus(401)
-        } else {
-          try {
-            await db.collection('avatarURLS').doc(emailByDefault).set({url: result.url})
-          } catch (error) {
-            console.error("AVATAR URL ERROR", error);
-          }
-          console.log(result);
-          fs.unlinkSync(`./${avatar.path}`)
-          res.send(result.url)
-        }
-      });
-    } else {
-      imagekit.deleteFile(result[0].fileId, (err, result) => {
-        if (err) {
-          console.error(err);
-        } else {
-          console.log(result);
-        }
-      });
-
-      const file = fs.readFileSync(`./${avatar.path}`);
-
-      const uploadOptions = {
-        file: file,
-        fileName: `${email}.${avatar.mimetype.split('/')[1]}`,
-        folder: '/home/',
-        tags: email,
-      };
-
-      imagekit.upload(uploadOptions, async (err, result) => {
-        if (err) {
-          console.error(err);
-          res.sendStatus(401)
-        } else {
-          try {
-            await db.collection('avatarURLS').doc(emailByDefault).set({url: result.url})
-          } catch (error) {
-            console.error("AVATAR URL ERROR", error);
-          }
-          console.log(result);
-          fs.unlinkSync(`./${avatar.path}`)
-          res.send(result.url)
-        }
-      });
-    }
-  });
+  updatePhotoFn(db, email, emailByDefault, avatar, res);
 })
 
 module.exports = router;

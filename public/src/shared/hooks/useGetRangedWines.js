@@ -23,5 +23,5 @@ export const useGetRangedWines = (pageNum) => {
 		getData();
 	}, [getData, pageNum]);
 
-	return { data, setData };
+	return {data, setData};
 };

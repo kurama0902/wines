@@ -1,11 +1,10 @@
-import React, { useState } from "react";
-import axios from 'axios'
+import React, { useState }  from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { saveUser } from "../../../../redux/actions/authActions";
 
 import './upload-modal.css'
 
-export const UploadModal = ({flag, setFlag, visibility, setVisibility}) => {
+export const UploadModal = ({setFlag, visibility, setVisibility}) => {
 
     const [value, setValue] = useState(null);
     const [file, setFile] = useState(null);
@@ -35,18 +34,22 @@ export const UploadModal = ({flag, setFlag, visibility, setVisibility}) => {
 
                     try {
                         setFlag(true)
-                        axios.post('http://localhost:3010/api/updatePhoto', formData)
-                            .then(res => {
-                                dispatch(saveUser({...user, imgURL: res.data}))
+                        fetch('http://localhost:3010/api/updatePhoto', {
+                            method: "POST",
+                            body: formData
+                        })
+                            .then(res => res.text())
+                            .then(result => {
+                                dispatch(saveUser({...user, imgURL: result}))
                                 setFlag(false)
-                            })                                    
+                            })                                 
                     } catch (error) {
-                        console.log("AXIOS ERROR", error);
+                        console.error("UPLOAD IMG ERROR", error);
                     }
 
                     setVisibility(!visibility)
                     
-                }} className="update-picture-btn">Update picture</button>
+                }} className={`update-picture-btn ${!file && 'disabled'}`}>Update picture</button>
             </div>
         </div>
     )

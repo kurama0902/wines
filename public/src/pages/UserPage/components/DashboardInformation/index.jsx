@@ -12,8 +12,6 @@ export const DashboardInformation = (props) => {
     const [visibility, setVisibility] = useState(false)
     const [flag, setFlag] = useState(false);
 
-    console.log(imgURL);
-
     const usersInfo = useRef({
         firstName: firstname,
         lastName: lastname,
@@ -67,7 +65,7 @@ export const DashboardInformation = (props) => {
                             </div>
                             <div className="update-picture-wrap">
                                 <button onClick={() => setVisibility(!visibility)} className="upload-photo">Upload Photo</button>
-                                {visibility && <UploadModal flag={flag} setFlag={setFlag} visibility={visibility} setVisibility={setVisibility}/>}
+                                {visibility && <UploadModal setFlag={setFlag} visibility={visibility} setVisibility={setVisibility}/>}
                             </div>
                         </div>
                     </div>
