@@ -19,18 +19,22 @@ router.route("/checkAuthorization").post(async (req, res) => {
 
   let { email } = req?.body;
 
-  console.log(email, " email");
-
   try {
     if (email) {
-      const IP = networkInterfaces.wlp3s0?.[1]["address"];
-      const img = (await db.collection('avatarURLS').doc(email).get()).data();
+      const IP =
+        req?.ip !== "::1" ||
+        networkInterfaces.wlp3s0?.[1]["address"] ||
+        networkInterfaces?.en0[0]?.address ||
+        "";
+
+      console.log(IP, "IP");
+      const img = (await db.collection("avatarURLS").doc(email).get()).data();
       const IPs = (await db.collection("IPs").doc(email).get()).data();
       const user = (await db.collection("users").doc(email).get()).data()
 
-        if(img !== undefined) {
-          user.imgURL = img.url
-        }
+      if (img !== undefined) {
+        user.imgURL = img.url;
+      }
 
         console.log(IPs, 'IPs');
         console.log(user, 'USER');
@@ -66,8 +70,6 @@ router.route("/feedback").post((req, res, next) => {
     },
   });
 
-  console.log(req.body.info);
-
   let mailOptions = {
     from: process.env.MAIN_EMAIL,
     to: req.body.email,
@@ -83,9 +85,6 @@ router.route("/feedback").post((req, res, next) => {
     console.log(mailOptions.html);
   });
 });
-
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const passwordPattern = /^(?=.*[A-Z])(?=.*[\W_]).{8,}$/;
 
 router.route("/login").post(async (req, res) => {
   const { email, pass } = req?.body || {};
@@ -127,7 +126,7 @@ router.route("/login").post(async (req, res) => {
           }
         }
 
-        const img = (await db.collection('avatarURLS').doc(email).get()).data();
+        const img = (await db.collection("avatarURLS").doc(email).get()).data();
 
         const userInfo = {
           firstname: user.get("firstname"),
@@ -158,13 +157,25 @@ router.route("/login").post(async (req, res) => {
   }
 });
 
-router.route('/updateUsersInfo').post(async (req, res) => {
-  const { firstName, lastName, username, email, pass, mobile, currentPass, newPass, repeatedNewPass } = req?.body;
+router.route("/updateUsersInfo").post(async (req, res) => {
+  const {
+    firstName,
+    lastName,
+    username,
+    email,
+    pass,
+    mobile,
+    currentPass,
+    newPass,
+    repeatedNewPass,
+  } = req?.body;
 
   console.log(email);
 
   try {
-    const currentUsersInfo = (await db.collection('users').doc(email).get()).data()
+    const currentUsersInfo = (
+      await db.collection("users").doc(email).get()
+    ).data();
 
     if (pass === currentPass) {
       if (newPass === repeatedNewPass) {
@@ -181,10 +192,10 @@ router.route('/updateUsersInfo').post(async (req, res) => {
 
     res.sendStatus(200)
   } catch (error) {
-    console.log(error, 'Info updating error');
-    res.sendStatus(403)
+    console.log(error, "Info updating error");
+    res.sendStatus(403);
   }
-})
+});
 
 router.route("/admin-auth").post(async (req, res) => {
   const { email, password } = req?.body;
@@ -221,7 +232,7 @@ router.route("/register").post(async (req, res) => {
   const { firstname, lastname, username, email, pass, address, mobile } =
     req?.body || {};
 
-    const userData = {
+  const userData = {
     firstname,
     lastname,
     username,
@@ -411,7 +422,9 @@ router.route("/getDataArray").post(async (req, res) => {
   const winesPremiumCollection = await db.collection("winesPremium").get();
   const winesPremium = winesPremiumCollection.docs.map((e) => e.data());
 
-  for (let ID of req.body) {
+  console.log(req?.body, " req?.body");
+
+  for (let ID of req?.body) {
     items.push(
       [...popularWines, ...winesNewSale, ...winesPremium].find(
         (item) => item.id === ID
@@ -588,16 +601,17 @@ router.route("/search-info").post(async (req, res) => {
   const seachedProductsResult =
     inputValue.length > 0
       ? [...popularWines, ...winesNewSale, ...winesPremium].filter((item) =>
-        item.description
-          .toLocaleLowerCase()
-          .includes(inputValue.toLocaleLowerCase())
-      )
+          item.description
+            .toLocaleLowerCase()
+            .includes(inputValue.toLocaleLowerCase())
+        )
       : [];
   res.send(seachedProductsResult);
 });
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
+    return cb(null, "./uploads");
     return cb(null, "./uploads");
   },
 
