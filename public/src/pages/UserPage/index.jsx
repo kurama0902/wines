@@ -13,8 +13,6 @@ export const UserPage = () => {
 
 	const isLogined = useSelector((state) => state.auth.user)
 
-	console.log(isLogined)
-
 	return isLogined ? (
 		<div className="user-profile-wrap">
 			<aside className="profile-sidebar">

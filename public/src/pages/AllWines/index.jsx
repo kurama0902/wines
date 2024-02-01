@@ -14,8 +14,6 @@ export const AllWines = () => {
 	const { data, setData } = useGetRangedWines(pageNumber) || [];
 	const { items, pagesCount } = data || [];
 
-	// console.log(items);
-
 	function changePageUrl(page) {
 		setData(undefined);
 		setSearchParams(`page=${page}`);

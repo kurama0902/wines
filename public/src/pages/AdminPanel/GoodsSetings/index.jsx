@@ -76,16 +76,11 @@ export const GoodsSettings = () => {
 
 	const changeInputValue = (id, value) => {
 		inputValue.current[id] = value;
-		console.log(inputValue.current, 'Quantity');
 	}
 
 	const updateWineQuantity = async (id) => {
-		console.log(id, 'ID');
-		console.log(inputValue.current[`${id}`], 'Value');
 
 		const selectedQuantity = Number(inputValue.current[`${id}`]);
-
-		console.log(selectedQuantity);
 
 		if (selectedQuantity) {
 			await fetch('http://localhost:3010/api/updateWineQuantity', {

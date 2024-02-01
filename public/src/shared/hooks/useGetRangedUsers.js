@@ -13,7 +13,6 @@ export const useGetRangedUsers = (pageNum) => {
 				body: JSON.stringify({ page: pageNum }),
 			});
 			let wines = await res.json();
-			console.log(wines);
 			setData(wines);
 		} catch (error) {
 			console.error('Error');

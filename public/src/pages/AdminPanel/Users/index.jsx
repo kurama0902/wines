@@ -17,12 +17,8 @@ export const Users = () => {
 
     const winesData = useGetRangedUsers(pageNumber) || [];
 
-    console.log(winesData);
-
     const { items, pagesCount, flag } = winesData[0] || [];
     const setData = winesData[1];
-
-    console.log(flag, "Flag");
 
 
     function changePageUrl(page) {

@@ -8,7 +8,6 @@ export const Preloader = () => {
     return (
         <div className="preloader-wrap">
             <h1>Just Wines</h1>
-            {/* <div className="preloader"></div> */}
             <AnimatedLoading />
         </div>
     )

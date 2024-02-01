@@ -17,8 +17,6 @@ export const AdminAuthorization = () => {
         const inputName = e.name;
         const inputValue = e.value;
         inputsData.current[inputName] = inputValue;
-        console.log(inputsData.current, "|  inputs data");
-        console.log(inputName, inputValue, "|  inputs value");
     }
 
     return (
@@ -34,7 +32,6 @@ export const AdminAuthorization = () => {
                     },
                     body: JSON.stringify(inputsData.current)
                 })
-                console.log(res);
 
                 if (res.status === 200) {
                     setFlag(true);

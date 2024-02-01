@@ -11,7 +11,7 @@ export const UploadModal = ({setFlag, visibility, setVisibility}) => {
 
     const dispatch = useDispatch();
 
-    const { user } = useSelector((state) => ({
+    let { user } = useSelector((state) => ({
         user: state.auth.user,
     }));
 
@@ -38,9 +38,9 @@ export const UploadModal = ({setFlag, visibility, setVisibility}) => {
                             method: "POST",
                             body: formData
                         })
-                            .then(res => res.text())
+                            .then(res => res.json())
                             .then(result => {
-                                dispatch(saveUser({...user, imgURL: result}))
+                                dispatch(saveUser(result))
                                 setFlag(false)
                             })                                 
                     } catch (error) {

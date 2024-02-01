@@ -23,8 +23,6 @@ export const MyOrders = (props) => {
     const { items, pagesCount } = winesData[0] || [];
     const setData = winesData[1];
 
-    console.log(items);
-
 
     function changePageUrl(page) {
         setSearchParams(`page=${page}`);

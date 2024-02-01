@@ -35,7 +35,6 @@ export const ShoppingBag = () => {
 		setBusketAmount(id);
 	};
 
-	// console.log(billTable);
 	async function orderGoods() {
 		let tableStart = `
 		<table border=1>

@@ -49,7 +49,7 @@ export const RegisterUserModal = () => {
 				handleClose();
 			}
 		} catch (error) {
-			console.log('Error -', error);
+			console.error('Register Error', error);
 		}
 	};
 

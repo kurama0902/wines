@@ -11,7 +11,7 @@ export const useGetRequest = (name) => {
 			let json = await res.json();
 			setData(json);
 		} catch (error) {
-			console.log(error);
+			console.error(`${name} ERROR`,error);
 		}
 	};
 

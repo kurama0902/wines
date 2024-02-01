@@ -31,15 +31,12 @@ function App() {
 				body: JSON.stringify({ email: document.cookie.split('=')[1]}),
 			});
 
-			console.log(response.status);
-
 			if (response.status === 200) {
-				console.log('ahuenno sho pizda');
 				const result = await response.json();
 				dispatch(saveUser(result));
 			}
 		} catch (error) {
-			console.log(error, ' lol');
+			console.error(error, ' checkAuthorization ERROR');
 		}
 	}, [dispatch]);
 
@@ -66,7 +63,7 @@ function App() {
 					<LikedProductsContext.Provider value={likedProductsContextValues}>
 						{components}
 
-						{width <= 1024 && <MobileNavigation width={width} />}
+						{width <= 1345 && <MobileNavigation width={width} />}
 					</LikedProductsContext.Provider>
 				)}
 			</WindowSizeContainer>

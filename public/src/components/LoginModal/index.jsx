@@ -53,7 +53,7 @@ export const LoginModal = () => {
 					handleClose();
 				}
 			} catch (error) {
-				console.log('Error -', error);
+				console.error('Login ERROR', error);
 			}
 		}
 	};

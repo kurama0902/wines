@@ -17,6 +17,5 @@ export const useGetWine = (id) => {
 		getData();
 	}, [getData, id]);
 
-	// console.log(data);
 	return data;
 };

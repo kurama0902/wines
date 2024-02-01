@@ -10,7 +10,7 @@
     border-radius: 12px;
     width: 150px;
     height: 40px;
-    align-self: flex-end;
+    margin-left: calc(100% - 150px);
     margin-bottom: 10px;
     background-color: #384D6C;
     color: #FBF7F4;
@@ -127,7 +127,7 @@
 }
 
 .upload-photo,
-.delete-photo {
+.mob-logout {
     display: flex;
     cursor: pointer;
     text-align: center;
@@ -151,7 +151,7 @@
     color: var(--white, #FFF);
 }
 
-.delete-photo {
+.mob-logout {
     border: 1px solid var(--peak-primary, #384D6C);
     color: #384D6C;
 }
@@ -255,7 +255,7 @@
         gap: 15px;
     }
 
-    .upload-photo, .delete-photo {
+    .upload-photo, .mob-logout {
         width: 100%;
     }
 
@@ -270,5 +270,11 @@
     .users-description {
         flex-direction: column;
         gap: 20px;
+    }
+}
+
+@media (min-width: 1346px) {
+    .mob-logout {
+        display: none;
     }
 }

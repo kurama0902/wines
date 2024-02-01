@@ -28,16 +28,11 @@ router.route("/checkAuthorization").post(async (req, res) => {
         "";
 
       console.log(IP, "IP");
-      const img = (await db.collection("avatarURLS").doc(email).get()).data();
       const IPs = (await db.collection("IPs").doc(email).get()).data();
       const user = (await db.collection("users").doc(email).get()).data()
 
-      if (img !== undefined) {
-        user.imgURL = img.url;
-      }
-
-        console.log(IPs, 'IPs');
-        console.log(user, 'USER');
+      console.log(IPs, 'IPs');
+      console.log(user, 'USER');
 
       if (IPs !== undefined && user !== undefined) {
         for (let ipNum of Object.keys(IPs)) {
@@ -86,6 +81,9 @@ router.route("/feedback").post((req, res, next) => {
   });
 });
 
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const passwordPattern = /^(?=.*[A-Z])(?=.*[\W_]).{8,}$/;
+
 router.route("/login").post(async (req, res) => {
   const { email, pass } = req?.body || {};
 
@@ -126,8 +124,6 @@ router.route("/login").post(async (req, res) => {
           }
         }
 
-        const img = (await db.collection("avatarURLS").doc(email).get()).data();
-
         const userInfo = {
           firstname: user.get("firstname"),
           lastname: user.get("lastname"),
@@ -135,11 +131,8 @@ router.route("/login").post(async (req, res) => {
           email: user.get("email"),
           address: user.get("address"),
           mobile: user.get("mobile"),
+          imgURL: user.get("imgURL")
         };
-
-        if(img !== undefined) {
-          userInfo.imgURL = img.url
-        }
 
         res.send(userInfo);
 
@@ -163,11 +156,7 @@ router.route("/updateUsersInfo").post(async (req, res) => {
     lastName,
     username,
     email,
-    pass,
     mobile,
-    currentPass,
-    newPass,
-    repeatedNewPass,
   } = req?.body;
 
   console.log(email);
@@ -176,12 +165,6 @@ router.route("/updateUsersInfo").post(async (req, res) => {
     const currentUsersInfo = (
       await db.collection("users").doc(email).get()
     ).data();
-
-    if (pass === currentPass) {
-      if (newPass === repeatedNewPass) {
-        currentUsersInfo.pass = newPass;
-      }
-    }
 
     currentUsersInfo.firstname = firstName;
     currentUsersInfo.lastname = lastName;
@@ -196,6 +179,22 @@ router.route("/updateUsersInfo").post(async (req, res) => {
     res.sendStatus(403);
   }
 });
+
+
+router.route('/updatePassword').post(async (req, res) => {
+  const { email, pass } = req?.body;
+
+  try {
+    const user = (await db.collection('users').doc(email).get()).data()
+    user.pass = pass;
+    await db.collection('users').doc(email).set(user)
+    res.send(user);
+  } catch (error) {
+    console.log('UPDATE USERS SI ERROR');
+    res.sendStatus(403);
+  }
+
+})
 
 router.route("/admin-auth").post(async (req, res) => {
   const { email, password } = req?.body;
@@ -242,7 +241,13 @@ router.route("/register").post(async (req, res) => {
     mobile,
   };
   try {
+    const IP =
+      req?.ip !== "::1" ||
+      networkInterfaces.wlp3s0?.[1]["address"] ||
+      networkInterfaces?.en0[0]?.address ||
+      "";
     await db.collection("users").doc(email).set(userData);
+    await db.collection('IPs').doc(email).set({ 'ip_1': IP });
     res.sendStatus(200);
   } catch (error) {
     console.error(error, " error");
@@ -461,29 +466,38 @@ router.route("/getRangedHistory").post(async (req, res) => {
   const { page, email } = req?.body;
   console.log(req?.body, "req body");
 
-  const ordersHistoryObj = (
-    await db.collection("Orders").doc(email).get()
-  ).data();
-  const ordersHistoryArr = [];
+  try {
+    const ordersHistoryObj = (
+      await db.collection("Orders").doc(email).get()
+    ).data();
 
-  console.log(ordersHistoryObj);
+    const ordersHistoryArr = [];
 
-  if (ordersHistoryObj !== undefined) {
-    for (let id of Object.keys(ordersHistoryObj)) {
-      ordersHistoryArr.push(ordersHistoryObj[id]);
+    console.log(ordersHistoryObj);
+
+    if (ordersHistoryObj !== undefined) {
+      for (let id of Object.keys(ordersHistoryObj)) {
+        ordersHistoryArr.push(ordersHistoryObj[id]);
+      }
+
+      const slicedHistoryArr = ordersHistoryArr.slice(page * 8 - 8, page * 8);
+      const historyLength = ordersHistoryArr.length;
+
+      res.send({
+        items: slicedHistoryArr,
+        pagesCount: Math.ceil(historyLength / 8),
+      });
+    } else {
+      res.status(403).send({
+        items: [],
+        pagesCount: 1
+      })
     }
-
-    const slicedHistoryArr = ordersHistoryArr.slice(page * 8 - 8, page * 8);
-    const historyLength = ordersHistoryArr.length;
-
-    res.send({
-      items: slicedHistoryArr,
-      pagesCount: Math.ceil(historyLength / 8),
-    });
-  } else {
-    res.sendStatus(403);
+  } catch (error) {
+    console.error("GETTING ERROR WHILE FETCHING ORDERS DATA");
+    res.send(403)
   }
-});
+})
 
 router.route("/getRangedUsers").post(async (req, res) => {
   const { page } = req?.body;
@@ -601,17 +615,16 @@ router.route("/search-info").post(async (req, res) => {
   const seachedProductsResult =
     inputValue.length > 0
       ? [...popularWines, ...winesNewSale, ...winesPremium].filter((item) =>
-          item.description
-            .toLocaleLowerCase()
-            .includes(inputValue.toLocaleLowerCase())
-        )
+        item.description
+          .toLocaleLowerCase()
+          .includes(inputValue.toLocaleLowerCase())
+      )
       : [];
   res.send(seachedProductsResult);
 });
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    return cb(null, "./uploads");
     return cb(null, "./uploads");
   },
 

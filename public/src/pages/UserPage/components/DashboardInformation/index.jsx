@@ -1,16 +1,20 @@
 import React, { useRef, useState } from "react";
 import MobContentSwitcher from "../../MobContentSwitcher";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { UploadModal } from "../../../../shared/components/Counter/UploadModal";
+import { deleteUser } from "../../../../redux/actions/authActions";
 import { Preloader } from "../../../../shared/components/Counter/Preloader";
+import { Link } from "react-router-dom";
 
 import './dashboard-info.css'
 
 export const DashboardInformation = (props) => {
 
-    const { firstname, lastname, username, email, pass, address, mobile, imgURL } = useSelector(state => state.auth.user);
+    const { firstname, lastname, username, email, pass, mobile, imgURL } = useSelector(state => state.auth.user);
     const [visibility, setVisibility] = useState(false)
     const [flag, setFlag] = useState(false);
+
+    const dispatch = useDispatch();
 
     const usersInfo = useRef({
         firstName: firstname,
@@ -19,14 +23,23 @@ export const DashboardInformation = (props) => {
         email: email,
         pass: pass,
         mobile: mobile,
+    })
+
+    const [userSI, setUserSI] = useState({
         currentPass: '',
         newPass: '',
-        repeatedNewPass: ''
+        repeatedNewPass: '',
     })
+
+
 
     const updateUsersInfo = (element) => {
         usersInfo.current[element.name] = element.value;
-        console.log(usersInfo);
+    }
+
+    const updateUsersSI = (element) => {
+        const newUserSI = { ...userSI, [element.name]: element.value };
+        setUserSI(newUserSI)
     }
 
     return (
@@ -39,36 +52,37 @@ export const DashboardInformation = (props) => {
                 </div>
                 <MobContentSwitcher flag={props.flag} setFlag={props.setFlag} sectionName={props.sectionName} />
             </header>
-            <form className="users-form" onSubmit={async (e) => {
-                e.preventDefault();
-                await fetch('http://localhost:3010/api/updateUsersInfo', {
-                    method: 'POST',
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(usersInfo.current)
-                })
-            }}>
-                <main className="users-info-wrap">
-                    <div className="users-description-wrap">
-                        <div className="text-wrap">
-                            <div className="users-desc-text-wrap">
-                                <p className="users-desc-text">User Profile</p>
-                            </div>
-                        </div>
-                        <div className="users-description">
-                            <div className="users-position">
-                                <img className="users-picture" src={imgURL || 'https://artscimedia.case.edu/wp-content/uploads/sites/79/2016/12/14205134/no-user-image.gif'} alt="" />
-                                <div className="pi">
-                                    <p className="users-name">{`${firstname} ${lastname}`}</p>
-                                </div>
-                            </div>
-                            <div className="update-picture-wrap">
-                                <button onClick={() => setVisibility(!visibility)} className="upload-photo">Upload Photo</button>
-                                {visibility && <UploadModal setFlag={setFlag} visibility={visibility} setVisibility={setVisibility}/>}
-                            </div>
+            <main className="users-info-wrap">
+                <div className="users-description-wrap">
+                    <div className="text-wrap">
+                        <div className="users-desc-text-wrap">
+                            <p className="users-desc-text">User Profile</p>
                         </div>
                     </div>
+                    <div className="users-description">
+                        <div className="users-position">
+                            <img className="users-picture" src={imgURL || 'https://artscimedia.case.edu/wp-content/uploads/sites/79/2016/12/14205134/no-user-image.gif'} alt="" />
+                            <div className="pi">
+                                <p className="users-name">{`${firstname} ${lastname}`}</p>
+                            </div>
+                        </div>
+                        <div className="update-picture-wrap">
+                            <button onClick={() => setVisibility(!visibility)} className="upload-photo">Upload Photo</button>
+                            <Link to='/' onClick={() => dispatch(deleteUser())} className="mob-logout">Log out</Link>
+                            {visibility && <UploadModal setFlag={setFlag} visibility={visibility} setVisibility={setVisibility} />}
+                        </div>
+                    </div>
+                </div>
+                <form className="users-form" onSubmit={async (e) => {
+                    e.preventDefault();
+                    await fetch('http://localhost:3010/api/updateUsersInfo', {
+                        method: 'POST',
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(usersInfo.current)
+                    })
+                }}>
                     <div className="info-fields-wrap">
                         <div className="first-and-last">
                             <div className="first-name">
@@ -101,25 +115,50 @@ export const DashboardInformation = (props) => {
                             </svg>
                         </div>
                     </div>
+                    <button type="submit" className="update-info">Update</button>
+                </form>
+                <form className="users-form" onSubmit={async (e) => {
+                    e.preventDefault();
+
+                    const passwordPattern = /^(?=.*[A-Z])(?=.*[\W_]).{8,}$/;
+
+                    if (passwordPattern.test(userSI.newPass)) {
+                        if ((pass === userSI.currentPass) && userSI.newPass === userSI.repeatedNewPass) {
+                            await fetch("http://localhost:3010/api/updatePassword", {
+                                method: "POST",
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ email: email, pass: userSI.newPass })
+                            })
+
+                            setUserSI({
+                                currentPass: '',
+                                newPass: '',
+                                repeatedNewPass: '',
+                            })
+                        }
+                    }
+                }}>
                     <div className="сhange-pass-wrap">
                         <div className="current-and-new">
                             <div className="current-pass">
                                 <label htmlFor="">Current password</label>
-                                <input onChange={(e) => updateUsersInfo(e.target)} name="currentPass" type="password" placeholder="Current password" className="input-current-pass" />
+                                <input value={userSI.currentPass} onChange={(e) => updateUsersSI(e.target)} name="currentPass" type="password" placeholder="Current password" className="input-current-pass" />
                             </div>
                             <div className="new-pass">
                                 <label htmlFor="">New password</label>
-                                <input onChange={(e) => updateUsersInfo(e.target)} name="newPass" type="password" placeholder="New password" className="input-new-pass" />
+                                <input value={userSI.newPass} onChange={(e) => updateUsersSI(e.target)} name="newPass" type="password" placeholder="New password" className="input-new-pass" />
                             </div>
                         </div>
                         <div className="confirming-new-pass">
                             <label htmlFor="" className="confirming-label">Confirming the new password</label>
-                            <input onChange={(e) => updateUsersInfo(e.target)} name="repeatedNewPass" type="password" placeholder="Confirm new password" className="input-cfnew-pass" />
+                            <input value={userSI.repeatedNewPass} onChange={(e) => updateUsersSI(e.target)} name="repeatedNewPass" type="password" placeholder="Confirm new password" className="input-cfnew-pass" />
                         </div>
                     </div>
                     <button type="submit" className="update-info">Update</button>
-                </main>
-            </form>
+                </form>
+            </main>
             {flag && <Preloader />}
         </div>
     )

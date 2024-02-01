@@ -2,9 +2,9 @@ const ImageKit = require("imagekit");
 const fs = require('fs');
 
 const IK = new ImageKit({
-    publicKey: "public_o8GkazK+J8PCgWzn4e76LM4FNQk=",
-    privateKey: "private_fopWiUVI+uoahH5u+NlTZhqJO7M=",
-    urlEndpoint: "https://ik.imagekit.io/nw50elh8t/"
+    publicKey: process.env.publicKey,
+    privateKey: process.env.privateKey,
+    urlEndpoint: process.env.urlEndpoint
 });
 
 const updatePhotoFn = async (db, email, emailByDefault, avatar, res) => {
@@ -38,14 +38,17 @@ const updatePhotoFn = async (db, email, emailByDefault, avatar, res) => {
                     console.error(err);
                     res.sendStatus(401);
                 } else {
+                    const user = (await db.collection('users').doc(emailByDefault).get()).data();
                     try {
-                        await db.collection('avatarURLS').doc(emailByDefault).set({ url: result.url });
+                        user.imgURL = result.url;
+
+                        await db.collection('users').doc(emailByDefault).set(user);
                     } catch (error) {
                         console.error("AVATAR URL ERROR", error);
                     }
                     console.log(result, "RESULT");
                     fs.unlinkSync(`./${avatar.path}`);
-                    res.send(result.url);
+                    res.send(user);
                 }
             });
         } else {

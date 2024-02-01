@@ -12,6 +12,7 @@ export const useGetRangedHistory = (pageNum, email) => {
 				},
 				body: JSON.stringify({ page: pageNum, email: email}),
 			});
+
 			let wines = await res.json();
 			setData(wines);
 		} catch (error) {
