@@ -5,14 +5,14 @@ const os = require("os");
 const router = require("express").Router();
 const nodemailer = require("nodemailer");
 const { brandCategories } = require("../db/brandCategories");
-const multer = require('multer');
-const updatePhotoFn = require('./../utils/updatePhotoFn');
+const multer = require("multer");
+const updatePhotoFn = require("./../utils/updatePhotoFn");
 const db = require("../firebaseConfig");
 // const resetDatabaseByDefaultFn = require('../utils/resetDatabaseByDefaultFn'); import of 'set default DB data function'
 
 const networkInterfaces = os.networkInterfaces();
 
-// resetDatabaseByDefaultFn(db); Set default DB 
+// resetDatabaseByDefaultFn(db); Set default DB
 
 router.route("/checkAuthorization").post(async (req, res) => {
   console.log(req?.ip, " req");
@@ -29,29 +29,36 @@ router.route("/checkAuthorization").post(async (req, res) => {
 
       console.log(IP, "IP");
       const IPs = (await db.collection("IPs").doc(email).get()).data();
-      const user = (await db.collection("users").doc(email).get()).data()
+      const user = (await db.collection("users").doc(email).get()).data();
 
-      console.log(IPs, 'IPs');
-      console.log(user, 'USER');
+      console.log(IPs, "IPs");
+      console.log(user, "USER");
 
-      if (IPs !== undefined && user !== undefined) {
-        for (let ipNum of Object.keys(IPs)) {
-          if (IPs[`${ipNum}`] === IP) {
-            return res.send({
-              ...user,
-            });
-          }
+      if (IPs && user) {
+        const IpsValues = Object.values(IPs);
+
+        if (IpsValues.includes(IP)) {
+          return res.send(user);
         }
-        res.sendStatus(401);
+
+        if (IpsValues.length <= 4) {
+          await db
+            .collection("IPs")
+            .doc(email)
+            .set({ [`ip_${IpsValues.length + 1}`]: IP }, { merge: true }); // add new IP
+          return res.send(user);
+        }
+
+        return res.sendStatus(401);
       } else {
         res.sendStatus(401);
       }
     } else {
-      res.sendStatus(401);
+      return res.sendStatus(401);
     }
   } catch (error) {
     console.log(error);
-    res.sendStatus(401);
+    return res.sendStatus(401);
   }
 });
 
@@ -131,11 +138,10 @@ router.route("/login").post(async (req, res) => {
           email: user.get("email"),
           address: user.get("address"),
           mobile: user.get("mobile"),
-          imgURL: user.get("imgURL")
+          imgURL: user.get("imgURL"),
         };
 
         res.send(userInfo);
-
       } else {
         res.sendStatus(401);
       }
@@ -151,13 +157,7 @@ router.route("/login").post(async (req, res) => {
 });
 
 router.route("/updateUsersInfo").post(async (req, res) => {
-  const {
-    firstName,
-    lastName,
-    username,
-    email,
-    mobile,
-  } = req?.body;
+  const { firstName, lastName, username, email, mobile } = req?.body;
 
   console.log(email);
 
@@ -171,30 +171,28 @@ router.route("/updateUsersInfo").post(async (req, res) => {
     currentUsersInfo.username = username;
     currentUsersInfo.mobile = mobile;
 
-    await db.collection('users').doc(email).set(currentUsersInfo)
+    await db.collection("users").doc(email).set(currentUsersInfo);
 
-    res.sendStatus(200)
+    res.sendStatus(200);
   } catch (error) {
     console.log(error, "Info updating error");
     res.sendStatus(403);
   }
 });
 
-
-router.route('/updatePassword').post(async (req, res) => {
+router.route("/updatePassword").post(async (req, res) => {
   const { email, pass } = req?.body;
 
   try {
-    const user = (await db.collection('users').doc(email).get()).data()
+    const user = (await db.collection("users").doc(email).get()).data();
     user.pass = pass;
-    await db.collection('users').doc(email).set(user)
+    await db.collection("users").doc(email).set(user);
     res.send(user);
   } catch (error) {
-    console.log('UPDATE USERS SI ERROR');
+    console.log("UPDATE USERS SI ERROR");
     res.sendStatus(403);
   }
-
-})
+});
 
 router.route("/admin-auth").post(async (req, res) => {
   const { email, password } = req?.body;
@@ -247,7 +245,7 @@ router.route("/register").post(async (req, res) => {
       networkInterfaces?.en0[0]?.address ||
       "";
     await db.collection("users").doc(email).set(userData);
-    await db.collection('IPs').doc(email).set({ 'ip_1': IP });
+    await db.collection("IPs").doc(email).set({ ip_1: IP });
     res.sendStatus(200);
   } catch (error) {
     console.error(error, " error");
@@ -490,14 +488,14 @@ router.route("/getRangedHistory").post(async (req, res) => {
     } else {
       res.status(403).send({
         items: [],
-        pagesCount: 1
-      })
+        pagesCount: 1,
+      });
     }
   } catch (error) {
     console.error("GETTING ERROR WHILE FETCHING ORDERS DATA");
-    res.send(403)
+    res.send(403);
   }
-})
+});
 
 router.route("/getRangedUsers").post(async (req, res) => {
   const { page } = req?.body;
@@ -615,10 +613,10 @@ router.route("/search-info").post(async (req, res) => {
   const seachedProductsResult =
     inputValue.length > 0
       ? [...popularWines, ...winesNewSale, ...winesPremium].filter((item) =>
-        item.description
-          .toLocaleLowerCase()
-          .includes(inputValue.toLocaleLowerCase())
-      )
+          item.description
+            .toLocaleLowerCase()
+            .includes(inputValue.toLocaleLowerCase())
+        )
       : [];
   res.send(seachedProductsResult);
 });
@@ -630,15 +628,15 @@ const storage = multer.diskStorage({
 
   filename: function (req, file, cb) {
     return cb(null, `${file.originalname}`);
-  }
-})
+  },
+});
 
 const upload = multer({ storage });
 
-router.route('/updatePhoto').post(upload.single('avatar'), (req, res) => {
+router.route("/updatePhoto").post(upload.single("avatar"), (req, res) => {
   const emailByDefault = req?.body.email;
   let { email } = req?.body;
-  email = email.split('@')[0];
+  email = email.split("@")[0];
 
   const avatar = req?.file;
 
@@ -646,6 +644,6 @@ router.route('/updatePhoto').post(upload.single('avatar'), (req, res) => {
   console.log(avatar, "AVATAR");
 
   updatePhotoFn(db, email, emailByDefault, avatar, res);
-})
+});
 
 module.exports = router;
