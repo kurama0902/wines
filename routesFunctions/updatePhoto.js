@@ -1,3 +1,5 @@
+const db = require("../firebaseConfig");
+
 const ImageKit = require("imagekit");
 const fs = require('fs');
 
@@ -7,7 +9,17 @@ const IK = new ImageKit({
     urlEndpoint: process.env.urlEndpoint
 });
 
-const updatePhotoFn = async (db, email, emailByDefault, avatar, res) => {
+const updatePhoto = async (req, res) => {
+
+    const emailByDefault = req?.body.email;
+    let { email } = req?.body;
+    email = email.split("@")[0];
+
+    const avatar = req?.file;
+
+    console.log(email, "EMAIL");
+    console.log(avatar, "AVATAR");
+
     IK.listFiles({
         tags: [email]
     }, function (error, result) {
@@ -57,4 +69,4 @@ const updatePhotoFn = async (db, email, emailByDefault, avatar, res) => {
     });
 }
 
-module.exports = updatePhotoFn
+module.exports = updatePhoto
