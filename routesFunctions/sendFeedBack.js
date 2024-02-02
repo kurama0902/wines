@@ -20,6 +20,8 @@ const sendFeedBack = (req, res) => {
         if (error) {
           res.statusCode = 405;
           return res.send(error);
+        } else {
+          res.sendStatus(200)
         }
         console.log(mailOptions.html);
       });
